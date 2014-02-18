@@ -54,8 +54,11 @@ function wpbo_update_cart_validation( $passed, $cart_item_key, $values, $quantit
 *	@return boolean
 *	
 */
+
 function wpbo_validate_single_product( $passed, $product_id, $quantity, $from_cart, $variation_id = null, $variations = null ) {
 	global $woocommerce, $product;
+	global $wpbo_wc_version;
+	
 	$product = get_product( $product_id );
 	$title = $product->get_title();
 
@@ -77,14 +80,28 @@ function wpbo_validate_single_product( $passed, $product_id, $quantity, $from_ca
 
 	// Min Validation
 	if ( $min_value != null && $quantity < intval( $min_value ) ) {
-		wc_add_notice( sprintf( __( "You must add a minimum of %s %s's to your cart.", 'woocommerce' ), $min_value, $title ), 'error' );
+		
+		if ( $wpbo_wc_version >= 2.1 ) {
+			wc_add_notice( sprintf( __( "You must add a minimum of %s %s's to your cart.", 'woocommerce' ), $min_value, $title ), 'error' );
+		
+		// Old Validation Style Support	
+		} else {
+			$woocommerce->add_error( sprintf( __( "You must add a minimum of %s %s's to your cart.", 'woocommerce' ), $min_value, $title ) );
+		}
+		
 		return false;
 	}
 
-
 	// Max Validation
 	if ( $max_value != null && $quantity > intval( $max_value ) ) {
-		wc_add_notice( sprintf( __( "You may only add a maximum of %s %s's to your cart.", 'woocommerce' ), $max_value, $title ), 'error' );
+		
+		if ( $wpbo_wc_version >= 2.1 ) {
+			wc_add_notice( sprintf( __( "You may only add a maximum of %s %s's to your cart.", 'woocommerce' ), $max_value, $title ), 'error' );
+		
+		// Old Validation Style Support	
+		} else {
+			$woocommerce->add_error( sprintf( __( "You may only add a maximum of %s %s's to your cart.", 'woocommerce' ), $max_value, $title ) );
+		}
 		return false;
 	}
 	
@@ -97,7 +114,15 @@ function wpbo_validate_single_product( $passed, $product_id, $quantity, $from_ca
 	
 	// Step Validation	
 	if ( $step != null && $rem_qty % $step != 0 ) {
-		wc_add_notice( sprintf( __( "You may only add a %s in multiples of %s to your cart.", 'woocommerce' ), $title, $step ), 'error' );
+	
+		if ( $wpbo_wc_version >= 2.1 ) {
+			wc_add_notice( sprintf( __( "You may only add a %s in multiples of %s to your cart.", 'woocommerce' ), $title, $step ), 'error' );
+		
+		// Old Validation Style Support	
+		} else {
+			$woocommerce->add_error( sprintf( __( "You may only add a %s in multiples of %s to your cart.", 'woocommerce' ), $title, $step ) );
+		}
+		
 		return false;
 	}
 	
@@ -117,13 +142,27 @@ function wpbo_validate_single_product( $passed, $product_id, $quantity, $from_ca
 		
 			// Total Cart Quantity Min Validation
 			if ( $min_value != null && ( $quantity + $cart_qty ) < $min_value ) {
-				wc_add_notice( sprintf( __( "Your cart must have a minimum of %s %s's to proceed.", 'woocommerce' ), $min_value, $title ), 'error' );
+				
+				if ( $wpbo_wc_version >= 2.1 ) {
+					wc_add_notice( sprintf( __( "Your cart must have a minimum of %s %s's to proceed.", 'woocommerce' ), $min_value, $title ), 'error' );
+				
+				// Old Validation Style Support	
+				} else {
+					$woocommerce->add_error( sprintf( __( "Your cart must have a minimum of %s %s's to proceed.", 'woocommerce' ), $min_value, $title ) );
+				}
 				return false;
 			}
 		
 			// Total Cart Quantity Max Validation
 			if ( $max_value != null && ( $quantity + $cart_qty ) > $max_value ) {
-				wc_add_notice( sprintf( __( "You can only purchase a maximum of %s %s's at once and your cart already has %s %s's in it already.", 'woocommerce' ), $max_value, $title, $cart_qty, $title ), 'error' );
+				
+				if ( $wpbo_wc_version >= 2.1 ) {
+					wc_add_notice( sprintf( __( "You can only purchase a maximum of %s %s's at once and your cart already has %s %s's in it already.", 'woocommerce' ), $max_value, $title, $cart_qty, $title ), 'error' );
+				
+				// Old Validation Style Support	
+				} else {
+					$woocommerce->add_error( sprintf( __( "You can only purchase a maximum of %s %s's at once and your cart already has %s %s's in it already.", 'woocommerce' ), $max_value, $title, $cart_qty, $title ) );
+				}
 				return false;
 			}
 			
@@ -136,8 +175,14 @@ function wpbo_validate_single_product( $passed, $product_id, $quantity, $from_ca
 			
 			// Total Cart Quantity Step Validation
 			if ( $step != null && $step != 0 && $cart_qty_rem != 0 && $cart_qty_rem % $step != 0 ) {
-				wc_add_notice( sprintf( __("You may only purchase %s in multiples of %s.", 'woocommerce' ), $title, $step ), 'error' );
-			return false;
+				if ( $wpbo_wc_version >= 2.1 ) {
+					wc_add_notice( sprintf( __("You may only purchase %s in multiples of %s.", 'woocommerce' ), $title, $step ), 'error' );
+				
+				// Old Validation Style Support	
+				} else {
+					$woocommerce->add_error( sprintf( __("You may only purchase %s in multiples of %s.", 'woocommerce' ), $title, $step ) );
+				}
+				return false;
 			}
 		}
 	}
