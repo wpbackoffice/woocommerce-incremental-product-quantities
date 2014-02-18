@@ -325,25 +325,37 @@ function wpbo_save_quantity_rule_meta( $post_id ) {
 		$min = $_POST['min'];
 	}
 	
+	// Update Step
 	if ( isset( $_POST['step'] ) and isset( $min ) ) {
 		if ( $min < $_POST['step']) {
 			$min = $_POST['step'];
 		}
 	}
 	
+	// Update Min
 	if ( isset( $min ) ) {
 		update_post_meta( $post_id, '_min', wpbo_validate_number( $min ) );
 	}
 	
-	if ( isset( $min ) ) {
-		update_post_meta( $post_id, '_max', wpbo_validate_number( $_POST['max'] ) );
+	// Update Max
+	if ( isset( $_POST['max'] ) ) {
+		$max = $_POST['max'];
+		
+		// Validate Max is not less then Min
+		if ( isset( $min ) and $max < $min and $max != 0 ) {
+			$max = $min;
+		}
+		
+		update_post_meta( $post_id, '_max', wpbo_validate_number( $max ) );
 	}
 	
-	if ( isset( $min ) ) {
+	// Update Step
+	if ( isset( $_POST['step'] ) ) {
 		update_post_meta( $post_id, '_step', wpbo_validate_number( $_POST['step'] ) );
 	}
 	
-	if ( isset( $min ) ) {
+	// Update Priority
+	if ( isset( $_POST['priority'] ) ) {
 		update_post_meta( $post_id, '_priority', wpbo_validate_number( $_POST['priority'] ) );
 	}
 	
