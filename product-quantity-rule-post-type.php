@@ -87,15 +87,16 @@ function wpbo_manage_quantity_rule_columns($column_name, $id) {
 	        
 	    case 'cats':
 	   		$cats = get_post_meta( $id, '_cats', false);
-	   			   		
-	   		foreach ( $cats[0] as $cat ){
-
-	   			$taxonomy = 'product_cat'; 	
-		   		$term = get_term_by( 'id', $cat, $taxonomy );
-	   			$link = get_term_link( $term );	
-	   			
-	   			echo "<a href='" . $link . "'>" . $term->name . "</a><br />";	
-	   		}
+	   		if ( $cats != null ) {	   		
+		   		foreach ( $cats[0] as $cat ){
+	
+		   			$taxonomy = 'product_cat'; 	
+			   		$term = get_term_by( 'id', $cat, $taxonomy );
+		   			$link = get_term_link( $term );	
+		   			
+		   			echo "<a href='" . $link . "'>" . $term->name . "</a><br />";	
+		   		}
+		   	}
 	        break;  
 	        
 	    default:
