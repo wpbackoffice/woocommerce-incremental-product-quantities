@@ -9,7 +9,7 @@ Requires at least: 2.3
 
 Tested up to: 3.8
 
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 
 License: GPLv2
 
@@ -54,6 +54,10 @@ Manual Installation
 6. Set Rules for categories by clicking the new ‘Quantity Rules’ sidebar option or assign per-product rules by using the new metabox on your product page.
 
 ## Changelog 
+
+####1.1.3
+* Minor bug fixes.
+
 
 ####1.1.2 
 * Undefined variable bug fix.
