@@ -55,6 +55,9 @@ Manual Installation
 
 ## Changelog 
 
+####1.1.4
+* Added back WC 2.0.x validation compatability. 
+
 ####1.1.3
 * Minor bug fixes.
 
