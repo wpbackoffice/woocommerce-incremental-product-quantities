@@ -42,6 +42,30 @@ function wpbo_quantity_styles() {
 }
 
 /*
+*	Set what version of WooCommerce the user has installed 
+*/
+add_action( 'init', 'wpbo_get_wc_version', 1 );
+
+global $wpbo_wc_version;
+
+function wpbo_get_wc_version() {
+
+	global $wpbo_wc_version;
+	
+	if ( ! function_exists( 'get_plugins' ) )
+		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	
+	$plugin_folder = get_plugins( '/' . 'woocommerce' );
+	$plugin_file = 'woocommerce.php';
+	
+	if ( isset( $plugin_folder[$plugin_file]['Version'] ) ) {
+		$wpbo_wc_version = $plugin_folder[$plugin_file]['Version'];
+	} else {
+		$wpbo_wc_version = NULL;
+	}
+}
+
+/*
 * 	General Admin Notice to Encourage users to download thumbnail input as well
 */
 add_action('admin_notices', 'wpbo_thumbnail_plugin_notice');
