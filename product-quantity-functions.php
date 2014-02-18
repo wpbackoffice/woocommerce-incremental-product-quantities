@@ -50,8 +50,11 @@ function wpbo_get_applied_rule_obj( $product ) {
 	 	
 	 	// Get the Rule's Cats and Tags
 	 	$cats = get_post_meta( $rule->ID, '_cats' );
-	 	$cats = $cats[0];
-	 
+	 	
+	 	if( $cats != false ) {
+		 	$cats = $cats[0];
+	 	}
+
 	 	// Loop through the Product's Categories
 	 	// If they are in the rule flag it
 	 	foreach ( $product_terms as $term ) {

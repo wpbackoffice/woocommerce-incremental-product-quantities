@@ -161,6 +161,20 @@ function wpbo_save_quantity_meta( $post_id ) {
 			'' 
 		);
 	}
+
+	if( isset( $_POST['_wpbo_override'] )) {
+		update_post_meta( 
+			$post_id, 
+			'_wpbo_override', 
+			strip_tags( $_POST['_wpbo_override'] )
+		);
+	} else {
+		update_post_meta( 
+			$post_id, 
+			'_wpbo_override', 
+			'' 
+		);
+	}
 	
 	if ( isset( $_POST['_wpbo_minimum'] )) {
 		$min  = $_POST['_wpbo_minimum'];
@@ -181,7 +195,7 @@ function wpbo_save_quantity_meta( $post_id ) {
 		update_post_meta( 
 			$post_id, 
 			'_wpbo_step', 
-			strip_tags( $_POST['_wpbo_step'] )
+			strip_tags( wpbo_validate_number( $_POST['_wpbo_step'] ) )
 		);
 	}
 	
@@ -189,30 +203,24 @@ function wpbo_save_quantity_meta( $post_id ) {
 		update_post_meta( 
 			$post_id, 
 			'_wpbo_minimum', 
-			strip_tags( $min )
+			strip_tags( wpbo_validate_number( $min ) )
 		);
 	}
 	
+	/* Make sure Max > Min */
 	if( isset( $_POST['_wpbo_maximum'] )) {
+		$max = $_POST['_wpbo_maximum'];
+		if ( isset( $min ) and $max < $min and $max != 0 ) {
+			$max = $min;
+		}
+	
 		update_post_meta( 
 			$post_id, 
 			'_wpbo_maximum', 
-			strip_tags( $_POST['_wpbo_maximum'] )
+			strip_tags( wpbo_validate_number( $max ) )
 		);
 	}
 	
-	if( isset( $_POST['_wpbo_override'] )) {
-		update_post_meta( 
-			$post_id, 
-			'_wpbo_override', 
-			strip_tags( $_POST['_wpbo_override'] )
-		);
-	} else {
-		update_post_meta( 
-			$post_id, 
-			'_wpbo_override', 
-			'' 
-		);
-	}
+
 
 }

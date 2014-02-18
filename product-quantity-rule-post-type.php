@@ -87,15 +87,16 @@ function wpbo_manage_quantity_rule_columns($column_name, $id) {
 	        
 	    case 'cats':
 	   		$cats = get_post_meta( $id, '_cats', false);
-	   			   		
-	   		foreach ( $cats[0] as $cat ){
-
-	   			$taxonomy = 'product_cat'; 	
-		   		$term = get_term_by( 'id', $cat, $taxonomy );
-	   			$link = get_term_link( $term );	
-	   			
-	   			echo "<a href='" . $link . "'>" . $term->name . "</a><br />";	
-	   		}
+	   		if ( $cats != null ) {	   		
+		   		foreach ( $cats[0] as $cat ){
+	
+		   			$taxonomy = 'product_cat'; 	
+			   		$term = get_term_by( 'id', $cat, $taxonomy );
+		   			$link = get_term_link( $term );	
+		   			
+		   			echo "<a href='" . $link . "'>" . $term->name . "</a><br />";	
+		   		}
+		   	}
 	        break;  
 	        
 	    default:
@@ -325,25 +326,37 @@ function wpbo_save_quantity_rule_meta( $post_id ) {
 		$min = $_POST['min'];
 	}
 	
+	// Update Step
 	if ( isset( $_POST['step'] ) and isset( $min ) ) {
 		if ( $min < $_POST['step']) {
 			$min = $_POST['step'];
 		}
 	}
 	
+	// Update Min
 	if ( isset( $min ) ) {
 		update_post_meta( $post_id, '_min', wpbo_validate_number( $min ) );
 	}
 	
-	if ( isset( $min ) ) {
-		update_post_meta( $post_id, '_max', wpbo_validate_number( $_POST['max'] ) );
+	// Update Max
+	if ( isset( $_POST['max'] ) ) {
+		$max = $_POST['max'];
+		
+		// Validate Max is not less then Min
+		if ( isset( $min ) and $max < $min and $max != 0 ) {
+			$max = $min;
+		}
+		
+		update_post_meta( $post_id, '_max', wpbo_validate_number( $max ) );
 	}
 	
-	if ( isset( $min ) ) {
+	// Update Step
+	if ( isset( $_POST['step'] ) ) {
 		update_post_meta( $post_id, '_step', wpbo_validate_number( $_POST['step'] ) );
 	}
 	
-	if ( isset( $min ) ) {
+	// Update Priority
+	if ( isset( $_POST['priority'] ) ) {
 		update_post_meta( $post_id, '_priority', wpbo_validate_number( $_POST['priority'] ) );
 	}
 	
