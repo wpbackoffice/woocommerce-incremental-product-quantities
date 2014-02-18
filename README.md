@@ -1,22 +1,29 @@
-=== WooCommerce Incremental Product Quantities  ===
+# WooCommerce Incremental Product Quantities  
 Contributors: wpbackoffice
+
 Tags: woocommerce, product quantities, input values
+
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
+
 Requires at least: 2.3
+
 Tested up to: 3.8
+
 Stable tag: 1.1.2
+
 License: GPLv2
+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Sell products in increments by setting minimum and maximum quantities as well as the intervals in between ie. sell products by the dozen.
 
-== Description ==
+## Description 
 
 Sell WooCommerce products in increments by setting minimum and maximum quantities as well as the intervals in between ie. sell products by the dozen.
 
 Using rules based on product categories or per product settings, you can easily sell products by the dozen and set minimum/maximum quantity amounts.
 
-Features:
+## Features:
 
 * Simple installation makes getting started easy
 * Create product category based rules in seconds
@@ -27,7 +34,7 @@ Features:
 
 [Plugin's Official Documentation and Support Page](http://www.wpbackoffice.com/plugins/woocommerce-incremental-product-quantities)
 
-== Installation ==
+## Installation 
 
 Automatic WordPress Installation
 
@@ -46,50 +53,44 @@ Manual Installation
 5. Active the plugin from your wordpress backend ‘Plugins -> Installed Plugins’
 6. Set Rules for categories by clicking the new ‘Quantity Rules’ sidebar option or assign per-product rules by using the new metabox on your product page.
 
-== Changelog ==
+## Changelog 
 
-= 1.1.2 =
+####1.1.2 
 * Undefined variable bug fix.
 
-= 1.1.1 =
+####1.1.1
 * Fixed bug that was unsetting rule checkboxes.
 
-= 1.1.0 =
+####1.1.0
 * Updated plugin to work with WC 2.1.2 and below.
 * New error response methods.
 * Update validations.
 * Updated comments.
 * Added extra help text.
 
-= 1.0.8 =
+####1.0.8
 * Fixed division by zero error in validations.
 
-= 1.0.7 =
+####1.0.7
 * Contributor consolidation.
 
-= 1.0.6 =
+####1.0.6
 * Fixed cart bug, added additional validation so users can't enter minimum values that are less then the step value.
 
-= 1.0.5 =
+####1.0.5
 * Fixed additional bug related to missing input values and error messages on some installs. Also updated notice window. 
 
-= 1.0.4 =
+####1.0.4
 * Style sheet and link update. Added potential soluation for niche valdation problem. 
 
-= 1.0.3 =
+####1.0.3
 * Readme.txt updates.
 
-= 1.0.2 =
+####1.0.2
 * Another small url change.
 
-= 1.0.1 =
+####1.0.1
 * Minor variable updates to account for changing directory.
 
-= 1.0.0 =
+####1.0.0
 * Initial Commit
-
-== Screenshots ==
-
-1. screenshot-1.png
-1. screenshot-2.png
-1. screenshot-3.png
