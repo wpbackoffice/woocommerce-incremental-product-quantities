@@ -36,12 +36,16 @@ class Incremental_Product_Quantities {
 	
 	public function __construct() {
 		
+		// Activation Hook
+		register_activation_hook( __FILE__, array( $this, 'activation_hook' ) );
+		
 		// Include Required Files
 		require_once( 'includes/ipq-functions.php' );
 		require_once( 'includes/class-ipq-filters.php' );
 		require_once( 'includes/class-ipq-product-meta-box.php' );
 		require_once( 'includes/class-ipq-post-type.php' );
 		require_once( 'includes/class-ipq-validations.php' );
+		require_once( 'includes/class-ipq-advanced-rules.php' );
 		
 		// Add Scripts and styles		
 		add_action( 'wp_enqueue_scripts', array( $this, 'input_value_validation' ) );	
@@ -53,6 +57,27 @@ class Incremental_Product_Quantities {
 		// Control Admin Notices
 		add_action( 'admin_notices', array( $this, 'thumbnail_plugin_notice' ) );
 		add_action( 'admin_init', array( $this, 'thumbnail_plugin_notice_ignore' ) );
+
+	}
+
+	/*
+	*	Adds default option values
+	*/	
+	public function activation_hook() {
+
+		$options = get_option( 'ipq_options' );
+	
+		if ( $options == false ) {
+		
+			$defaults = array (		
+				'ipq_site_rule_active'	=> '',
+				'ipq_site_min'			=> '',
+				'ipq_site_max' 			=> '',
+				'ipq_site_step' 		=> '',
+			);
+		
+			add_option( 'ipq_options', $defaults, '', false );
+		}
 
 	}
 
