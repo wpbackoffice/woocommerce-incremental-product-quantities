@@ -220,7 +220,4 @@ function wpbo_save_quantity_meta( $post_id ) {
 			strip_tags( wpbo_validate_number( $max ) )
 		);
 	}
-	
-
-
 }

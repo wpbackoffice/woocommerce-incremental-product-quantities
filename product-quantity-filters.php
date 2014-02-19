@@ -5,9 +5,6 @@ if ( ! class_exists( 'IPQ_Filters' ) ) :
 
 class IPQ_Filters {
 	
-	/* @var bool True if Incremental Product Quantities plugin is active */
-	public $incremental_active;
-	
 	public function __construct() {
 		
 		// Cart input box variable filters
