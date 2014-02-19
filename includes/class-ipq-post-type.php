@@ -303,7 +303,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	public function company_notice_meta( $post ) {
 		
 		?>
-			<a href="http://www.wpbackoffice.com" target="_blank"><img src="<?php echo plugins_url() ?>/woocommerce-incremental-product-quantities/wpbo-logo.png" /></a>
+			<a href="http://www.wpbackoffice.com" target="_blank"><img src="<?php echo plugins_url() ?>/woocommerce-incremental-product-quantities/assets/img/wpbo-logo.png" /></a>
 			<p>
 				<a href="http://www.wpbackoffice.com" target="_blank">WooCommerce Hosting, Customization, Support</a>
 			</p>

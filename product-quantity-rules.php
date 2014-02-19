@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'IPQ' ) ) :
 
-class IPQ {
+class Incremental_Product_Quantities {
 	
 	public $wc_version;
 	
@@ -37,11 +37,11 @@ class IPQ {
 	public function __construct() {
 		
 		// Include Required Files
-		require_once( 'product-quantity-functions.php' );
-		require_once( 'product-quantity-filters.php' );
-		require_once( 'product-quantity-meta-box.php' );
-		require_once( 'product-quantity-rule-post-type.php' );
-		require_once( 'product-quantity-validations.php' );
+		require_once( 'includes/ipq-functions.php' );
+		require_once( 'includes/class-ipq-filters.php' );
+		require_once( 'includes/class-ipq-product-meta-box.php' );
+		require_once( 'includes/class-ipq-post-type.php' );
+		require_once( 'includes/class-ipq-validations.php' );
 		
 		// Add Scripts and styles		
 		add_action( 'wp_enqueue_scripts', array( $this, 'input_value_validation' ) );	
@@ -61,30 +61,33 @@ class IPQ {
 	*	step up.
 	*/	
 	public function input_value_validation() {
+	
 		wp_enqueue_script( 
 			'wpbo_validation', 
-			plugins_url() . '/woocommerce-incremental-product-quantities/wpbo_input_value_validation.js',
+			plugins_url( '/assets/js/wpbo_input_value_validation.js', __FILE__ ),
 			array( 'jquery' )
 		);
+		
 	}
 	
 	/*
 	*	Include Styles
 	*/	
 	public function quantity_styles() {
-		wp_enqueue_style( 
-			'wpbo_quantity_styles', 
-			plugins_url() . '/woocommerce-incremental-product-quantities/styles.css'
-		);
+	
+		if ( is_admin() ) {
+			wp_enqueue_style( 
+				'wpbo_quantity_styles', 
+				plugins_url( '/assets/css/styles.css', __FILE__ )
+			);
+		}
 	}
 	
 	/*
 	*	Set what version of WooCommerce the user has installed 
 	*/	
 	public function get_wc_version() {
-	
-		global $wpbo_wc_version;
-		
+			
 		if ( ! function_exists( 'get_plugins' ) )
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		
@@ -154,7 +157,7 @@ endif;
  * @return WCS_Supplier
  */
 function IPQ() {
-	return IPQ::instance();
+	return Incremental_Product_Quantities::instance();
 }
 
 // Global for backwards compatibility.
