@@ -159,3 +159,19 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 		}				
 	}
 }
+
+/*
+*	Validate inputs as numbers and set them to null if 0
+*/
+function wpbo_validate_number( $number ) {
+	
+	$number = intval( $number );
+	
+	if ( $number == 0 ) {
+		return null;
+	} elseif ( $number < 0 ) {
+		return null;
+	} 
+	
+	return $number;
+}
