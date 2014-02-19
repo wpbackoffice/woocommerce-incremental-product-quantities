@@ -31,39 +31,40 @@ class IPQ_Quantity_Rule_Post_Type {
 	*	Register Quantity Rule Post Type
 	*/	
 	public function quantity_rule_init() {
-	  $labels = array(
-	    'name'               => 'Quantity Rules',
-	    'singular_name'      => 'Quantity Rule',
-	    'add_new'            => 'Add New',
-	    'add_new_item'       => 'Add New Rule',
-	    'edit_item'          => 'Edit Rule',
-	    'new_item'           => 'New Rule',
-	    'all_items'          => 'All Rules',
-	    'view_item'          => 'View Rule',
-	    'search_items'       => 'Search Ruless',
-	    'not_found'          => 'No rules found',
-	    'not_found_in_trash' => 'No rules found in Trash',
-	    'parent_item_colon'  => '',
-	    'menu_name'          => 'Quantity Rules'
-	  );
 	
-	  $args = array(
-	    'labels'             => $labels,
-	    'public'             => false,
-	    'publicly_queryable' => false,
-	    'show_ui'            => true,
-	    'show_in_menu'       => true,
-	    'query_var'          => true,
-	    'rewrite'            => array( 'slug' => 'quantity-rule' ),
-	    'capability_type'    => 'post',
-	    'has_archive'        => true,
-	    'hierarchical'       => false,
-	    'menu_position'      => null,
-	    'supports'           => array( 'title' ),
-	    'taxonomies' 		 => array(),
-	  );
-	
-	  register_post_type( 'quantity-rule', $args );
+		$labels = array(
+			'name'               => 'Quantity Rules',
+			'singular_name'      => 'Quantity Rule',
+			'add_new'            => 'Add New',
+			'add_new_item'       => 'Add New Rule',
+			'edit_item'          => 'Edit Rule',
+			'new_item'           => 'New Rule',
+			'all_items'          => 'All Rules',
+			'view_item'          => 'View Rule',
+			'search_items'       => 'Search Ruless',
+			'not_found'          => 'No rules found',
+			'not_found_in_trash' => 'No rules found in Trash',
+			'parent_item_colon'  => '',
+			'menu_name'          => 'Quantity Rules'
+		);
+		
+		$args = array(
+			'labels'             => $labels,
+			'public'             => false,
+			'publicly_queryable' => false,
+			'show_ui'            => true,
+			'show_in_menu'       => true,
+			'query_var'          => true,
+			'rewrite'            => array( 'slug' => 'quantity-rule' ),
+			'capability_type'    => 'post',
+			'has_archive'        => true,
+			'hierarchical'       => false,
+			'menu_position'      => null,
+			'supports'           => array( 'title' ),
+			'taxonomies' 		 => array(),
+		);
+		
+		register_post_type( 'quantity-rule', $args );
 	}
 	
 	/*
