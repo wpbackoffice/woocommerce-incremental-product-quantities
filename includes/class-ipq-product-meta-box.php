@@ -48,14 +48,50 @@ class IPQ_Quantity_Meta_Boxes {
 			} else {
 				$rule = $rule_result;
 			}
-		
+
 			// Display Rule Being Applied
 			if ( $rule == 'inactive' ) {
-				echo "<div class='inactive-rule rule-message'>No rule is being applied becasue you've deactivted the plugin for this product.</div>";
+				echo "<div class='inactive-rule rule-message'>No rule is being applied becasue you've deactivated the plugin for this product.</div>";
+				
 			} elseif ( $rule == 'override' ) {
-				echo "<div class='overide-rule rule-message'>The values below are being used because you've chosen to override any rules for this product.</div>";
+				echo "<div class='overide-rule rule-message'>The values below are being used because you've chosen to override any applied rules for this product.</div>";
+			
+			} elseif ( $rule == 'sitewide' ) {
+				?>
+				<div class="active-rule">
+					<span>Active Rule:</span>
+					<a href='<?php echo admin_url( 'edit.php?post_type=quantity-rule&page=class-ipq-advanced-rules.php' ) ?>'>
+						Site Wide Rule
+					</a>
+				</div>
+		
+				<div class="rule-meta">			
+					<span class="meta-value-title">Step Value:</span> 
+					<?php if ( $values['step'] == '' ) {
+							echo '<span class="meta-value-single">No Step Value</span>';
+						} else { 
+							echo '<span class="meta-value-single">' . $values['step'] . '</span>'; 
+						} 
+					?>
+					<span class="meta-value-title">Minimum Quantity:</span>
+					<?php if ( $values['min_value'] == '' ) {
+							echo '<span class="meta-value-single">No Minimum Value</span>';
+						} else { 
+							echo '<span class="meta-value-single">' . $values['min_value'] . '</span>'; 
+						} 
+					?>
+					<span class="meta-value-title">Maximum Quantity:</span>
+					<?php if ( $values['max_value'] == '' ) {
+							echo '<span class="meta-value-single">No Maximum Value</span>';
+						} else { 
+							echo '<span class="meta-value-single">' . $values['max_value'] . '</span>'; 
+						} 
+					?>
+				</div>
+				<?php 
 			} elseif ( ! isset( $rule->post_title ) or $rule->post_title == null ) {
-				echo "<div class='no-rule rule-message'>The values below will be used becasue there is not rule currently being applied to this product.</div>";
+				echo "<div class='no-rule rule-message'>The values below will be used becasue there is not a rule currently being applied to this product.</div>";
+				
 			} else { ?>
 				<div class="active-rule">
 					<span>Active Rule:</span>

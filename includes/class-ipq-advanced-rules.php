@@ -61,17 +61,17 @@ class IPQ_Advanced_Rules {
 		}
 
 		if ( isset( $_POST['ipq_site_min'] )) {
-			$min  = $_POST['ipq_site_min'];
+			$min  = wpbo_validate_number( $_POST['ipq_site_min'] );
 		}
 		
 		if ( isset( $_POST['ipq_site_step'] )) {
-			$step = $_POST['ipq_site_step'];
+			$step = wpbo_validate_number( $_POST['ipq_site_step'] );
 		}
 		
 		if ( isset( $_POST['ipq_site_max'] )) {
-			$max = $_POST['ipq_site_max'];
+			$max = wpbo_validate_number( $_POST['ipq_site_max'] );
 		}
-		
+
 		/* Make sure min >= step */
 		if ( isset( $step ) and isset( $min ) ) {
 			if ( $min < $step ) {
@@ -81,8 +81,8 @@ class IPQ_Advanced_Rules {
 		
 		/* Make sure min <= max */
 		if ( isset( $step ) and isset( $max ) ) {
-			if ( $min > $max ) {
-				$min = $max;
+			if ( $min > $max and $max != '' and $max != 0 ) {
+				$max = $min;
 			}
 		}
 
@@ -97,9 +97,9 @@ class IPQ_Advanced_Rules {
 		} 
 		
 		/* Make sure Max > Min */
-		if( isset( $_POST['_wpbo_maximum'] )) {
+		if( isset( $_POST['ipq_site_max'] )) {
 			
-			if ( isset( $min ) and $max < $min and $max != 0 ) {
+			if ( isset( $min ) and $max < $min and $max != 0 and $max != '' ) {
 				$max = $min;
 			}
 
@@ -109,7 +109,7 @@ class IPQ_Advanced_Rules {
 
 		// Update Settings
 		$updated = update_option( 'ipq_options', $settings );
-		
+
 	}
 	
 	/**
@@ -132,7 +132,7 @@ class IPQ_Advanced_Rules {
 			
 			<table class="form-table">
 				<tr>
-					<th>Activate Site Wide Rule?</th>
+					<th>Activate Site Wide Rules?</th>
 					<td><input type='checkbox' name='ipq_site_rule_active' id='ipq_site_rule_active'
 						<?php if ( $ipq_site_rule_active != '' ) echo 'checked'; ?>
 					 /></td>

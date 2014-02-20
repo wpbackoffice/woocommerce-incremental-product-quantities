@@ -9,10 +9,18 @@
 */
 function wpbo_get_applied_rule( $product ) {
 	
+	// Check for site wide rule
+	$options = get_option( 'ipq_options' );
+	
 	if ( get_post_meta( $product->id, '_wpbo_deactive', true ) == 'on' ) {
 		return 'inactive';
+		
 	} elseif ( get_post_meta( $product->id, '_wpbo_override', true ) == 'on' ) {
 		return 'override';
+	
+	} elseif ( isset( $options['ipq_site_rule_active'] ) and $options['ipq_site_rule_active'] == 'on' ) {
+		return 'sitewide';
+		
 	} else {
 		return wpbo_get_applied_rule_obj( $product );
 	}
@@ -26,7 +34,7 @@ function wpbo_get_applied_rule( $product ) {
 *	@return mixed 	Null if no rule applies / Object top rule post 
 */
 function wpbo_get_applied_rule_obj( $product ) {
-	
+
 	// Get Product Categories
 	$taxonomy = 'product_cat'; 
 	$product_terms = wp_get_post_terms( $product->id, $taxonomy );
@@ -91,9 +99,9 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 	// Validate $type
 	if ( $type != 'min' and $type != 'max' and $type != 'step' and $type != 'all' and $type != 'priority' ) {
 		return null;
-	}
 	
-	if ( $rule == null ) {
+	// Validate for missing rule	
+	} elseif ( $rule == null ) {
 		return null;
 	
 	// Return Null if Inactive
@@ -128,6 +136,56 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 				break;
 		}		
 	
+	// Check for Site Wide Rule
+	} elseif ( $rule == 'sitewide' ) {
+
+		$options = get_option( 'ipq_options' );
+		
+		if( isset( $options['ipq_site_min'] ) ) {
+			$min = $options['ipq_site_min'];
+		} else {
+			$min = '';
+		}
+
+		if( isset( $options['ipq_site_max'] ) ) {
+			$max = $options['ipq_site_max'];
+		} else {
+			$max = '';
+		}
+
+		if( isset( $options['ipq_site_step'] ) ) {
+			$step = $options['ipq_site_step'];			
+		} else {
+			$step = '';			
+		}
+
+		switch ( $type ) {
+			case 'all':
+				return array( 
+					'min_value' => $min, 
+					'max_value' => $max, 
+					'step' 		=> $step
+				);
+				break;
+				
+			case 'min':
+				return array( 'min' => $min );					
+				break;
+			
+			case 'max': 
+				return array( 'max' => $max );		
+				break;
+				
+			case 'step':
+				return array( 'step' => $step );				
+				break;
+				
+			case 'priority':
+				return null;
+				break;
+		
+		}
+		
 	// Return Values from the Rule based on $type requested
 	} else {
 	
