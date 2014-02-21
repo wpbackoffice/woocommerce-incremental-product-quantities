@@ -20,8 +20,9 @@ class IPQ_Quantity_Meta_Boxes {
 		if ( $post->post_type == 'product' ) {
 			
 			$product = get_product( $post->ID );
-			
-			if ( $product->product_type != 'external' ) {
+			$unsupported_product_types = array( 'external', 'grouped' );
+
+			if ( ! in_array( $product->product_type, $unsupported_product_types ) ) {
 						
 				add_meta_box(
 					'wpbo_product_info', 
