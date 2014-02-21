@@ -18,12 +18,14 @@ class IPQ_Quantity_Rule_Post_Type {
 		// Add custom meta boxes
 		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_meta_init' ) );
 		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_tax_init' ) );
+		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_tag_init' ) );
 		add_action( 'add_meta_boxes', array( $this, 'input_thumbnail_notice' ) );
 		add_action( 'add_meta_boxes', array( $this, 'company_notice' ) );
 		
 		// Save post meta on post update
 		add_action( 'save_post', array( $this, 'save_quantity_rule_meta') );
 		add_action( 'save_post', array( $this, 'save_quantity_rule_taxes' ) );
+		add_action( 'save_post', array( $this, 'save_quantity_rule_tags' ) );
 
 	}
 	
@@ -182,7 +184,6 @@ class IPQ_Quantity_Rule_Post_Type {
 		<?php	
 	}
 	
-	
 	/*
 	*	Register and Create Product Category Meta Box for quantity Rule
 	*/	
@@ -228,7 +229,7 @@ class IPQ_Quantity_Rule_Post_Type {
 			echo '</ul>';
 		}
 	}
-	
+		
 	/*
 	*	Will Recursivly Print all Product Categories with heirarcy included
 	*/
@@ -259,6 +260,56 @@ class IPQ_Quantity_Rule_Post_Type {
 		}
 	}
 	
+	/*
+	*	Allow users to apply rules by tags
+	*/	
+	public function quantity_rule_tag_init() {
+		add_meta_box(	
+			'wpbo-quantity-rule-tag-meta', 
+			'Product Tags', 
+			array( $this, 'quantity_rule_tag_meta' ), 
+			'quantity-rule', 
+			'normal', 
+			'high'
+		);
+	}
+	
+	public function quantity_rule_tag_meta( $post ) {
+		
+		// Get all Tags
+		$args = array(
+		    'orderby'       => 'name', 
+		    'order'         => 'ASC',
+		    'hide_empty'    => false, 
+	
+		); 
+
+		$tags = get_terms( 'product_tag', $args );
+		
+		$included_tags = get_post_meta( $post->ID, '_tags');
+		if ( $included_tags != false ){
+			$included_tags = $included_tags[0];
+		}
+
+		// If Tags exists, show them all
+		if ( $tags ) {
+		
+			// Create Nonce Field
+			wp_nonce_field( plugin_basename( __FILE__ ), '_wpbo_tag_nonce' );
+
+			?>
+				<ul id='product-tags' class='rule-product-cats'>
+					<?php foreach ( $tags as $tag ): ?>
+						<li>
+							<input type='checkbox' name='_wpbo_tag_<?php echo $tag->term_id ?>' id='wpbo_tag_<?php echo $tag->term_id ?>' <?php if( in_array( $tag->term_id, $included_tags ) ) echo 'checked' ?> />
+							<?php echo $tag->name ?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php 
+		}
+	}
+
 	/*
 	*	Register and Create Meta Box to encourage user to install our thumbnail plugin
 	*/	
@@ -409,9 +460,55 @@ class IPQ_Quantity_Rule_Post_Type {
 		// Add them to the post meta
 		delete_post_meta( $post_id, '_cats' );
 		update_post_meta( $post_id, '_cats', $cats, false );
-	
 	} 
+	
+	/*
+	*	Save Rule Tag Values
+	*/	
+	public function save_quantity_rule_tags( $post_id ) {
+		
+		// Validate Post Type
+		if ( ! isset( $_POST['post_type'] ) or $_POST['post_type'] !== 'quantity-rule' ) {
+			return;
+		}
+		
+		// Validate User
+		if ( !current_user_can( 'edit_post', $post_id ) ) {
+	        return;
+	    }
+	
+		// Verify Nonce
+	    if ( ! isset( $_POST["_wpbo_tag_nonce"] ) or ! wp_verify_nonce( $_POST["_wpbo_tag_nonce"], plugin_basename( __FILE__ ) ) ) {
+	        return;
+	    }
+	    
+	    // Get all Tags
+		$args = array(
+		    'orderby'       => 'name', 
+		    'order'         => 'ASC',
+		    'hide_empty'    => false, 
+	
+		); 
 
+		$tags = get_terms( 'product_tag', $args );
+		
+		$tags_included = array();
+		
+		// If the tags are set, loop through them
+		if ( $tags ) {
+			foreach ( $tags as $tag ) {
+				
+				$tag_name = '_wpbo_tag_' . $tag->term_id;
+				if ( isset( $_POST[ $tag_name ] ) and $_POST[ $tag_name ] == 'on' ) {
+					array_push( $tags_included, $tag->term_id );		
+				} 
+			}
+			
+			// Add them to the post meta
+			delete_post_meta( $post_id, '_tags' );
+			update_post_meta( $post_id, '_tags', $tags_included, false );
+		}
+	}
 }
 
 endif;

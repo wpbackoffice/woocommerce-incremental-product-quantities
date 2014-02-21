@@ -35,9 +35,12 @@ function wpbo_get_applied_rule( $product ) {
 */
 function wpbo_get_applied_rule_obj( $product ) {
 
-	// Get Product Categories
-	$taxonomy = 'product_cat'; 
-	$product_terms = wp_get_post_terms( $product->id, $taxonomy );
+	// Get Product Terms
+	$product_cats = wp_get_post_terms( $product->id, 'product_cat' );
+	$product_tags = wp_get_post_terms( $product->id, 'product_tag' );
+	
+	// Combine all product terms
+	$product_terms = array_merge( $product_cats, $product_tags );
 	
 	// Get all Rules
 	$args = array(
@@ -58,15 +61,22 @@ function wpbo_get_applied_rule_obj( $product ) {
 	 	
 	 	// Get the Rule's Cats and Tags
 	 	$cats = get_post_meta( $rule->ID, '_cats' );
+	 	$tags = get_post_meta( $rule->ID, '_tags' );
 	 	
 	 	if( $cats != false ) {
 		 	$cats = $cats[0];
 	 	}
+	 	
+	 	if( $tags != false ) {
+		 	$tags = $tags[0];
+	 	}
+
+	 	$rule_taxes = array_merge( $tags, $cats );
 
 	 	// Loop through the Product's Categories
 	 	// If they are in the rule flag it
 	 	foreach ( $product_terms as $term ) {
-		 	if ( in_array( $term->term_id, $cats )) {
+		 	if ( in_array( $term->term_id, $rule_taxes ) ) {
 			 	$apply_rule = true;
 		 	}
 	 	}
