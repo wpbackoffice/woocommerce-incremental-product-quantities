@@ -117,18 +117,12 @@ class IPQ_Filters {
 	*/	
 	public function input_set_all_values( $args, $product ) {
 		
-		return array( 
-			"input_name" => "quantity",
-			"input_value" => "30",
-			"max_value" => '50',
-			"min_value" => "10",
-			"step" => "5"
-		);
-		
 		// Return Defaults if it isn't a simple product
+/*
 		if( $product->product_type != 'simple' ) {
 			return $args;
 		}
+*/
 		
 		// Get Rule
 		$rule = wpbo_get_applied_rule( $product );

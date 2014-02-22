@@ -101,7 +101,7 @@ function wpbo_get_applied_rule_obj( $product ) {
 *
 *	@params string	$type Product type
 *	@params object 	$produt Product Object 
-*	@params object	$rule Rule post object
+*	@params object	$rule Quantity Rule post object
 *	@return void 	 
 */
 function wpbo_get_value_from_rule( $type, $product, $rule ) {

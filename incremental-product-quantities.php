@@ -87,12 +87,51 @@ class Incremental_Product_Quantities {
 	*/	
 	public function input_value_validation() {
 	
-		wp_enqueue_script( 
-			'wpbo_validation', 
-			plugins_url( '/assets/js/wpbo_input_value_validation.js', __FILE__ ),
-			array( 'jquery' )
-		);
-		
+		global $post, $woocommerce;
+	
+		// Only display script if we are on a single product or cart page
+		if ( $post->post_type == 'product' or is_cart() ) {
+			
+			wp_enqueue_script( 
+				'ipq_validation', 
+				plugins_url( '/assets/js/ipq_input_value_validation.js', __FILE__ ),
+				array( 'jquery' )
+			);
+
+			// Only localize parameters for variable products
+			if ( ! is_cart() ) {
+				
+				// Get the product
+				$pro = get_product( $post );
+				
+				// Check if variable
+				if ( $pro->product_type == 'variable' ) {
+
+					// See what rules are being applied
+					$rule_result = wpbo_get_applied_rule( $pro );
+				
+					// If the rule result is inactive, we're done
+					if ( $rule_result == 'inactive' or $rule_result == null ) {
+						return;
+					
+					// Get values for Override, Sitewide and Rule Controlled Products
+					} else {
+						$values = wpbo_get_value_from_rule( 'all', $pro, $rule_result );
+					}
+							
+					// Output admin-ajax.php URL with sma eprotocol as current page
+					$params = array (
+						'min' => $values['min_value'],
+						'max' => $values['max_value'],
+						'step' => $values['step']
+					);	
+					
+					wp_localize_script( 'ipq_validation', 'ipq_validation', $params );
+
+				}
+
+			}		
+		}		
 	}
 	
 	/*
@@ -102,7 +141,7 @@ class Incremental_Product_Quantities {
 	
 		if ( is_admin() ) {
 			wp_enqueue_style( 
-				'wpbo_quantity_styles', 
+				'ipq_quantity_styles', 
 				plugins_url( '/assets/css/styles.css', __FILE__ )
 			);
 		}

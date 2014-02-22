@@ -8,7 +8,7 @@ class IPQ_Quantity_Validations {
 	public function __construct() {
 	
 		add_action( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 5, 6 );
-		add_action( 'woocommerce_update_cart_validation', array( $this, 'update_cart_validation' ), 4, 5 );
+		add_action( 'woocommerce_update_cart_validation', array( $this, 'update_cart_validation' ), 5, 5 );
 
 	}
 
@@ -63,17 +63,11 @@ class IPQ_Quantity_Validations {
 	*	@return boolean
 	*	
 	*/
-	
 	public function validate_single_product( $passed, $product_id, $quantity, $from_cart, $variation_id = null, $variations = null ) {
 		global $woocommerce, $product, $ipq;
 		
 		$product = get_product( $product_id );
 		$title = $product->get_title();
-	
-		// Return Defaults if it isn't a simple product
-		if( $product->product_type != 'simple' ) {
-			return true;
-		}
 	
 		// Get the applied rule and values - if they exist
 		$rule = wpbo_get_applied_rule( $product );
@@ -165,11 +159,11 @@ class IPQ_Quantity_Validations {
 				if ( $max_value != null && ( $quantity + $cart_qty ) > $max_value ) {
 					
 					if ( $ipq->wc_version >= 2.1 ) {
-						wc_add_notice( sprintf( __( "You can only purchase a maximum of %s %s's at once and your cart already has %s %s's in it already.", 'woocommerce' ), $max_value, $title, $cart_qty, $title ), 'error' );
+						wc_add_notice( sprintf( __( "You can only purchase a maximum of %s %s's at once and your cart has %s %s's in it already.", 'woocommerce' ), $max_value, $title, $cart_qty, $title ), 'error' );
 					
 					// Old Validation Style Support	
 					} else {
-						$woocommerce->add_error( sprintf( __( "You can only purchase a maximum of %s %s's at once and your cart already has %s %s's in it already.", 'woocommerce' ), $max_value, $title, $cart_qty, $title ) );
+						$woocommerce->add_error( sprintf( __( "You can only purchase a maximum of %s %s's at once and your cart has %s %s's in it already.", 'woocommerce' ), $max_value, $title, $cart_qty, $title ) );
 					}
 					return false;
 				}
