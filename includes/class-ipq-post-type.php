@@ -81,6 +81,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	    $new_columns['max'] = __('Maximum');
 	    $new_columns['step'] = __('Step Value');     
 	    $new_columns['cats'] = __('Categories');
+	    $new_columns['product_tags'] = __('Tags');
 	    $new_columns['date'] = __('Date');
 	    
 	    return array_merge( $column, $new_columns );
@@ -123,6 +124,20 @@ class IPQ_Quantity_Rule_Post_Type {
 			   	}
 		        break;  
 		        
+		    case 'product_tags':
+		    	$tags = get_post_meta( $id, '_tags', false);
+		   		if ( $tags != null ) {	   		
+			   		foreach ( $tags[0] as $tag ){
+		
+			   			$taxonomy = 'product_tag'; 	
+				   		$term = get_term_by( 'id', $tag, $taxonomy );
+			   			$link = get_term_link( $term );	
+			   			
+			   			echo "<a href='" . $link . "'>" . $term->name . "</a><br />";	
+			   		}
+			   	}
+		    	break;
+		    	
 		    default:
 		        break;
 	    } 
