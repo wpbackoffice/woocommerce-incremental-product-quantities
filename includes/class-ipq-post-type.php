@@ -83,7 +83,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	    $new_columns['cats'] = __('Categories');
 	    $new_columns['product_tags'] = __('Tags');
 	    $new_columns['date'] = __('Date');
-	    
+
 	    return array_merge( $column, $new_columns );
 	}
 	
@@ -112,7 +112,7 @@ class IPQ_Quantity_Rule_Post_Type {
 		        
 		    case 'cats':
 		   		$cats = get_post_meta( $id, '_cats', false);
-		   		if ( $cats != null ) {	   		
+		   		if ( $cats != false and count( $cats[0] ) > 0 ) {	   		
 			   		foreach ( $cats[0] as $cat ){
 		
 			   			$taxonomy = 'product_cat'; 	
@@ -121,12 +121,12 @@ class IPQ_Quantity_Rule_Post_Type {
 			   			
 			   			echo "<a href='" . $link . "'>" . $term->name . "</a><br />";	
 			   		}
-			   	}
+			   	} 
 		        break;  
 		        
 		    case 'product_tags':
 		    	$tags = get_post_meta( $id, '_tags', false);
-		   		if ( $tags != null ) {	   		
+		   		if ( $tags != null and count( $tags[0] ) > 0) {	   		
 			   		foreach ( $tags[0] as $tag ){
 		
 			   			$taxonomy = 'product_tag'; 	
@@ -135,7 +135,7 @@ class IPQ_Quantity_Rule_Post_Type {
 			   			
 			   			echo "<a href='" . $link . "'>" . $term->name . "</a><br />";	
 			   		}
-			   	}
+			   	} 
 		    	break;
 		    	
 		    default:
