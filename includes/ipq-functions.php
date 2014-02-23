@@ -9,10 +9,18 @@
 */
 function wpbo_get_applied_rule( $product ) {
 	
+	// Check for site wide rule
+	$options = get_option( 'ipq_options' );
+	
 	if ( get_post_meta( $product->id, '_wpbo_deactive', true ) == 'on' ) {
 		return 'inactive';
+		
 	} elseif ( get_post_meta( $product->id, '_wpbo_override', true ) == 'on' ) {
 		return 'override';
+	
+	} elseif ( isset( $options['ipq_site_rule_active'] ) and $options['ipq_site_rule_active'] == 'on' ) {
+		return 'sitewide';
+		
 	} else {
 		return wpbo_get_applied_rule_obj( $product );
 	}
@@ -26,10 +34,13 @@ function wpbo_get_applied_rule( $product ) {
 *	@return mixed 	Null if no rule applies / Object top rule post 
 */
 function wpbo_get_applied_rule_obj( $product ) {
+
+	// Get Product Terms
+	$product_cats = wp_get_post_terms( $product->id, 'product_cat' );
+	$product_tags = wp_get_post_terms( $product->id, 'product_tag' );
 	
-	// Get Product Categories
-	$taxonomy = 'product_cat'; 
-	$product_terms = wp_get_post_terms( $product->id, $taxonomy );
+	// Combine all product terms
+	$product_terms = array_merge( $product_cats, $product_tags );
 	
 	// Get all Rules
 	$args = array(
@@ -50,15 +61,22 @@ function wpbo_get_applied_rule_obj( $product ) {
 	 	
 	 	// Get the Rule's Cats and Tags
 	 	$cats = get_post_meta( $rule->ID, '_cats' );
+	 	$tags = get_post_meta( $rule->ID, '_tags' );
 	 	
 	 	if( $cats != false ) {
 		 	$cats = $cats[0];
 	 	}
+	 	
+	 	if( $tags != false ) {
+		 	$tags = $tags[0];
+	 	}
+
+	 	$rule_taxes = array_merge( $tags, $cats );
 
 	 	// Loop through the Product's Categories
 	 	// If they are in the rule flag it
 	 	foreach ( $product_terms as $term ) {
-		 	if ( in_array( $term->term_id, $cats )) {
+		 	if ( in_array( $term->term_id, $rule_taxes ) ) {
 			 	$apply_rule = true;
 		 	}
 	 	}
@@ -83,7 +101,7 @@ function wpbo_get_applied_rule_obj( $product ) {
 *
 *	@params string	$type Product type
 *	@params object 	$produt Product Object 
-*	@params object	$rule Rule post object
+*	@params object	$rule Quantity Rule post object
 *	@return void 	 
 */
 function wpbo_get_value_from_rule( $type, $product, $rule ) {
@@ -91,9 +109,9 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 	// Validate $type
 	if ( $type != 'min' and $type != 'max' and $type != 'step' and $type != 'all' and $type != 'priority' ) {
 		return null;
-	}
 	
-	if ( $rule == null ) {
+	// Validate for missing rule	
+	} elseif ( $rule == null ) {
 		return null;
 	
 	// Return Null if Inactive
@@ -128,6 +146,56 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 				break;
 		}		
 	
+	// Check for Site Wide Rule
+	} elseif ( $rule == 'sitewide' ) {
+
+		$options = get_option( 'ipq_options' );
+		
+		if( isset( $options['ipq_site_min'] ) ) {
+			$min = $options['ipq_site_min'];
+		} else {
+			$min = '';
+		}
+
+		if( isset( $options['ipq_site_max'] ) ) {
+			$max = $options['ipq_site_max'];
+		} else {
+			$max = '';
+		}
+
+		if( isset( $options['ipq_site_step'] ) ) {
+			$step = $options['ipq_site_step'];			
+		} else {
+			$step = '';			
+		}
+
+		switch ( $type ) {
+			case 'all':
+				return array( 
+					'min_value' => $min, 
+					'max_value' => $max, 
+					'step' 		=> $step
+				);
+				break;
+				
+			case 'min':
+				return array( 'min' => $min );					
+				break;
+			
+			case 'max': 
+				return array( 'max' => $max );		
+				break;
+				
+			case 'step':
+				return array( 'step' => $step );				
+				break;
+				
+			case 'priority':
+				return null;
+				break;
+		
+		}
+		
 	// Return Values from the Rule based on $type requested
 	} else {
 	
@@ -158,4 +226,20 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 				break;
 		}				
 	}
+}
+
+/*
+*	Validate inputs as numbers and set them to null if 0
+*/
+function wpbo_validate_number( $number ) {
+	
+	$number = intval( $number );
+	
+	if ( $number == 0 ) {
+		return null;
+	} elseif ( $number < 0 ) {
+		return null;
+	} 
+	
+	return $number;
 }

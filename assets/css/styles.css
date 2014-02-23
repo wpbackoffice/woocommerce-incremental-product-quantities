@@ -104,3 +104,11 @@ ul.level-4 {
 	text-align: center;
 }
 
+/* --------- wpbo additional info ---------- */
+#wpbo-additional-info .inside div {
+	text-align: center;
+}
+
+#wpbo-additional-info .inside a {
+	line-height: 3em;
+}
