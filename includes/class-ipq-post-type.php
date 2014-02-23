@@ -19,6 +19,7 @@ class IPQ_Quantity_Rule_Post_Type {
 		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_meta_init' ) );
 		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_tax_init' ) );
 		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_tag_init' ) );
+		add_action( 'add_meta_boxes', array( $this, 'rate_us_notice' ) );
 		add_action( 'add_meta_boxes', array( $this, 'input_thumbnail_notice' ) );
 		add_action( 'add_meta_boxes', array( $this, 'company_notice' ) );
 		
@@ -336,7 +337,7 @@ class IPQ_Quantity_Rule_Post_Type {
 		
 			add_meta_box(	
 				'wpbo-input-thumbnail-notice', 
-				'Notice', 
+				'Urgent Notice', 
 				array( $this, 'input_thumbnail_notice_meta' ), 
 				'quantity-rule', 
 				'side', 
@@ -347,7 +348,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	
 	public function input_thumbnail_notice_meta( $post ) {
 		
-		echo "We've noticed you do not have <a href='http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/' target='_blank'>WooCommerce Thumbnail Input Quantity</a> installed. <br /><br />It is <strong>highly recommended</strong> so your users can use your quantity rules from product thumbnails.";
+		echo "We've noticed you do not have <a href='http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/' target='_blank'>WooCommerce Thumbnail Input Quantity</a> installed. <br /><br />Installation is <strong>highly recommended</strong> as it shows an input box (with your quantity rules) from all product thumbnails such as on the shop page and in the related prodcuts section.";
 		
 	}
 	
@@ -374,7 +375,35 @@ class IPQ_Quantity_Rule_Post_Type {
 				<a href="http://www.wpbackoffice.com" target="_blank">WooCommerce Hosting, Customization, Support</a>
 			</p>
 		<?php 
+	}
+	
+		/*
+	*	Register and Create Meta Box to encourage user to install our thumbnail plugin
+	*/	
+	public function rate_us_notice() {
+	
+		add_meta_box(	
+			'wpbo-additional-info', 
+			'Additional Information', 
+			array( $this, 'additional_info_notice_meta' ), 
+			'quantity-rule', 
+			'side', 
+			'low'
+		);
+	}
+	
+	public function additional_info_notice_meta( $post ) {
 		
+		?>
+			<div style="text-align: center">
+				<h3>Enjoy this plugin?</h3>
+				<a href="http://wordpress.org/support/view/plugin-reviews/woocommerce-incremental-product-quantities" target="_blank">Rating us on Wordpress!</a>
+			
+			
+				<h3>Need Support?</h3>
+				<a href="http://wordpress.org/support/plugin/woocommerce-incremental-product-quantities" target="_blank">Visit our Support Forum</a> 
+			</div>
+		<?php 
 	}
 	
 	/*

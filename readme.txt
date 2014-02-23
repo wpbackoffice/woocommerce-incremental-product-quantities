@@ -1,4 +1,4 @@
-=== WooCommerce Incremental Product Quantities  ===
+=== WooCommerce Advanced Product Quantities  ===
 Contributors: wpbackoffice
 Tags: woocommerce, product quantities, input values
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
