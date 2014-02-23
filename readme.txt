@@ -1,25 +1,35 @@
 === WooCommerce Advanced Product Quantities  ===
 Contributors: wpbackoffice
-Tags: woocommerce, product quantities, input values
+Tags: woocommerce, product quantities, input values, min, max, step, product minimums, product maximums, quantity rules, input box, minimum order, maximum order, simple products, variable products, grouped products, affiliate products
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Requires at least: 2.3
-Tested up to: 3.8
-Stable tag: 1.1.4
+Tested up to: 3.81
+Stable tag: 2.0.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Sell products in increments by setting minimum and maximum quantities as well as the intervals in between ie. sell products by the dozen.
+Easily require your customers to buy a minimum / maximum / incremental amount of products to continue with their checkout.
 
 == Description ==
 
-Sell WooCommerce products in increments by setting minimum and maximum quantities as well as the intervals in between ie. sell products by the dozen.
+With WooCommerce Advanced Product Quantities you can easily create rules that restrict the amount of products a user can buy at once. Set Minimum, Maximum and Step values for any product type and must be valid before a customer can proceed to checkout.
 
-Using rules based on product categories or per product settings, you can easily sell products by the dozen and set minimum/maximum quantity amounts.
+New Features as of version 2.0.0:
+
+* Now fully supports ALL PRODUCT TYPES, simple, variable, grouped and affiliate
+* Create Site Wide rules that apply to every product unless overwritten on a per-product basis
+* Create rules by Product Tags (opposed to just categories)
+* Woocommerce +2.0 compatible 
 
 Features:
 
-* Simple installation makes getting started easy
-* Create product category based rules in seconds
+* Get started in minutes
+* Set a Minimum product quantity requirement
+* Set a Maximum product quantity requirement
+* Sell products by a desired increment ie. by two's or the dozen
+* Create product category based rules
+* WooCommerce Validation rules tells users what rules they've broken directly on the cart or product page
+* Set rule priority to layer multiple rules on top of each other
 * Add your rule based input boxes to products thumbnails using [WooCommerce Thumbnail Input Quantities](http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/installation/)
 * Easily override rules on a per-product basis
 * Integrates with [WooCommerce's Product CSV Import Suite](http://www.woothemes.com/products/product-csv-import-suite/?utm_source=docs&utm_medium=docssite&utm_campaign=docs)
@@ -46,10 +56,22 @@ Manual Installation
 5. Active the plugin from your wordpress backend ‘Plugins -> Installed Plugins’
 6. Set Rules for categories by clicking the new ‘Quantity Rules’ sidebar option or assign per-product rules by using the new metabox on your product page.
 
+== Upgrade Notice == 
+
+= 2.0.0 =
+This major upgrade adds the following features - Now supports all product types, allows you to create site wide rules, and rules by product tags. It is recommended that you back up and test your site with 2.0 before going live.
+
 == Changelog ==
 
+= 2.0.0 = 
+* Updated name from WooCommerce Incremental Product Quantities to WooCommerce Advanced Product Quantities
+* Now fully supports ALL PRODUCT TYPES, simple, variable, grouped and affiliate
+* Create Site Wide rules that apply to every product unless overwritten on a per-product basis
+* Create rules by Product Tags (opposed to just categories)
+* Code reconfiguration puts everything into classes, the way it should be.
+
 = 1.1.4 =
-* Added back WC 2.0.x validation compatability. 
+* Added back WC 2.0.x validation compatibility. 
 
 = 1.1.3 =
 * Minor bug fixes.
@@ -80,7 +102,8 @@ Manual Installation
 * Fixed additional bug related to missing input values and error messages on some installs. Also updated notice window. 
 
 = 1.0.4 =
-* Style sheet and link update. Added potential soluation for niche valdation problem. 
+* Style sheet and link update. 
+* Added potential solution for niche validation problem.  
 
 = 1.0.3 =
 * Readme.txt updates.
@@ -99,3 +122,5 @@ Manual Installation
 1. screenshot-1.png
 1. screenshot-2.png
 1. screenshot-3.png
+1. screenshot-4.png
+
