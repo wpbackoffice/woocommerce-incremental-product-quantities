@@ -1,6 +1,6 @@
 === WooCommerce Advanced Product Quantities  ===
 Contributors: wpbackoffice
-Tags: woocommerce, product quantities, input values, min, max, step, product minimums, product maximums, quantity rules, input box, minimum order, maximum order, simple products, variable products, grouped products, affiliate products
+Tags: woocommerce, product quantities, product minimum values, product maximum values, product step values, woocommerce incremental product quantities
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Requires at least: 2.3
 Tested up to: 3.81
