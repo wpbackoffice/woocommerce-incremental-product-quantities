@@ -426,21 +426,23 @@ class IPQ_Quantity_Rule_Post_Type {
 	        return;
 	    }
 	
-		/* Make sure $min >= step */
+		// Make sure $min >= step
 		if( isset( $_POST['min'] ) ) {
 			$min = $_POST['min'];
 		}
 		
 		// Update Step
+/*
 		if ( isset( $_POST['step'] ) and isset( $min ) ) {
 			if ( $min < $_POST['step']) {
 				$min = $_POST['step'];
 			}
 		}
+*/
 		
 		// Update Min
 		if ( isset( $min ) ) {
-			update_post_meta( $post_id, '_min', wpbo_validate_number( $min ) );
+			update_post_meta( $post_id, '_min', $min );
 		}
 		
 		// Update Max
