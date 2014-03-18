@@ -476,13 +476,16 @@ class IPQ_Quantity_Rule_Post_Type {
 	        return;
 	    }
 	
+		// Remove the rule transient since values have been updated
+		delete_transient( 'ipq_rules' );
+	
 		// Make sure $min >= step
 		if( isset( $_POST['min'] ) ) {
 			$min = $_POST['min'];
 		}
 		
 		// Update Step 
-		// *Note Removed to allow min value to be 0
+		// * Note Removed to allow min value to be 0
 		/*
 		if ( isset( $_POST['step'] ) and isset( $min ) ) {
 			if ( $min < $_POST['step']) {

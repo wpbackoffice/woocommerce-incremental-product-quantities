@@ -48,16 +48,24 @@ function wpbo_get_applied_rule_obj( $product ) {
 
 	// Combine all product terms
 	$product_terms = array_merge( $product_cats, $product_tags );
+
+	// Check for rule transient
+	if ( false === ( $rules = get_transient( 'ipq_rules' ) ) ) {
+		
+		// Get all Rules
+		$args = array(
+			'posts_per_page'   => -1,
+			'offset'           => 0,
+			'post_type'        => 'quantity-rule',
+			'post_status'      => 'publish',
+		); 
+		
+		$rules = get_posts( $args );
+
+		$duration = 60 * 60 * 12; // 12 hours
+		set_transient( 'ipq_rules', $rules, $duration );	
+	}
 	
-	// Get all Rules
-	$args = array(
-		'posts_per_page'   => -1,
-		'offset'           => 0,
-		'post_type'        => 'quantity-rule',
-		'post_status'      => 'publish',
-	); 
-	
-	$rules = get_posts( $args );
 	$top = null;
 	$top_rule = null;
 	
