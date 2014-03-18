@@ -4,7 +4,7 @@ Tags: woocommerce, product quantities, product minimum values, product maximum v
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Requires at least: 2.3
 Tested up to: 3.81
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ With WooCommerce Advanced Product Quantities you can easily create rules that re
 New Features as of version 2.1.0:
 
 * Added Role Support, create rules based on user roles.
-* Improved preformance / cacheing
+* Improved performance / cacheing
 * Improved admin interface
 * Allows rules to have a minimum of 0
 
@@ -72,7 +72,7 @@ This major upgrade adds the following features - Now supports all product types,
 
 = 2.1.0 = 
 * Added Role Support, create rules based on user roles.
-* Improved preformance / cacheing
+* Improved performance / cacheing
 * Improved admin interface
 * Allows rules to have a minimum of 0
 
