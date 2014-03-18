@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Advanced Product Quantities
 Plugin URI: http://www.wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Description: Easily require your customers to buy a minimum / maximum / incremental amount of products to continue with their checkout. It is highly recommended to also install 'WooCommerce Thumbnail Input Quantities' to allow users to add your custom quantites from product thumbnails.
-Version: 2.0.0
+Version: 2.1.0
 Author: WP BackOffice
 Author URI: http://www.wpbackoffice.com
 */ 
@@ -90,7 +90,7 @@ class Incremental_Product_Quantities {
 		global $post, $woocommerce;
 	
 		// Only display script if we are on a single product or cart page
-		if ( $post->post_type == 'product' or is_cart() ) {
+		if ( is_object( $post ) and $post->post_type == 'product' or is_cart() ) {
 			
 			wp_enqueue_script( 
 				'ipq_validation', 
@@ -140,9 +140,16 @@ class Incremental_Product_Quantities {
 	public function quantity_styles() {
 	
 		if ( is_admin() ) {
+		
 			wp_enqueue_style( 
 				'ipq_quantity_styles', 
 				plugins_url( '/assets/css/styles.css', __FILE__ )
+			);
+					
+			wp_enqueue_script( 
+				'ipq_admin_script', 
+				plugins_url( '/assets/js/ipq_admin_script.js', __FILE__ ),
+				array( 'jquery' )
 			);
 		}
 	}

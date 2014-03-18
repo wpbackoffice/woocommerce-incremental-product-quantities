@@ -37,20 +37,35 @@ function wpbo_get_applied_rule_obj( $product ) {
 
 	// Get Product Terms
 	$product_cats = wp_get_post_terms( $product->id, 'product_cat' );
-	$product_tags = wp_get_post_terms( $product->id, 'product_tag' );
+	$product_tags = wp_get_post_terms( $product->id, 'product_tag' );	
+	$user_data = get_userdata( get_current_user_id() );
 	
+	if ( $user_data->wp_capabilities ) {
+		foreach ( $user_data->wp_capabilities as $cap => $val ) {
+			$role = $cap;
+		}
+	}
+
 	// Combine all product terms
 	$product_terms = array_merge( $product_cats, $product_tags );
+
+	// Check for rule transient
+	if ( false === ( $rules = get_transient( 'ipq_rules' ) ) ) {
+		
+		// Get all Rules
+		$args = array(
+			'posts_per_page'   => -1,
+			'offset'           => 0,
+			'post_type'        => 'quantity-rule',
+			'post_status'      => 'publish',
+		); 
+		
+		$rules = get_posts( $args );
+
+		$duration = 60 * 60 * 12; // 12 hours
+		set_transient( 'ipq_rules', $rules, $duration );	
+	}
 	
-	// Get all Rules
-	$args = array(
-		'posts_per_page'   => -1,
-		'offset'           => 0,
-		'post_type'        => 'quantity-rule',
-		'post_status'      => 'publish',
-	); 
-	
-	$rules = get_posts( $args );
 	$top = null;
 	$top_rule = null;
 	
@@ -62,14 +77,16 @@ function wpbo_get_applied_rule_obj( $product ) {
 	 	// Get the Rule's Cats and Tags
 	 	$cats = get_post_meta( $rule->ID, '_cats' );
 	 	$tags = get_post_meta( $rule->ID, '_tags' );
-	 	
-	 	if( $cats != false ) {
+	 	$roles = get_post_meta( $rule->ID, '_roles' );
+	 		 	
+	 	if( $cats != false )
 		 	$cats = $cats[0];
-	 	}
 	 	
-	 	if( $tags != false ) {
+	 	if( $tags != false )
 		 	$tags = $tags[0];
-	 	}
+
+		if ( $roles != false )
+		 	$roles = $roles[0];
 
 	 	$rule_taxes = array_merge( $tags, $cats );
 
@@ -79,6 +96,11 @@ function wpbo_get_applied_rule_obj( $product ) {
 		 	if ( in_array( $term->term_id, $rule_taxes ) ) {
 			 	$apply_rule = true;
 		 	}
+	 	}
+	 	
+	 	// Flag if user's role is included
+	 	if ( in_array( $role, $roles ) ) {
+		 	$apply_rule = true;
 	 	}
 	 	
 	 	// If the rule applies, check the priority
@@ -91,13 +113,14 @@ function wpbo_get_applied_rule_obj( $product ) {
 	 			$top_rule = $rule;
 		 	}
 		}
+
 	}
 	
 	return $top_rule;	
 }
 
 /*
-*	Get the Input Value (min/max/step/priority/all) for a product given a rule
+*	Get the Input Value (min/max/step/priority/role/all) for a product given a rule
 *
 *	@params string	$type Product type
 *	@params object 	$produt Product Object 
@@ -107,7 +130,7 @@ function wpbo_get_applied_rule_obj( $product ) {
 function wpbo_get_value_from_rule( $type, $product, $rule ) {
 	
 	// Validate $type
-	if ( $type != 'min' and $type != 'max' and $type != 'step' and $type != 'all' and $type != 'priority' ) {
+	if ( $type != 'min' and $type != 'max' and $type != 'step' and $type != 'all' and $type != 'priority' and $type != 'role' ) {
 		return null;
 	
 	// Validate for missing rule	
@@ -205,7 +228,8 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 						'min_value' => get_post_meta( $rule->ID, '_min', true ),
 						'max_value' => get_post_meta( $rule->ID, '_max', true ),
 						'step' 		=> get_post_meta( $rule->ID, '_step', true ),
-						'priority'  => get_post_meta( $rule->ID, '_priority', true )
+						'priority'  => get_post_meta( $rule->ID, '_priority', true ),
+						'roles' 	=> get_post_meta( $rule->ID, '_roles', true )
 					);
 				break;
 				
@@ -219,6 +243,10 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 				
 			case 'step':
 				return get_post_meta( $rule->ID, '_step', true );
+				break;
+			
+			case 'role':
+				return get_post_meta( $rule->ID, '_roles', true );
 				break;
 				
 			case 'priority':
