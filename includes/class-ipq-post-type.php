@@ -16,18 +16,19 @@ class IPQ_Quantity_Rule_Post_Type {
 		add_filter( 'manage_edit-quantity-rule_sortable_columns', array( $this, 'sortable_quantity_rule_columns' ) ); 
 		
 		// Add custom meta boxes
-		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_meta_init' ) );
-		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_tax_init' ) );
-		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_tag_init' ) );
-		add_action( 'add_meta_boxes', array( $this, 'rate_us_notice' ) );
-		add_action( 'add_meta_boxes', array( $this, 'input_thumbnail_notice' ) );
-		add_action( 'add_meta_boxes', array( $this, 'company_notice' ) );
+		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_meta_init' 	) );
+		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_tax_init' 	) );
+		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_tag_init' 	) );
+		add_action( 'add_meta_boxes', array( $this, 'quantity_rule_role_init' 	) );
+		add_action( 'add_meta_boxes', array( $this, 'rate_us_notice' 			) );
+		add_action( 'add_meta_boxes', array( $this, 'input_thumbnail_notice' 	) );
+		add_action( 'add_meta_boxes', array( $this, 'company_notice' 			) );
 		
 		// Save post meta on post update
-		add_action( 'save_post', array( $this, 'save_quantity_rule_meta') );
+		add_action( 'save_post', array( $this, 'save_quantity_rule_meta'  ) );
 		add_action( 'save_post', array( $this, 'save_quantity_rule_taxes' ) );
-		add_action( 'save_post', array( $this, 'save_quantity_rule_tags' ) );
-
+		add_action( 'save_post', array( $this, 'save_quantity_rule_tags'  ) );
+		add_action( 'save_post', array( $this, 'save_quantity_rule_roles' ) );
 	}
 	
 	/*
@@ -73,7 +74,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	/*
 	*	Register Custom Columns for List View
 	*/	
-	public function quantity_rule_columns( $column, $post_id ) {
+	public function quantity_rule_columns( $column ) {
 	 	
 	 	unset( $column['date'] );
 	 	
@@ -83,6 +84,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	    $new_columns['step'] = __('Step Value');     
 	    $new_columns['cats'] = __('Categories');
 	    $new_columns['product_tags'] = __('Tags');
+	    $new_columns['roles'] = __('Roles');
 	    $new_columns['date'] = __('Date');
 
 	    return array_merge( $column, $new_columns );
@@ -135,6 +137,15 @@ class IPQ_Quantity_Rule_Post_Type {
 			   			$link = get_term_link( $term );	
 			   			
 			   			echo "<a href='" . $link . "'>" . $term->name . "</a><br />";	
+			   		}
+			   	} 
+		    	break;
+		    
+		    case 'roles':
+		   		$roles = get_post_meta( $id, '_roles', false);
+		   		if ( $roles != null and count( $roles[0] ) > 0) {	   		
+			   		foreach ( $roles[0] as $role ){
+			   			echo ucfirst( $role ) . "<br />";	
 			   		}
 			   	} 
 		    	break;
@@ -327,12 +338,51 @@ class IPQ_Quantity_Rule_Post_Type {
 	}
 
 	/*
+	*	Register and Create User Role Option for Quantity Rules
+	*/	
+	public function quantity_rule_role_init() {
+		add_meta_box(
+			'wpbo-quantity-rule-role', 
+			'Apply Rule by User Role', 
+			array( $this, 'quantity_rule_role' ), 
+			'quantity-rule', 
+			'normal', 
+			'high'
+		);
+	}
+	
+	public function quantity_rule_role( $post ) {
+
+		// Get all user roles
+		global $wp_roles;
+		$roles = $wp_roles->get_names();
+		
+		// Get applied roles
+		$applied_roles = get_post_meta( $post->ID, '_roles' );
+		if ( $applied_roles != false ){
+			$applied_roles = $applied_roles[0];
+		}
+		// Create Nonce Field
+		wp_nonce_field( plugin_basename( __FILE__ ), '_wpbo_role_nonce' );
+		
+		if ( $roles ): ?>
+			<ul>
+				<?php foreach ( $roles as $slug => $name ): ?>
+					<li>
+						<input type='checkbox' name='_wpbo_role_<?php echo $slug ?>' id='wpbo_role_<?php echo $slug ?>'  <?php if( in_array( $slug, $applied_roles ) ) echo 'checked' ?> />
+						<?php echo $name; ?>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif;
+	}
+
+	/*
 	*	Register and Create Meta Box to encourage user to install our thumbnail plugin
 	*/	
 	public function input_thumbnail_notice() {
 	
-		// Only show eta box if user has not installed thumbnail plugin
-		
+		// Only show meta box if user has not installed thumbnail plugin
 		if ( !in_array( 'woocommerce-thumbnail-input-quantities/woocommerce-thumbnail-input-quantity.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		
 			add_meta_box(	
@@ -431,14 +481,15 @@ class IPQ_Quantity_Rule_Post_Type {
 			$min = $_POST['min'];
 		}
 		
-		// Update Step
-/*
+		// Update Step 
+		// *Note Removed to allow min value to be 0
+		/*
 		if ( isset( $_POST['step'] ) and isset( $min ) ) {
 			if ( $min < $_POST['step']) {
 				$min = $_POST['step'];
 			}
 		}
-*/
+		*/
 		
 		// Update Min
 		if ( isset( $min ) ) {
@@ -529,11 +580,10 @@ class IPQ_Quantity_Rule_Post_Type {
 	    }
 	    
 	    // Get all Tags
-		$args = array(
+		$args = array (
 		    'orderby'       => 'name', 
 		    'order'         => 'ASC',
 		    'hide_empty'    => false, 
-	
 		); 
 
 		$tags = get_terms( 'product_tag', $args );
@@ -555,6 +605,47 @@ class IPQ_Quantity_Rule_Post_Type {
 			update_post_meta( $post_id, '_tags', $tags_included, false );
 		}
 	}
+	
+	/*
+	*	Save Rule Role Values
+	*/	
+	public function save_quantity_rule_roles( $post_id ) {
+		
+		// Validate Post Type
+		if ( ! isset( $_POST['post_type'] ) or $_POST['post_type'] !== 'quantity-rule' ) {
+			return;
+		}
+		
+		// Validate User
+		if ( !current_user_can( 'edit_post', $post_id ) ) {
+	        return;
+	    }
+	
+		// Verify Nonce
+	    if ( ! isset( $_POST["_wpbo_role_nonce"] ) or ! wp_verify_nonce( $_POST["_wpbo_role_nonce"], plugin_basename( __FILE__ ) ) ) {
+	        return;
+	    }
+	    
+	    // Get available user roles
+	    global $wp_roles;
+		$roles = $wp_roles->get_names();
+		$applied_roles = array();
+		
+		// Loop through roles
+		foreach ( $roles as $slug => $name ) {
+			$role_name = '_wpbo_role_' . $slug;
+			
+			// If role is set add it to the applied list
+			if ( isset( $_POST[ $role_name ] ) and $_POST[ $role_name ] == 'on' ) {
+				array_push( $applied_roles, $slug );
+			}
+		}
+		
+		// Add them to the post meta
+		delete_post_meta( $post_id, '_roles' );
+		update_post_meta( $post_id, '_roles', $applied_roles, false );
+    
+	}	
 }
 
 endif;

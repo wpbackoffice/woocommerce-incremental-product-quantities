@@ -5,6 +5,8 @@ if ( ! class_exists( 'IPQ_Filters' ) ) :
 
 class IPQ_Filters {
 	
+	public $rule = 'unset';
+	
 	public function __construct() {
 		
 		// Cart input box variable filters
@@ -31,12 +33,12 @@ class IPQ_Filters {
 		if( $product->product_type != 'simple' ) {
 			return $default;
 		}
-		
+
 		// Get Rule
-		$rule = wpbo_get_applied_rule( $product );
-		
+		$rule = $this->get_rule( $product );
+				
 		// Get Value from Rule
-		$min = wpbo_get_value_from_rule( 'min', $product, $rule );
+		$min = wpbo_get_value_from_rule( 'min', $product, $this->rule );
 	
 		// Return Value
 		if ( $min == '' or $min == null ) {
@@ -63,10 +65,10 @@ class IPQ_Filters {
 		}
 		
 		// Get Rule
-		$rule = wpbo_get_applied_rule( $product );
+		$rule = $this->get_rule( $product );
 		
 		// Get Value from Rule
-		$max = wpbo_get_value_from_rule( 'max', $product, $rule );
+		$max = wpbo_get_value_from_rule( 'max', $product, $this->rule );
 	
 		// Return Value
 		if ( $max == '' or $max == null ) {
@@ -93,10 +95,10 @@ class IPQ_Filters {
 		}
 		
 		// Get Rule
-		$rule = wpbo_get_applied_rule( $product );
+		$rule = $this->get_rule( $product );
 		
 		// Get Value from Rule
-		$step = wpbo_get_value_from_rule( 'step', $product, $rule );
+		$step = wpbo_get_value_from_rule( 'step', $product, $this->rule );
 	
 		// Return Value
 		if ( $step == '' or $step == null ) {
@@ -118,17 +120,17 @@ class IPQ_Filters {
 	public function input_set_all_values( $args, $product ) {
 		
 		// Return Defaults if it isn't a simple product
-/*
+		/*
 		if( $product->product_type != 'simple' ) {
 			return $args;
 		}
-*/
+		*/
 		
 		// Get Rule
-		$rule = wpbo_get_applied_rule( $product );
+		$rule = $this->get_rule( $product );
 		
 		// Get Value from Rule
-		$values = wpbo_get_value_from_rule( 'all', $product, $rule );
+		$values = wpbo_get_value_from_rule( 'all', $product, $this->rule );
 	
 		if ( $values == null ) {
 			return $args;
@@ -158,6 +160,23 @@ class IPQ_Filters {
 		}
 	
 		return $args;
+	}
+	
+	/*
+	*	Get rule from object if it has been set, 
+	* 	Otherwise go and get it.
+	*
+	*	@access public 
+	*	@param  obj		product
+	*	@return obj 	rule
+	*/
+	public function get_rule( $product ) {
+		
+		if ( $this->rule == 'unset' ) {
+			$this->rule = wpbo_get_applied_rule( $product );
+		}
+		
+		return $this->rule;
 	}
 
 }

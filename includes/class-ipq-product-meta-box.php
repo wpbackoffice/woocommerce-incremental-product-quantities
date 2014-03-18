@@ -69,6 +69,7 @@ class IPQ_Quantity_Meta_Boxes {
 				<a href='<?php echo admin_url( 'edit.php?post_type=quantity-rule&page=class-ipq-advanced-rules.php' ) ?>'>
 					Site Wide Rule
 				</a>
+				<span class='active-toggle'><a>Show/Hide Active Rule Values &#x25BC;</a></span>
 			</div>
 	
 			<div class="rule-meta">			
@@ -104,6 +105,7 @@ class IPQ_Quantity_Meta_Boxes {
 				<a href='<?php echo get_edit_post_link( $rule->ID ) ?>'>
 					<?php echo $rule->post_title ?>
 				</a>
+				<span class='active-toggle'><a>Show/Hide Active Rule Values &#x25BC;</a></span>
 			</div>
 	
 			<div class="rule-meta">			
@@ -133,6 +135,18 @@ class IPQ_Quantity_Meta_Boxes {
 						echo '<span class="meta-value-single">No Priority Level</span>';
 					} else { 
 						echo '<span class="meta-value-single">' . $values['priority'] . '</span>'; 
+					} 
+				?>
+				<span class="meta-value-title">Roles Applied To:</span>
+				<?php if ( $values['roles'] == '' ) {
+						echo '<span class="meta-value-single">No Roles Values Applied</span>';
+					} else { 
+						echo "<div class='roles'>";
+						foreach ( $values['roles'] as $role ) {
+							echo '<span class="meta-value-single">' . ucfirst( $role ) . '</span>'; 
+						}
+						echo "<p><em>Note* - There maybe additional rules applied to other user roles.</em></p>";
+						echo "</div>";
 					} 
 				?>
 			</div>
@@ -166,7 +180,6 @@ class IPQ_Quantity_Meta_Boxes {
 			<label for="_wpbo_maximum">Maximum Quantity</label>
 			<input type="number" name="_wpbo_maximum" value="<?php echo $max; ?>" />
 		</div>
-		<p><em>*Note - the minimum value must be greater then or equal to the step value.</em></p>
 		<?php
 	}
 	
@@ -229,11 +242,13 @@ class IPQ_Quantity_Meta_Boxes {
 		}
 		
 		/* Make sure min >= step */
+		/*
 		if ( isset( $step ) and isset( $min ) ) {
 			if ( $min < $step ) {
 				$min = $step;
 			}
 		}
+		*/
 		
 		if( isset( $_POST['_wpbo_step'] )) {
 			update_post_meta( 
@@ -244,10 +259,13 @@ class IPQ_Quantity_Meta_Boxes {
 		}
 		
 		if( isset( $_POST['_wpbo_minimum'] )) {
+			if ( $min != 0 ) {
+				$min = wpbo_validate_number( $min );
+			}
 			update_post_meta( 
 				$post_id, 
 				'_wpbo_minimum', 
-				strip_tags( wpbo_validate_number( $min ) )
+				strip_tags( $min )
 			);
 		}
 		

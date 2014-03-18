@@ -90,7 +90,7 @@ class Incremental_Product_Quantities {
 		global $post, $woocommerce;
 	
 		// Only display script if we are on a single product or cart page
-		if ( $post->post_type == 'product' or is_cart() ) {
+		if ( is_object( $post ) and $post->post_type == 'product' or is_cart() ) {
 			
 			wp_enqueue_script( 
 				'ipq_validation', 
@@ -140,9 +140,16 @@ class Incremental_Product_Quantities {
 	public function quantity_styles() {
 	
 		if ( is_admin() ) {
+		
 			wp_enqueue_style( 
 				'ipq_quantity_styles', 
 				plugins_url( '/assets/css/styles.css', __FILE__ )
+			);
+					
+			wp_enqueue_script( 
+				'ipq_admin_script', 
+				plugins_url( '/assets/js/ipq_admin_script.js', __FILE__ ),
+				array( 'jquery' )
 			);
 		}
 	}

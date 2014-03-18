@@ -61,6 +61,20 @@ ul.level-4 {
 	margin: 5px 0;
 }
 
+.rule-meta .roles {
+	float: left;
+	padding-top: 2px;
+}
+
+.rule-meta .roles .meta-value-single {
+	clear: left;
+	margin: 0;
+}
+
+.rule-meta .roles p {
+	clear: left;
+}
+
 .meta-value-single, .rule-input-boxes span, .rule-input-boxes input[type="number"] {
 	float: left;
 	margin: 4px 0;
@@ -83,7 +97,20 @@ ul.level-4 {
 	padding: 10px 12px;
 }
 
+.active-rule span.active-toggle {
+	float: right;
+	width: auto;
+}
+
+.active-rule span.active-toggle a {
+	cursor: pointer;
+	width: 27px;
+	height: 30px;
+	color: #444;
+}
+
 .rule-meta {
+	display: none;
 	border-top: 1px solid white;
 	border-bottom: 1px solid #dfdfdf;
 	padding: 5px 12px;
