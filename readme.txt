@@ -14,12 +14,12 @@ Easily require your customers to buy a minimum / maximum / incremental amount of
 
 With WooCommerce Advanced Product Quantities you can easily create rules that restrict the amount of products a user can buy at once. Set Minimum, Maximum and Step values for any product type and must be valid before a customer can proceed to checkout.
 
-New Features as of version 2.0.0:
+New Features as of version 2.1.0:
 
-* Now fully supports ALL PRODUCT TYPES, simple, variable, grouped and affiliate
-* Create Site Wide rules that apply to every product unless overwritten on a per-product basis
-* Create rules by Product Tags (opposed to just categories)
-* Woocommerce +2.0 compatible 
+* Added Role Support, create rules based on user roles.
+* Improved preformance / cacheing
+* Improved admin interface
+* Allows rules to have a minimum of 0
 
 Features:
 
@@ -34,6 +34,10 @@ Features:
 * Easily override rules on a per-product basis
 * Integrates with [WooCommerce's Product CSV Import Suite](http://www.woothemes.com/products/product-csv-import-suite/?utm_source=docs&utm_medium=docssite&utm_campaign=docs)
 * See which rule is being applied to an individual product on your edit product page
+* Now fully supports ALL PRODUCT TYPES, simple, variable, grouped and affiliate
+* Create Site Wide rules that apply to every product unless overwritten on a per-product basis
+* Create rules by Product Tags (opposed to just categories)
+* Woocommerce +2.0 compatible 
 
 [Plugin's Official Documentation and Support Page](http://www.wpbackoffice.com/plugins/woocommerce-incremental-product-quantities)
 
@@ -58,10 +62,19 @@ Manual Installation
 
 == Upgrade Notice == 
 
+= 2.1.0 = 
+Added user role support for Quantity Rules, improved performance / user interface.
+
 = 2.0.0 =
 This major upgrade adds the following features - Now supports all product types, allows you to create site wide rules, and rules by product tags. It is recommended that you back up and test your site with 2.0 before going live.
 
 == Changelog ==
+
+= 2.1.0 = 
+* Added Role Support, create rules based on user roles.
+* Improved preformance / cacheing
+* Improved admin interface
+* Allows rules to have a minimum of 0
 
 = 2.0.0 = 
 * Updated name from WooCommerce Incremental Product Quantities to WooCommerce Advanced Product Quantities
