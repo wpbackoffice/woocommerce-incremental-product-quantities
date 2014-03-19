@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Advanced Product Quantities
 Plugin URI: http://www.wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Description: Easily require your customers to buy a minimum / maximum / incremental amount of products to continue with their checkout. It is highly recommended to also install 'WooCommerce Thumbnail Input Quantities' to allow users to add your custom quantites from product thumbnails.
-Version: 2.1.0
+Version: 2.1.1
 Author: WP BackOffice
 Author URI: http://www.wpbackoffice.com
 */ 
@@ -36,8 +36,9 @@ class Incremental_Product_Quantities {
 	
 	public function __construct() {
 		
-		// Activation Hook
+		// Activation / Deactivation Hooks
 		register_activation_hook( __FILE__, array( $this, 'activation_hook' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivation_hook' ) );
 		
 		// Include Required Files
 		require_once( 'includes/ipq-functions.php' );
@@ -79,6 +80,24 @@ class Incremental_Product_Quantities {
 			add_option( 'ipq_options', $defaults, '', false );
 		}
 
+	}
+
+	/*
+	*	Remove thumbnail plugin notice meta value
+	*/	
+	public function deactivation_hook() {
+	
+		$args = array(
+			'meta_key'     => 'wpbo_thumbnail_input_notice',
+			'meta_value'   => 'true',
+		 );
+	
+		$admins = get_users( $args );
+		
+		foreach ( $admins as $admin ) {
+			delete_user_meta( $admin->ID, 'wpbo_thumbnail_input_notice' );
+		}
+		
 	}
 
 	/*
@@ -176,12 +195,12 @@ class Incremental_Product_Quantities {
 	* 	General Admin Notice to Encourage users to download thumbnail input as well
 	*/	
 	public function thumbnail_plugin_notice() {
+
 		global $current_user;
-		
 		$user_id = $current_user->ID; 
-		
+
 		// Check if Thumbnail Plugin is activated	
-		if ( !in_array( 'woocommerce-thumbnail-input-quantity/woocommerce-thumbnail-input-quantity.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		if ( !in_array( 'woocommerce-thumbnail-input-quantities/woocommerce-thumbnail-input-quantity.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		
 			// Check if User has Dismissed this message already
 			if ( ! get_user_meta( $user_id, 'wpbo_thumbnail_input_notice' ) ) {
