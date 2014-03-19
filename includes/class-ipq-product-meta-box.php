@@ -42,19 +42,38 @@ class IPQ_Quantity_Meta_Boxes {
 	function product_meta_box_content( $post ) {
 		global $product;
 		global $woocommerce;
-		
+		global $wp_roles;
+				
 		// Get the product and see what rules are being applied
 		$pro = get_product( $post );
-		$rule_result = wpbo_get_applied_rule( $pro );
 		
-		// If there isn't a rule mark rule as null, otherwise get the id
+		// Get applied rules by user role
+		$roles = $wp_roles->get_names();
+		$rules_by_role = array();
+		
+		// Loop through roles
+		foreach ( $roles as $slug => $name ) {
+			$rule = wpbo_get_applied_rule( $pro, $slug );
+
+			if ( $rule == 'inactive' or $rule == 'override' or $rule == 'sitewide' )
+				continue;
+				
+			$rules_by_role[$name] = $rule;
+		}
+		
+		// $rule_result = wpbo_get_applied_rule( $pro );
+		
+	/*
+	// If there isn't a rule mark rule as null, otherwise get the id
 		if ( $rule_result != 'inactive' and $rule_result != 'override' ) {
 			$rule = $rule_result;
 			$values = wpbo_get_value_from_rule( 'all', $pro, $rule );
 		} else {
 			$rule = $rule_result;
 		}
-
+	*/
+	
+		
 		// Display Rule Being Applied
 		if ( $rule == 'inactive' ) {
 			echo "<div class='inactive-rule rule-message'>No rule is being applied becasue you've deactivated the plugin for this product.</div>";
@@ -64,36 +83,34 @@ class IPQ_Quantity_Meta_Boxes {
 		
 		} elseif ( $rule == 'sitewide' ) {
 			?>
+			<?php $values = wpbo_get_value_from_rule( 'all', $pro, $rule ); ?>
 			<div class="active-rule">
 				<span>Active Rule:</span>
 				<a href='<?php echo admin_url( 'edit.php?post_type=quantity-rule&page=class-ipq-advanced-rules.php' ) ?>'>
 					Site Wide Rule
 				</a>
-				<span class='active-toggle'><a>Show/Hide Active Rule Values &#x25BC;</a></span>
+				<span class='active-toggle'><a>Show/Hide Active Rules by Role &#x25BC;</a></span>
 			</div>
 	
-			<div class="rule-meta">			
-				<span class="meta-value-title">Step Value:</span> 
-				<?php if ( $values['step'] == '' ) {
-						echo '<span class="meta-value-single">No Step Value</span>';
-					} else { 
-						echo '<span class="meta-value-single">' . $values['step'] . '</span>'; 
-					} 
-				?>
-				<span class="meta-value-title">Minimum Quantity:</span>
-				<?php if ( $values['min_value'] == '' ) {
-						echo '<span class="meta-value-single">No Minimum Value</span>';
-					} else { 
-						echo '<span class="meta-value-single">' . $values['min_value'] . '</span>'; 
-					} 
-				?>
-				<span class="meta-value-title">Maximum Quantity:</span>
-				<?php if ( $values['max_value'] == '' ) {
-						echo '<span class="meta-value-single">No Maximum Value</span>';
-					} else { 
-						echo '<span class="meta-value-single">' . $values['max_value'] . '</span>'; 
-					} 
-				?>
+			<div class="rule-meta">		
+				<table>
+					<tr>
+						<th>Role</th>
+						<th>Rule</th>
+						<th>Min</th>
+						<th>Max</th>
+						<th>Step</th>
+						<th>Priority</th>
+					</tr>
+					<tr>
+						<td>All</td>
+						<td><a href='<?php echo admin_url( 'edit.php?post_type=quantity-rule&page=class-ipq-advanced-rules.php' ) ?>'>Site Wide Rule</a></td>
+						<td><?php echo $values['min_value'] ?></td>
+						<td><?php echo $values['max_value'] ?></td>
+						<td><?php echo $values['step'] ?></td>
+						<td></td>
+					</tr>
+				</table>
 			</div>
 			<?php 
 		} elseif ( ! isset( $rule->post_title ) or $rule->post_title == null ) {
@@ -105,50 +122,41 @@ class IPQ_Quantity_Meta_Boxes {
 				<a href='<?php echo get_edit_post_link( $rule->ID ) ?>'>
 					<?php echo $rule->post_title ?>
 				</a>
-				<span class='active-toggle'><a>Show/Hide Active Rule Values &#x25BC;</a></span>
+				<span class='active-toggle'><a>Show/Hide Active Rules by Role &#x25BC;</a></span>
 			</div>
 	
-			<div class="rule-meta">			
-				<span class="meta-value-title">Step Value:</span> 
-				<?php if ( $values['step'] == '' ) {
-						echo '<span class="meta-value-single">No Step Value</span>';
-					} else { 
-						echo '<span class="meta-value-single">' . $values['step'] . '</span>'; 
-					} 
-				?>
-				<span class="meta-value-title">Minimum Quantity:</span>
-				<?php if ( $values['min_value'] == '' ) {
-						echo '<span class="meta-value-single">No Minimum Value</span>';
-					} else { 
-						echo '<span class="meta-value-single">' . $values['min_value'] . '</span>'; 
-					} 
-				?>
-				<span class="meta-value-title">Maximum Quantity:</span>
-				<?php if ( $values['max_value'] == '' ) {
-						echo '<span class="meta-value-single">No Maximum Value</span>';
-					} else { 
-						echo '<span class="meta-value-single">' . $values['max_value'] . '</span>'; 
-					} 
-				?>
-				<span class="meta-value-title">Priority Level:</span>
-				<?php if ( $values['priority'] == '' ) {
-						echo '<span class="meta-value-single">No Priority Level</span>';
-					} else { 
-						echo '<span class="meta-value-single">' . $values['priority'] . '</span>'; 
-					} 
-				?>
-				<span class="meta-value-title">Roles Applied To:</span>
-				<?php if ( $values['roles'] == '' ) {
-						echo '<span class="meta-value-single">No Roles Values Applied</span>';
-					} else { 
-						echo "<div class='roles'>";
-						foreach ( $values['roles'] as $role ) {
-							echo '<span class="meta-value-single">' . ucfirst( $role ) . '</span>'; 
-						}
-						echo "<p><em>Note* - There maybe additional rules applied to other user roles.</em></p>";
-						echo "</div>";
-					} 
-				?>
+			<div class="rule-meta">		
+				<table>
+					<tr>
+						<th>Role</th>
+						<th>Rule</th>
+						<th>Min</th>
+						<th>Max</th>
+						<th>Step</th>
+						<th>Priority</th>
+					</tr>
+				<?php foreach ( $rules_by_role as $role => $rule ): ?>
+					<?php if ( $rule != null )
+						$values = wpbo_get_value_from_rule( 'all', $pro, $rule ); 
+					?>
+					<tr>
+						<td><?php echo $role ?></td>
+						<?php if ( $rule != null ): ?>
+							<td><a href='<?php echo get_edit_post_link( $rule->ID ) ?>' target="_blank"><?php echo $rule->post_title ?></a></td>
+							<td><?php echo $values['min_value'] ?></td>
+							<td><?php echo $values['max_value'] ?></td>
+							<td><?php echo $values['step'] ?></td>
+							<td><?php echo $values['priority'] ?></td>
+						<?php else: ?>
+							<td>None</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						<?php endif; ?>
+					</tr>
+				<?php endforeach; ?>
+				</table>
 			</div>
 		<?php
 		}
@@ -168,17 +176,19 @@ class IPQ_Quantity_Meta_Boxes {
 			<input type="checkbox" name="_wpbo_deactive" <?php if ( $deactive == 'on' ) echo 'checked'; ?> />
 			<span>Deactivate Quantity Rules on this Product?</span>
 			
-			<input type="checkbox" name="_wpbo_override" <?php if ( $over == 'on' ) echo 'checked'; ?> />
+			<input type="checkbox" name="_wpbo_override" id='toggle_override' <?php if ( $over == 'on' ) echo 'checked'; ?> />
 			<span>Override Quantity Rules with Values Below</span>
 			
-			<label for="_wpbo_step">Step Value</label>
-			<input type="number" name="_wpbo_step" value="<?php echo $step; ?>" />
-			
-			<label for="_wpbo_minimum">Minimum Quantity</label>
-			<input type="number" name="_wpbo_minimum" value="<?php echo $min; ?>" />
-			
-			<label for="_wpbo_maximum">Maximum Quantity</label>
-			<input type="number" name="_wpbo_maximum" value="<?php echo $max; ?>" />
+			<span class='wpbo_product_values' <?php if ( $over != 'on' ) echo "style='display:none'"?>>
+				<label for="_wpbo_step">Step Value</label>
+				<input type="number" name="_wpbo_step" value="<?php echo $step; ?>" />
+				
+				<label for="_wpbo_minimum">Minimum Quantity</label>
+				<input type="number" name="_wpbo_minimum" value="<?php echo $min; ?>" />
+				
+				<label for="_wpbo_maximum">Maximum Quantity</label>
+				<input type="number" name="_wpbo_maximum" value="<?php echo $max; ?>" />
+			</span>
 		</div>
 		<?php
 	}

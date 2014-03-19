@@ -5,9 +5,10 @@
 *	or overridden (from the product meta box).
 *
 *	@params object	$product WC_Product object
+*	@param 	string	User role to get rule from, otherwise current user role is used
 *	@return mixed 	String of rule status / Object top rule post 
 */
-function wpbo_get_applied_rule( $product ) {
+function wpbo_get_applied_rule( $product, $role = null ) {
 	
 	// Check for site wide rule
 	$options = get_option( 'ipq_options' );
@@ -22,7 +23,7 @@ function wpbo_get_applied_rule( $product ) {
 		return 'sitewide';
 		
 	} else {
-		return wpbo_get_applied_rule_obj( $product );
+		return wpbo_get_applied_rule_obj( $product, $role );
 	}
 }
 
@@ -31,44 +32,66 @@ function wpbo_get_applied_rule( $product ) {
 *	Will return null if no rule is applied.
 *
 *	@params object	$product WC_Product object
+*	@param 	string	User role to get rule from, otherwise current user role is used
 *	@return mixed 	Null if no rule applies / Object top rule post 
 */
-function wpbo_get_applied_rule_obj( $product ) {
+function wpbo_get_applied_rule_obj( $product, $role = null ) {
 
 	// Get Product Terms
 	$product_cats = wp_get_post_terms( $product->id, 'product_cat' );
 	$product_tags = wp_get_post_terms( $product->id, 'product_tag' );	
-	$user_data = get_userdata( get_current_user_id() );
-	
-	if ( $user_data->wp_capabilities ) {
-		foreach ( $user_data->wp_capabilities as $cap => $val ) {
-			$role = $cap;
+
+	// Get role if not passed
+	if ( $role == NULL ) {
+		$user_data = get_userdata( get_current_user_id() );
+		if ( $user_data->wp_capabilities ) {
+			foreach ( $user_data->wp_capabilities as $cap => $val ) {
+				$role = $cap;
+			}
 		}
 	}
 
 	// Combine all product terms
 	$product_terms = array_merge( $product_cats, $product_tags );
 
-	// Check for rule transient
-	if ( false === ( $rules = get_transient( 'ipq_rules' ) ) ) {
+	// Check for rule / role transient
+	if ( false === ( $rules = get_transient( 'ipq_rules_' . $role ) ) ) {
 		
 		// Get all Rules
 		$args = array(
-			'posts_per_page'   => -1,
-			'offset'           => 0,
-			'post_type'        => 'quantity-rule',
-			'post_status'      => 'publish',
+			'posts_per_page'   	=> -1,
+			'post_type'        	=> 'quantity-rule',
+			'post_status'      	=> 'publish',
 		); 
 		
 		$rules = get_posts( $args );
+		
+		// Remove rules not applied to current user role
+		$cnt = 0; 
+		$rules_to_unset = array();
+		
+		while ( $cnt < count( $rules ) ) {
+	
+			$roles = get_post_meta( $rules[$cnt]->ID, '_roles' );
+		 	if ( !in_array( $role, $roles[0] ) ) {
+			 	array_push( $rules_to_unset, $cnt );
+		 	} 
+		 	
+		 	$cnt++;
+		}		
 
 		$duration = 60 * 60 * 12; // 12 hours
-		set_transient( 'ipq_rules', $rules, $duration );	
-	}
-	
+		arsort( $rules_to_unset );
+		
+		foreach ( $rules_to_unset as $single_unset ) {
+			unset( $rules[$single_unset] );
+		}		
+		set_transient( 'ipq_rules_' . $role, $rules, $duration );	
+	} 
+
 	$top = null;
 	$top_rule = null;
-	
+
 	// Loop through the rules and find the ones that apply
 	foreach ( $rules as $rule ) {
 	 
@@ -98,11 +121,6 @@ function wpbo_get_applied_rule_obj( $product ) {
 		 	}
 	 	}
 	 	
-	 	// Flag if user's role is included
-	 	if ( in_array( $role, $roles ) ) {
-		 	$apply_rule = true;
-	 	}
-	 	
 	 	// If the rule applies, check the priority
 	 	if ( $apply_rule == true ) {
 	 	
@@ -113,9 +131,8 @@ function wpbo_get_applied_rule_obj( $product ) {
 	 			$top_rule = $rule;
 		 	}
 		}
-
 	}
-	
+
 	return $top_rule;	
 }
 

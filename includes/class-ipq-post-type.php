@@ -343,7 +343,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	public function quantity_rule_role_init() {
 		add_meta_box(
 			'wpbo-quantity-rule-role', 
-			'Apply Rule by User Role', 
+			'User Roles', 
 			array( $this, 'quantity_rule_role' ), 
 			'quantity-rule', 
 			'normal', 
@@ -374,6 +374,7 @@ class IPQ_Quantity_Rule_Post_Type {
 					</li>
 				<?php endforeach; ?>
 			</ul>
+			<p><em>Note* - All roles are selected by default.</em></p>
 		<?php endif;
 	}
 
@@ -476,8 +477,12 @@ class IPQ_Quantity_Rule_Post_Type {
 	        return;
 	    }
 	
-		// Remove the rule transient since values have been updated
-		delete_transient( 'ipq_rules' );
+		// Remove the rule/role transient
+		global $wp_roles;
+		$roles = $wp_roles->get_names();
+		foreach ( $roles as $slug => $name ) {
+			delete_transient( 'ipq_rules_' . $slug );
+		}
 	
 		// Make sure $min >= step
 		if( isset( $_POST['min'] ) ) {

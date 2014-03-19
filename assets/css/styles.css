@@ -54,6 +54,12 @@ ul.level-4 {
 	float: left;
 	width: 125px;
 }
+.rule-meta table {
+	width: 100%;
+}
+.rule-meta table th {
+	text-align: left;
+}
 .rule-meta, .rule-input-boxes {
 	overflow: hidden;
 }
