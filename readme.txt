@@ -63,6 +63,7 @@ Manual Installation
 == Upgrade Notice == 
 
 = 2.1.1 = 
+Product Page UI Update
 Minor bug fixes.
 
 = 2.1.0 = 
@@ -74,7 +75,8 @@ This major upgrade adds the following features - Now supports all product types,
 == Changelog ==
 
 = 2.1.1 = 
-Minor bug fixes.
+* Product Page UI Update
+* Minor bug fixes.
 
 = 2.1.0 = 
 * Added Role Support, create rules based on user roles.

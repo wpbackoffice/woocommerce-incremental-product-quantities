@@ -70,6 +70,7 @@ Manual Installation
 ## Upgrade Notice
 
 ####2.1.1
+Product Page UI Update
 Minor bug fixes.
 
 ####2.1.0
@@ -82,6 +83,7 @@ This major upgrade adds the following features - Now supports all product types,
 ## Changelog 
 
 ####2.1.1
+Product Page UI Update
 Minor bug fixes.
 
 ####2.1.0
@@ -101,7 +103,6 @@ Minor bug fixes.
 
 ####1.1.3
 * Minor bug fixes.
-
 
 ####1.1.2 
 * Undefined variable bug fix.
