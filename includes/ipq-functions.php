@@ -42,13 +42,18 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 	$product_tags = wp_get_post_terms( $product->id, 'product_tag' );	
 
 	// Get role if not passed
-	if ( $role == NULL ) {
+	if ( $role == NULL and is_user_logged_in() ) {
 		$user_data = get_userdata( get_current_user_id() );
 		if ( $user_data->wp_capabilities ) {
 			foreach ( $user_data->wp_capabilities as $cap => $val ) {
 				$role = $cap;
 			}
 		}
+	}
+	
+	// Use default role if the user isn't signed in
+	if ( $role == NULL ) {
+		$role = get_option('default_role');	
 	}
 
 	// Combine all product terms

@@ -9,7 +9,7 @@ Requires at least: 2.3
 
 Tested up to: 3.8
 
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 
 License: GPLv2
 
@@ -69,6 +69,9 @@ Manual Installation
 
 ## Upgrade Notice
 
+####2.1.2 
+Default user role bug fix.
+
 ####2.1.1
 Product Page UI Update
 Minor bug fixes.
@@ -76,11 +79,13 @@ Minor bug fixes.
 ####2.1.0
 Added user role support for Quantity Rules, improved performance / user interface.
 
-
 ####2.0.0
 This major upgrade adds the following features - Now supports all product types, allows you to create site wide rules, and rules by product tags. It is recommended that you back up and test your site with 2.0 before going live.
 
 ## Changelog 
+
+####2.1.2 
+* Default user role bug fix.
 
 ####2.1.1
 Product Page UI Update
