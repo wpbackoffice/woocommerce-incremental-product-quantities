@@ -323,20 +323,31 @@ class IPQ_Quantity_Meta_Boxes {
 		
 			$max_oos = stripslashes( $_POST['_wpbo_maximum_oos'] );
 			
-			if ( $max_oos != 0 ) {
-				$max_oos = wpbo_validate_number( $max_oos );
-			}
-					
-			// Max must be bigger then min
-			if ( isset( $min_oos ) and $min_oos != 0 ) {
-				if ( $min_oos > $max_oos )
-					$max_oos = $min_oos;
+			// Allow the value to be unset
+			if ( $max_oos != '' ) {
 				
-			} elseif ( isset( $min ) and $min != 0 ){
-				if ( $min > $max_oos ) {
-					$max_oos = $min;
+				// Validate the number			
+				if ( $max_oos != 0 ) {
+					$max_oos = wpbo_validate_number( $max_oos );
+				} 
+				
+			/*
+	var_dump($min_oos);
+				var_dump($min);
+				var_dump($max_oos);
+				die;		
+*/
+				// Max must be bigger then min
+				if ( isset( $min_oos ) and $min_oos != 0 ) {
+					if ( $min_oos > $max_oos )
+						$max_oos = $min_oos;
+					
+				} elseif ( isset( $min ) and $min != 0 ){
+					if ( $min > $max_oos ) {
+						$max_oos = $min;
+					}
 				}
-			}
+			} 
 			
 			update_post_meta( 
 				$post_id, 
@@ -344,7 +355,7 @@ class IPQ_Quantity_Meta_Boxes {
 				strip_tags( $max_oos )
 			);
 
-		}
+		} 
 		
 	}
 }
