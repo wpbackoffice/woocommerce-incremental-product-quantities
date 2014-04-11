@@ -44,6 +44,7 @@ class Incremental_Product_Quantities {
 		// Include Required Files
 		require_once( 'includes/ipq-functions.php' );
 		require_once( 'includes/class-ipq-filters.php' );
+		require_once( 'includes/class-ipq-actions.php' );
 		require_once( 'includes/class-ipq-product-meta-box.php' );
 		require_once( 'includes/class-ipq-post-type.php' );
 		require_once( 'includes/class-ipq-validations.php' );
