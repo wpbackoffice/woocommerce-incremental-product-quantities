@@ -33,7 +33,7 @@ class IPQ_Filters {
 		if( $product->product_type != 'simple' ) {
 			return $default;
 		}
-
+		
 		// Get Rule
 		$rule = $this->get_rule( $product );
 
@@ -145,7 +145,7 @@ class IPQ_Filters {
 		// Check stock status and if Out try Out of Stock value	
 		if ( strlen( $stock ) != 0 and $stock <= 0 and $values['min_oos'] != '' ) {
 			$args['min_value'] = $values['min_oos'];
-		
+			
 		// Otherwise just check normal min	
 		} elseif ( $values['min_value'] != ''  ) {
 			$args['min_value'] 	 = $values['min_value'];
@@ -168,7 +168,7 @@ class IPQ_Filters {
 		if ( $values['step'] != '' ) {
 			$args['step'] = $values['step'];
 		} 
-	
+
 		return $args;
 	}
 	

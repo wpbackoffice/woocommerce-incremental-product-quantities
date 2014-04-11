@@ -170,7 +170,23 @@ class Incremental_Product_Quantities {
 					} else {
 						$values = wpbo_get_value_from_rule( 'all', $pro, $rule_result );
 					}
-							
+					
+					// Check if the product is out of stock 
+					$stock = $pro->get_stock_quantity();
+			
+					// Check if the product is under stock management and out of stock
+					if ( strlen( $stock ) != 0 and $stock <= 0 ) {
+						
+						if ( $values['min_oos'] != '' ) {
+							$values['min_value'] = $values['min_oos'];
+						}
+						
+						if ( $values['max_oos'] != '' ) {
+							$values['max_value'] = $values['max_oos'];
+						}
+						
+					}
+						
 					// Output admin-ajax.php URL with sma eprotocol as current page
 					$params = array (
 						'min' => $values['min_value'],

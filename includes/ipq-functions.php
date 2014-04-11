@@ -150,7 +150,7 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 *	@return void 	 
 */
 function wpbo_get_value_from_rule( $type, $product, $rule ) {
-	
+
 	// Validate $type
 	if ( $type != 'min' and 
 		 $type != 'max' and 
@@ -178,7 +178,7 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 		$stock = $product->get_stock_quantity();
 
 		// Check if the product is under stock management and out of stock
-		if ( $stock != null and $stock <= 0 ) {
+		if ( strlen( $stock ) != 0 and $stock <= 0 ) {
 			
 			// Return Out of Stock values if they exist
 			switch ( $type ) {
