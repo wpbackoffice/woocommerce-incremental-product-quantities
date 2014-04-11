@@ -54,29 +54,29 @@ class IPQ_Advanced_Rules {
 		$settings = get_option( 'ipq_options' );
 		
 		// Minimum Product Notification 
-		if ( isset( $_POST['ipq_show_min_qty_note'] ) and $_POST['ipq_show_min_qty_note'] == 'on' ) {
-			$settings['ipq_show_min_qty_note'] = 'on';
+		if ( isset( $_POST['ipq_show_qty_note'] ) and $_POST['ipq_show_qty_note'] == 'on' ) {
+			$settings['ipq_show_qty_note'] = 'on';
 		} else {
-			$settings['ipq_show_min_qty_note'] = '';
+			$settings['ipq_show_qty_note'] = '';
 		}
 		
 		// Minimum Note Text 
-		if ( isset( $_POST['ipq_min_qty_text'] ) and $_POST['ipq_min_qty_text'] != '' ) {
-			$settings['ipq_min_qty_text'] = stripslashes( $_POST['ipq_min_qty_text'] );
+		if ( isset( $_POST['ipq_qty_text'] ) and $_POST['ipq_qty_text'] != '' ) {
+			$settings['ipq_qty_text'] = stripslashes( $_POST['ipq_qty_text'] );
 		} else {
-			$settings['ipq_min_qty_text'] = '';
+			$settings['ipq_qty_text'] = '';
 		}
 		
 		// Minimum Note Position
-		if ( isset( $_POST['ipq_show_min_qty_note_pos'] ) and $_POST['ipq_show_min_qty_note_pos'] == 'below' ) {
-			$settings['ipq_show_min_qty_note_pos'] = 'below';
+		if ( isset( $_POST['ipq_show_qty_note_pos'] ) and $_POST['ipq_show_qty_note_pos'] == 'below' ) {
+			$settings['ipq_show_qty_note_pos'] = 'below';
 		} else {
-			$settings['ipq_show_min_qty_note_pos'] = 'above';
+			$settings['ipq_show_qty_note_pos'] = 'above';
 		}
 		
 		// Minimum Note Class
-		if ( isset( $_POST['ipq_min_qty_class'] ) ) {
-			$settings['ipq_min_qty_class'] = stripslashes( $_POST['ipq_min_qty_class'] );
+		if ( isset( $_POST['ipq_qty_class'] ) ) {
+			$settings['ipq_qty_class'] = stripslashes( $_POST['ipq_qty_class'] );
 		} 
 		
 		// Active Rule
@@ -150,7 +150,7 @@ class IPQ_Advanced_Rules {
 		}
 		
 		extract($options);
-		$min_qty_text_default = "Minimum Qty: %QTY%";
+		$qty_text_default = "Minimum Qty: %MIN%";
 		
 		?>
 		<h2>Advanced Rules</h2>
@@ -198,36 +198,43 @@ class IPQ_Advanced_Rules {
 				<?php endif; ?>
 				
 				<tr>
-					<th>Show Minimum Quantity Notification on Product Page?</th>
-					<td><input type='checkbox' name='ipq_show_min_qty_note' id='ipq_show_min_qty_note' 
-						<?php if ( isset( $ipq_show_min_qty_note ) and $ipq_show_min_qty_note != '' ) echo 'checked'; ?>
+					<th>Show Quantity Notification on Product Page?</th>
+					<td><input type='checkbox' name='ipq_show_qty_note' id='ipq_show_qty_note' 
+						<?php if ( isset( $ipq_show_qty_note ) and $ipq_show_qty_note != '' ) echo 'checked'; ?>
 						/></td>
 				</tr>
 				
 				<tr>
 					<th>Notification Position</th>
 					<td>
-						<select name='ipq_show_min_qty_note_pos' id='ipq_show_min_qty_note_pos'>
-							<option value='above' <?php if ( isset( $ipq_show_min_qty_note_pos ) and $ipq_show_min_qty_note_pos == 'above' ) echo 'selected' ?>>Above Add To Cart</option>
-							<option value='below' <?php if ( isset( $ipq_show_min_qty_note_pos ) and  $ipq_show_min_qty_note_pos == 'below' ) echo 'selected' ?>>Below Add To Cart</option>
+						<select name='ipq_show_qty_note_pos' id='ipq_show_qty_note_pos'>
+							<option value='above' <?php if ( isset( $ipq_show_qty_note_pos ) and $ipq_show_qty_note_pos == 'above' ) echo 'selected' ?>>Above Add To Cart</option>
+							<option value='below' <?php if ( isset( $ipq_show_qty_note_pos ) and  $ipq_show_qty_note_pos == 'below' ) echo 'selected' ?>>Below Add To Cart</option>
 						</select>
 					</td>
 				</tr>
 				
 				<tr>
-					<th>Minimum Quantity Text (use %QTY% for quantity)</th>
-					<td><input type='text' name='ipq_min_qty_text' id='ipq_min_qty_text' value='<?php 
-							if ( isset( $ipq_min_qty_text ) and $ipq_min_qty_text != '' ) {
-								echo $ipq_min_qty_text; 
+					<th>Quantity Notification Text</th>
+					<td><input type='text' name='ipq_qty_text' id='ipq_qty_text' value='<?php 
+							if ( isset( $ipq_qty_text ) and $ipq_qty_text != '' ) {
+								echo $ipq_qty_text; 
 							} else {
-								echo $min_qty_text_default;	
+								echo $qty_text_default;	
 							}
 						?>' /></td>
 				</tr>
 				
 				<tr>
+					<th></th>
+					<td>%MIN% = Minimum Value<br />
+						%MAX% = Maximum Value<br />
+						%STEP% = Step Value
+					</td>
+				</tr>
+				<tr>
 					<th>Custom Quantity Note HTML Class</th>
-					<td><input type='text' name='ipq_min_qty_class' id='ipq_min_qty_class' value='<?php if ( isset( $ipq_min_qty_class ) and $ipq_min_qty_class != '' ) echo $ipq_min_qty_class; ?>' /></td>
+					<td><input type='text' name='ipq_qty_class' id='ipq_qty_class' value='<?php if ( isset( $ipq_qty_class ) and $ipq_qty_class != '' ) echo $ipq_qty_class; ?>' /></td>
 				</tr>
 				
 			</table>

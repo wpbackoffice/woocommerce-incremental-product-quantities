@@ -153,3 +153,8 @@ span.wpbo_product_values {
 .clear-left {
 	clear: left;
 }
+
+/* --------- advanced rules ---------- */
+.quantity-rule_page_class-ipq-advanced-rules .form-table input[type=text] {
+	min-width: 400px !important;
+}

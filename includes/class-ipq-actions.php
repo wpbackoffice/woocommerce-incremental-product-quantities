@@ -9,8 +9,12 @@ class IPQ_Actions {
 	
 	public function __construct() {
 		
-		add_action( 'init', array( $this, 'apply_product_min_notification' ) );
-		
+		// Conditionally add quantity note to product page
+		$settings = get_option( 'ipq_options' );
+
+		if ( $settings['ipq_show_qty_note'] == 'on' ) {
+			add_action( 'init', array( $this, 'apply_product_notification' ) );
+		}
 		
 	}
 
@@ -21,12 +25,12 @@ class IPQ_Actions {
 	*	@access public 
 	*	@return void
 	*/								
-	public function apply_product_min_notification() {
+	public function apply_product_notification() {
 
 		$settings = get_option( 'ipq_options' );
 		extract( $settings );
 		
-		if ( isset( $ipq_show_min_qty_note ) and $ipq_show_min_qty_note == 'on' ) {
+		if ( isset( $ipq_show_qty_note ) and $ipq_show_qty_note == 'on' ) {
 			
 			// Get add_to_cart action priority
 			global $wp_filter;
@@ -38,7 +42,7 @@ class IPQ_Actions {
 			if ( $cart_priority == null ) {
 				$priority = 30;
 				
-			} elseif ( isset( $ipq_show_min_qty_note_pos ) and $ipq_show_min_qty_note_pos == 'below' ) {
+			} elseif ( isset( $ipq_show_qty_note_pos ) and $ipq_show_qty_note_pos == 'below' ) {
 				$priority = $cart_priority + 1;
 												
 			} else {
@@ -65,16 +69,23 @@ class IPQ_Actions {
 		// Get minimum value for product 
 		$rule = wpbo_get_applied_rule( $product );
 		$min = wpbo_get_value_from_rule( 'min', $product, $rule );
+		$max = wpbo_get_value_from_rule( 'max', $product, $rule );
+		$step = wpbo_get_value_from_rule( 'step', $product, $rule );
 		
-		if ( isset( $ipq_min_qty_text ) ) {
-			$qty_pattern = '/\%QTY\%/';
-			$note_text = preg_replace($qty_pattern, $min, $ipq_min_qty_text);
+		if ( isset( $ipq_qty_text ) ) {
+			$min_pattern = '/\%MIN\%/';
+			$max_pattern = '/\%MAX\%/';
+			$step_pattern = '/\%STEP\%/';
+			
+			$ipq_qty_text = preg_replace($min_pattern, $min, $ipq_qty_text);
+			$ipq_qty_text = preg_replace($max_pattern, $max, $ipq_qty_text);
+			$ipq_qty_text = preg_replace($step_pattern, $step, $ipq_qty_text);
 			
 			// Output result with optional custom class
 			echo "<span ";
-			if ( isset( $ipq_min_qty_class ) and $ipq_min_qty_class != '' )
-				echo "class='" . $ipq_min_qty_class . "'>";
-			echo $note_text;
+			if ( isset( $ipq_qty_class ) and $ipq_qty_class != '' )
+				echo "class='" . $ipq_qty_class . "'>";
+			echo $ipq_qty_text;
 			echo "</span>";
 		}
 	}
