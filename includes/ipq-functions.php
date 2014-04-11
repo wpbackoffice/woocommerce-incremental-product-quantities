@@ -152,7 +152,15 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 function wpbo_get_value_from_rule( $type, $product, $rule ) {
 	
 	// Validate $type
-	if ( $type != 'min' and $type != 'max' and $type != 'step' and $type != 'all' and $type != 'priority' and $type != 'role' ) {
+	if ( $type != 'min' and 
+		 $type != 'max' and 
+		 $type != 'step' and 
+		 $type != 'all' and 
+		 $type != 'priority' and 
+		 $type != 'role' and
+		 $type != 'min_oos' and
+		 $type != 'max_oos'
+		) {
 		return null;
 	
 	// Validate for missing rule	
@@ -166,12 +174,37 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 	// Return Product Meta if Override is on
 	} elseif ( $rule == 'override' ) {
 		
+		// Check if the product is out of stock 
+		$stock = $product->get_stock_quantity();
+
+		// Check if the product is under stock management and out of stock
+		if ( $stock != null and $stock <= 0 ) {
+			
+			// Return Out of Stock values if they exist
+			switch ( $type ) {
+				case 'min':
+					$min_oos = get_post_meta( $product->id, '_wpbo_minimum_oos', true );
+					if ( $min_oos != '' )
+						return $min_oos;
+					break;
+				
+				case 'max':
+					$max_oos = get_post_meta( $product->id, '_wpbo_maximum_oos', true );
+					if ( $max_oos != '' )
+						return $max_oos;
+					break;	
+			}  
+			// If nothing was returned, proceed as usual
+		}
+		
 		switch ( $type ) {
 			case 'all':
 				return array( 
 						'min_value' => get_post_meta( $product->id, '_wpbo_minimum', true ),
 						'max_value' => get_post_meta( $product->id, '_wpbo_maximum', true ),
-						'step' 		=> get_post_meta( $product->id, '_wpbo_step', true )
+						'step' 		=> get_post_meta( $product->id, '_wpbo_step', true ),
+						'min_oos'	=> get_post_meta( $product->id, '_wpbo_minimum_oos', true ),
+						'max_oos'	=> get_post_meta( $product->id, '_wpbo_maximum_oos', true ),
 					);
 				break;
 			case 'min':
@@ -184,6 +217,14 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 				
 			case 'step':
 				return get_post_meta( $product->id, '_wpbo_step', true );
+				break;
+			
+			case 'min_oos':
+				return get_post_meta( $product->id, '_wpbo_minimum_oos', true );
+				break;
+			
+			case 'max_oos':
+				return get_post_meta( $product->id, '_wpbo_maximum_oos', true );
 				break;
 				
 			case 'priority':

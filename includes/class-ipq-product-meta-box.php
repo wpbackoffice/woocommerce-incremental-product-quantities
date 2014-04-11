@@ -167,6 +167,8 @@ class IPQ_Quantity_Meta_Boxes {
 		$min   = get_post_meta( $post->ID, '_wpbo_minimum',  true );
 		$max   = get_post_meta( $post->ID, '_wpbo_maximum',  true );
 		$over  = get_post_meta( $post->ID, '_wpbo_override', true );
+		$min_oos = get_post_meta( $post->ID, '_wpbo_minimum_oos', true );
+		$max_oos = get_post_meta( $post->ID, '_wpbo_maximum_oos', true );
 		
 		// Create Nonce Field
 		wp_nonce_field( plugin_basename( __FILE__ ), '_wpbo_product_rule_nonce' );
@@ -188,7 +190,16 @@ class IPQ_Quantity_Meta_Boxes {
 				
 				<label for="_wpbo_maximum">Maximum Quantity</label>
 				<input type="number" name="_wpbo_maximum" value="<?php echo $max; ?>" />
+				
+				<label for="_wpbo_minimum_oos">Out of Stock Minimum</label>
+				<input type="number" name="_wpbo_minimum_oos" value="<?php echo $min_oos ?>" />
+				
+				<label for="_wpbo_maximum_oos">Out of Stock Maximum</label>
+				<input type="number" name="_wpbo_maximum_oos" value="<?php echo $max_oos ?>" />
+				
+				<span class='clear-left'>Note* Maximum values must be larger then minimums</span>
 			</span>
+
 		</div>
 		<?php
 	}
@@ -292,6 +303,49 @@ class IPQ_Quantity_Meta_Boxes {
 				strip_tags( wpbo_validate_number( $max ) )
 			);
 		}
+		
+		// Update Out of Stock Minimum
+		if( isset( $_POST['_wpbo_minimum_oos'] )) {
+			$min_oos = stripslashes( $_POST['_wpbo_minimum_oos'] );
+			
+			if ( $min_oos != 0 ) {
+				$min_oos = wpbo_validate_number( $min_oos );
+			}
+			update_post_meta( 
+				$post_id, 
+				'_wpbo_minimum_oos', 
+				strip_tags( $min_oos )
+			);
+		}
+		
+		// Update Out of Stock Minimum
+		if( isset( $_POST['_wpbo_maximum_oos'] )) {
+		
+			$max_oos = stripslashes( $_POST['_wpbo_maximum_oos'] );
+			
+			if ( $max_oos != 0 ) {
+				$max_oos = wpbo_validate_number( $max_oos );
+			}
+					
+			// Max must be bigger then min
+			if ( isset( $min_oos ) and $min_oos != 0 ) {
+				if ( $min_oos > $max_oos )
+					$max_oos = $min_oos;
+				
+			} elseif ( isset( $min ) and $min != 0 ){
+				if ( $min > $max_oos ) {
+					$max_oos = $min;
+				}
+			}
+			
+			update_post_meta( 
+				$post_id, 
+				'_wpbo_maximum_oos', 
+				strip_tags( $max_oos )
+			);
+
+		}
+		
 	}
 }
 

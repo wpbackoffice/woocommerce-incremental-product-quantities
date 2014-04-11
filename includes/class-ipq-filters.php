@@ -29,17 +29,17 @@ class IPQ_Filters {
 	*/								
 	public function input_min_value( $default, $product ) {
 
-		// Return Defaults if it isn't a simple product
+		// Return Defaults if it isn't a simple product 
 		if( $product->product_type != 'simple' ) {
 			return $default;
 		}
 
 		// Get Rule
 		$rule = $this->get_rule( $product );
-				
+
 		// Get Value from Rule
-		$min = wpbo_get_value_from_rule( 'min', $product, $this->rule );
-	
+		$min = wpbo_get_value_from_rule( 'min', $product, $rule );
+
 		// Return Value
 		if ( $min == '' or $min == null ) {
 			return $default;
@@ -137,27 +137,37 @@ class IPQ_Filters {
 		}
 		
 		$vals = array();
-		
 		$vals['input_name'] = 'quantity';
-		if ( $values['min_value'] != ''  ) {
+		
+		// Check if the product is out of stock 
+		$stock = $product->get_stock_quantity();
+
+		// Check stock status and if Out try Out of Stock value	
+		if ( strlen( $stock ) != 0 and $stock <= 0 and $values['min_oos'] != '' ) {
+			$args['min_value'] = $values['min_oos'];
+		
+		// Otherwise just check normal min	
+		} elseif ( $values['min_value'] != ''  ) {
 			$args['min_value'] 	 = $values['min_value'];
+		
+		// If no min, try step	
 		} elseif ( $values['min_value'] == '' and $values['step'] != '' ) {
 			$args['min_value'] 	 = $values['step'];
-		} else {
-			$args['min_value'] 	 = $args['min_value'];
-		}
-	
-		if ( $values['max_value'] != '' ) {
-			$args['max_value'] = $values['max_value'];
-		} else {
-			$args['max_value'] = $args['max_value'];
+		} 
+		
+		// Check stock status and if Out try Out of Stock value	
+		if ( $stock <= 0 and $values['max_oos'] != '' ) {
+			$args['max_value'] = $values['max_oos'];
+		
+		// Otherwise just check normal max	
+		} elseif ($values['max_value'] != ''  ) {
+			$args['max_value'] 	 = $values['max_value'];
 		}
 		
+		// Set step value
 		if ( $values['step'] != '' ) {
 			$args['step'] = $values['step'];
-		} else {
-			$args['step'] = $args['step'];
-		}
+		} 
 	
 		return $args;
 	}
