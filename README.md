@@ -7,7 +7,7 @@ Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-qua
 
 Requires at least: 2.3
 
-Tested up to: 3.8
+Tested up to: 3.83
 
 Stable tag: 2.1.3
 
@@ -22,6 +22,8 @@ Easily require your customers to buy a minimum / maximum / incremental amount of
 With WooCommerce Advanced Product Quantities you can easily create rules that restrict the amount of products a user can buy at once. Set Minimum, Maximum and Step values for any product type and must be valid before a customer can proceed to checkout.
 
 ## New Features as of version 2.1.0:
+* Added Custom Quantity Message Option
+* Added Out of Stock Min/Max
 * Added Role Support, create rules based on user roles.
 * Improved preformance / cacheing
 * Improved admin interface
@@ -68,6 +70,12 @@ Manual Installation
 6. Set Rules for categories by clicking the new ‘Quantity Rules’ sidebar option or assign per-product rules by using the new metabox on your product page.
 
 ## Upgrade Notice
+
+####2.1.3
+* Added Quantity Message Options
+* Added Out of Stock min/max values 
+* Fixed 0 quantity appearing as 1 bug
+* Minor class tweaks
 
 ####2.1.2 
 Default user role bug fix.

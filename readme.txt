@@ -3,7 +3,7 @@ Contributors: wpbackoffice
 Tags: woocommerce, product quantities, product minimum values, product maximum values, product step values, woocommerce incremental product quantities
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Requires at least: 2.3
-Tested up to: 3.81
+Tested up to: 3.83
 Stable tag: 2.1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,8 +14,10 @@ Easily require your customers to buy a minimum / maximum / incremental amount of
 
 With WooCommerce Advanced Product Quantities you can easily create rules that restrict the amount of products a user can buy at once. Set Minimum, Maximum and Step values for any product type and must be valid before a customer can proceed to checkout.
 
-New Features as of version 2.1.0:
+New Features as of version 2.1.0
 
+* Added Custom Quantity Message Option
+* Added Out of Stock Min/Max
 * Added Role Support, create rules based on user roles.
 * Improved performance / cacheing
 * Improved admin interface
@@ -62,6 +64,12 @@ Manual Installation
 
 == Upgrade Notice == 
 
+= 2.1.3 = 
+* Added Quantity Message Options
+* Added Out of Stock min/max values 
+* Fixed 0 quantity appearing as 1 bug
+* Minor class tweaks
+
 = 2.1.2 = 
 * Default user role bug fix.
 
@@ -76,6 +84,12 @@ Added user role support for Quantity Rules, improved performance / user interfac
 This major upgrade adds the following features - Now supports all product types, allows you to create site wide rules, and rules by product tags. It is recommended that you back up and test your site with 2.0 before going live.
 
 == Changelog ==
+
+= 2.1.3 = 
+* Added Quantity Message Options
+* Added Out of Stock min/max values 
+* Fixed 0 quantity appearing as 1 bug
+* Minor class tweaks
 
 = 2.1.2 = 
 * Default user role bug fix.
@@ -146,8 +160,9 @@ This major upgrade adds the following features - Now supports all product types,
 
 == Screenshots ==
 
-1. screenshot-1.png
-1. screenshot-2.png
-1. screenshot-3.png
-1. screenshot-4.png
+1. Single product page, page loads with it's minimum quantity and notifies the user below.
+1. Create rule page. 
+1. Single product 'Product Quantity Rules' meta box. Deactivate or override rules. Even set out of stock min/max values.
+1. Single product 'Product Quantity Rules' meta box. Display of values by user role.
+1. 'Advanced Rules' page, set sitewide rules and configure quantity notifications (screenshot 1)
 
