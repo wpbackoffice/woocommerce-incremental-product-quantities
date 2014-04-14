@@ -73,7 +73,6 @@ class IPQ_Quantity_Meta_Boxes {
 		}
 	*/
 	
-		
 		// Display Rule Being Applied
 		if ( $rule == 'inactive' ) {
 			echo "<div class='inactive-rule rule-message'>No rule is being applied becasue you've deactivated the plugin for this product.</div>";
@@ -114,7 +113,7 @@ class IPQ_Quantity_Meta_Boxes {
 			</div>
 			<?php 
 		} elseif ( ! isset( $rule->post_title ) or $rule->post_title == null ) {
-			echo "<div class='no-rule rule-message'>The values below will be used becasue there is not a rule currently being applied to this product.</div>";
+			echo "<div class='no-rule rule-message'>No rule is currently being applied to this product.</div>";
 			
 		} else { ?>
 			<div class="active-rule">
@@ -331,12 +330,6 @@ class IPQ_Quantity_Meta_Boxes {
 					$max_oos = wpbo_validate_number( $max_oos );
 				} 
 				
-			/*
-	var_dump($min_oos);
-				var_dump($min);
-				var_dump($max_oos);
-				die;		
-*/
 				// Max must be bigger then min
 				if ( isset( $min_oos ) and $min_oos != 0 ) {
 					if ( $min_oos > $max_oos )

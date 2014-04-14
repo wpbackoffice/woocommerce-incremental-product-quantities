@@ -131,7 +131,7 @@ class IPQ_Filters {
 		
 		// Get Value from Rule
 		$values = wpbo_get_value_from_rule( 'all', $product, $this->rule );
-	
+
 		if ( $values == null ) {
 			return $args;
 		}
@@ -143,7 +143,7 @@ class IPQ_Filters {
 		$stock = $product->get_stock_quantity();
 
 		// Check stock status and if Out try Out of Stock value	
-		if ( strlen( $stock ) != 0 and $stock <= 0 and $values['min_oos'] != '' ) {
+		if ( strlen( $stock ) != 0 and $stock <= 0 and isset( $values['min_oos'] ) and $values['min_oos'] != '' ) {
 			$args['min_value'] = $values['min_oos'];
 			
 		// Otherwise just check normal min	
@@ -156,7 +156,7 @@ class IPQ_Filters {
 		} 
 		
 		// Check stock status and if Out try Out of Stock value	
-		if ( $stock <= 0 and $values['max_oos'] != '' ) {
+		if ( $stock <= 0 and isset( $values['min_oos'] ) and $values['max_oos'] != '' ) {
 			$args['max_value'] = $values['max_oos'];
 		
 		// Otherwise just check normal max	

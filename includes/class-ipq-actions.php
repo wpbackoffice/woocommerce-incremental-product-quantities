@@ -71,8 +71,8 @@ class IPQ_Actions {
 		$min = wpbo_get_value_from_rule( 'min', $product, $rule );
 		$max = wpbo_get_value_from_rule( 'max', $product, $rule );
 		$step = wpbo_get_value_from_rule( 'step', $product, $rule );
-		
-		if ( isset( $ipq_qty_text ) ) {
+	
+		if ( isset( $ipq_qty_text ) and $min != null and $max != null and $step != null ) {
 			$min_pattern = '/\%MIN\%/';
 			$max_pattern = '/\%MAX\%/';
 			$step_pattern = '/\%STEP\%/';
