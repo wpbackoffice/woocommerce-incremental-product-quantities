@@ -4,9 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! class_exists( 'IPQ_Actions' ) ) :
 
 class IPQ_Actions {
-	
-	public $rule = 'unset';
-	
+		
 	public function __construct() {
 		
 		// Conditionally add quantity note to product page
@@ -63,6 +61,10 @@ class IPQ_Actions {
 	public function display_minimum_quantity_note() {
 	
 		global $product;
+		
+		if( $product->product_type == 'grouped' )
+			return;
+		
 		$settings = get_option( 'ipq_options' );
 		extract( $settings );
 		
@@ -71,8 +73,8 @@ class IPQ_Actions {
 		$min = wpbo_get_value_from_rule( 'min', $product, $rule );
 		$max = wpbo_get_value_from_rule( 'max', $product, $rule );
 		$step = wpbo_get_value_from_rule( 'step', $product, $rule );
-	
-		if ( isset( $ipq_qty_text ) and $min != null and $max != null and $step != null ) {
+
+		if ( isset( $ipq_qty_text ) ) {
 			$min_pattern = '/\%MIN\%/';
 			$max_pattern = '/\%MAX\%/';
 			$step_pattern = '/\%STEP\%/';
@@ -80,7 +82,7 @@ class IPQ_Actions {
 			$ipq_qty_text = preg_replace($min_pattern, $min, $ipq_qty_text);
 			$ipq_qty_text = preg_replace($max_pattern, $max, $ipq_qty_text);
 			$ipq_qty_text = preg_replace($step_pattern, $step, $ipq_qty_text);
-			
+
 			// Output result with optional custom class
 			echo "<span ";
 			if ( isset( $ipq_qty_class ) and $ipq_qty_class != '' )

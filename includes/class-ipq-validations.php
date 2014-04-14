@@ -84,12 +84,12 @@ class IPQ_Quantity_Validations {
 		$stock = $product->get_stock_quantity();
 	
 		// Adjust min value if item is out of stock
-		if ( strlen( $stock ) != 0 and $stock <= 0 and $min_oos != null  ) {
+		if ( strlen( $stock ) != 0 and $stock <= 0 and isset( $min_oos ) and $min_oos != null  ) {
 			$min_value = $min_oos;
 		}
 		
 		// Adjust max value if item is out of stock
-		if ( strlen( $stock ) != 0 and $stock <= 0 and $max_oos != null ) {
+		if ( strlen( $stock ) != 0 and $stock <= 0 and isset( $max_oos ) and $max_oos != null ) {
 			$max_value = $max_oos;
 		}
 		
@@ -201,7 +201,7 @@ class IPQ_Quantity_Validations {
 				}
 			}
 		}
-		
+
 		return true;
 	}
 

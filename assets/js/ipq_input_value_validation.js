@@ -51,8 +51,8 @@ jQuery(document).ready( function($) {
 	*	Make sure minimum equals value 
 	*	To Fix: when min = 0 and val = 1 
 	*/
-	if ( $(".qty").val() != $(".qty").attr('min') && $(".qty").attr('min') != '' ) {
-		$(".qty").val( $(".qty").attr('min') );
+	if ( $("body.single-product .qty").val() != $("body.single-product .qty").attr('min') && $("body.single-product .qty").attr('min') != '' ) {
+		$("body.single-product .qty").val( $("body.single-product .qty").attr('min') );
 	}
 	
 	/*
