@@ -48,6 +48,14 @@ jQuery(document).ready( function($) {
 	});
 	
 	/*
+	*	Make sure minimum equals value 
+	*	To Fix: when min = 0 and val = 1 
+	*/
+	if ( $(".qty").val() != $(".qty").attr('min') && $(".qty").attr('min') != '' ) {
+		$(".qty").val( $(".qty").attr('min') );
+	}
+	
+	/*
 	*	Variable Product Support
 	*	
 	*	Need to overwrite what WC changes with their js
