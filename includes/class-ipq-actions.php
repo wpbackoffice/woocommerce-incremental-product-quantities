@@ -74,11 +74,24 @@ class IPQ_Actions {
 		$max = wpbo_get_value_from_rule( 'max', $product, $rule );
 		$step = wpbo_get_value_from_rule( 'step', $product, $rule );
 
+		// If sitewide rule is applied, convert return arrays to values
+		if ( $rule == 'sitewide' ) {
+			if ( is_array( $min ) )
+			$min = $min['min'];
+		
+			if ( is_array( $max ) )
+				$max = $max['max'];
+				
+			if ( is_array( $step ) )
+				$step = $step['step'];
+		}
+		
+		// If the text is set, update and print the output
 		if ( isset( $ipq_qty_text ) ) {
 			$min_pattern = '/\%MIN\%/';
 			$max_pattern = '/\%MAX\%/';
 			$step_pattern = '/\%STEP\%/';
-			
+
 			$ipq_qty_text = preg_replace($min_pattern, $min, $ipq_qty_text);
 			$ipq_qty_text = preg_replace($max_pattern, $max, $ipq_qty_text);
 			$ipq_qty_text = preg_replace($step_pattern, $step, $ipq_qty_text);
