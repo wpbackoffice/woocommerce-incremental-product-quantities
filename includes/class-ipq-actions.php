@@ -14,6 +14,7 @@ class IPQ_Actions {
 			add_action( 'init', array( $this, 'apply_product_notification' ) );
 		}
 		
+		// Add quantity message shortcode
 		add_shortcode('wpbo_quantity_message', array( $this, 'display_minimum_quantity_note' ));
 		
 	}
