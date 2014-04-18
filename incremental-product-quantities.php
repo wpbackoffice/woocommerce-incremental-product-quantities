@@ -77,6 +77,11 @@ class Incremental_Product_Quantities {
 				'ipq_site_min'			=> '',
 				'ipq_site_max' 			=> '',
 				'ipq_site_step' 		=> '',
+				'ipq_site_rule_active'	=> '',
+				'ipq_show_qty_note' 	=> '',
+				'ipq_qty_text'			=> 'Minimum Qty: %MIN%',
+				'ipq_show_qty_note_pos' => 'below',	
+				'ipq_qty_class'			=> ''
 			);
 		
 			add_option( 'ipq_options', $defaults, '', false );
