@@ -97,9 +97,10 @@ class IPQ_Actions {
 			$ipq_qty_text = preg_replace($step_pattern, $step, $ipq_qty_text);
 
 			// Output result with optional custom class
-			echo "<span ";
+			echo "<span";
 			if ( isset( $ipq_qty_class ) and $ipq_qty_class != '' )
-				echo "class='" . $ipq_qty_class . "'>";
+				echo " class='" . $ipq_qty_class . "'";
+			echo ">";	
 			echo $ipq_qty_text;
 			echo "</span>";
 		}
