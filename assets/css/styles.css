@@ -81,6 +81,10 @@ ul.level-4 {
 	clear: left;
 }
 
+span.wpbo_product_values {
+	clear: left;
+}
+
 .meta-value-single, .rule-input-boxes span, .rule-input-boxes input[type="number"] {
 	float: left;
 	margin: 4px 0;
@@ -89,7 +93,7 @@ ul.level-4 {
 	float: left;
 	clear: left;
 	margin: 5px 0;
-	width: 125px;
+	width: 150px;
 }
 
 .rule-input-boxes input[type="checkbox"] {
@@ -144,4 +148,13 @@ ul.level-4 {
 
 #wpbo-additional-info .inside a {
 	line-height: 3em;
+}
+
+.clear-left {
+	clear: left;
+}
+
+/* --------- advanced rules ---------- */
+.quantity-rule_page_class-ipq-advanced-rules .form-table input[type=text] {
+	min-width: 400px !important;
 }

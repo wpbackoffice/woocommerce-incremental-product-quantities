@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Advanced Product Quantities
 Plugin URI: http://www.wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Description: Easily require your customers to buy a minimum / maximum / incremental amount of products to continue with their checkout. It is highly recommended to also install 'WooCommerce Thumbnail Input Quantities' to allow users to add your custom quantites from product thumbnails.
-Version: 2.1.1
+Version: 2.1.3
 Author: WP BackOffice
 Author URI: http://www.wpbackoffice.com
 */ 
@@ -44,6 +44,7 @@ class Incremental_Product_Quantities {
 		// Include Required Files
 		require_once( 'includes/ipq-functions.php' );
 		require_once( 'includes/class-ipq-filters.php' );
+		require_once( 'includes/class-ipq-actions.php' );
 		require_once( 'includes/class-ipq-product-meta-box.php' );
 		require_once( 'includes/class-ipq-post-type.php' );
 		require_once( 'includes/class-ipq-validations.php' );
@@ -76,6 +77,11 @@ class Incremental_Product_Quantities {
 				'ipq_site_min'			=> '',
 				'ipq_site_max' 			=> '',
 				'ipq_site_step' 		=> '',
+				'ipq_site_rule_active'	=> '',
+				'ipq_show_qty_note' 	=> '',
+				'ipq_qty_text'			=> 'Minimum Qty: %MIN%',
+				'ipq_show_qty_note_pos' => 'below',	
+				'ipq_qty_class'			=> ''
 			);
 		
 			add_option( 'ipq_options', $defaults, '', false );
@@ -170,7 +176,23 @@ class Incremental_Product_Quantities {
 					} else {
 						$values = wpbo_get_value_from_rule( 'all', $pro, $rule_result );
 					}
-							
+					
+					// Check if the product is out of stock 
+					$stock = $pro->get_stock_quantity();
+			
+					// Check if the product is under stock management and out of stock
+					if ( strlen( $stock ) != 0 and $stock <= 0 ) {
+						
+						if ( $values['min_oos'] != '' ) {
+							$values['min_value'] = $values['min_oos'];
+						}
+						
+						if ( $values['max_oos'] != '' ) {
+							$values['max_value'] = $values['max_oos'];
+						}
+						
+					}
+						
 					// Output admin-ajax.php URL with sma eprotocol as current page
 					$params = array (
 						'min' => $values['min_value'],

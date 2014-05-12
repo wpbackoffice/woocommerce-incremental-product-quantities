@@ -42,13 +42,18 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 	$product_tags = wp_get_post_terms( $product->id, 'product_tag' );	
 
 	// Get role if not passed
-	if ( $role == NULL ) {
+	if ( $role == NULL and is_user_logged_in() ) {
 		$user_data = get_userdata( get_current_user_id() );
 		if ( $user_data->wp_capabilities ) {
 			foreach ( $user_data->wp_capabilities as $cap => $val ) {
 				$role = $cap;
 			}
 		}
+	}
+	
+	// Use default role if the user isn't signed in
+	if ( $role == NULL ) {
+		$role = get_option('default_role');	
 	}
 
 	// Combine all product terms
@@ -145,9 +150,17 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 *	@return void 	 
 */
 function wpbo_get_value_from_rule( $type, $product, $rule ) {
-	
+
 	// Validate $type
-	if ( $type != 'min' and $type != 'max' and $type != 'step' and $type != 'all' and $type != 'priority' and $type != 'role' ) {
+	if ( $type != 'min' and 
+		 $type != 'max' and 
+		 $type != 'step' and 
+		 $type != 'all' and 
+		 $type != 'priority' and 
+		 $type != 'role' and
+		 $type != 'min_oos' and
+		 $type != 'max_oos'
+		) {
 		return null;
 	
 	// Validate for missing rule	
@@ -161,12 +174,37 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 	// Return Product Meta if Override is on
 	} elseif ( $rule == 'override' ) {
 		
+		// Check if the product is out of stock 
+		$stock = $product->get_stock_quantity();
+
+		// Check if the product is under stock management and out of stock
+		if ( strlen( $stock ) != 0 and $stock <= 0 ) {
+			
+			// Return Out of Stock values if they exist
+			switch ( $type ) {
+				case 'min':
+					$min_oos = get_post_meta( $product->id, '_wpbo_minimum_oos', true );
+					if ( $min_oos != '' )
+						return $min_oos;
+					break;
+				
+				case 'max':
+					$max_oos = get_post_meta( $product->id, '_wpbo_maximum_oos', true );
+					if ( $max_oos != '' )
+						return $max_oos;
+					break;	
+			}  
+			// If nothing was returned, proceed as usual
+		}
+		
 		switch ( $type ) {
 			case 'all':
 				return array( 
 						'min_value' => get_post_meta( $product->id, '_wpbo_minimum', true ),
 						'max_value' => get_post_meta( $product->id, '_wpbo_maximum', true ),
-						'step' 		=> get_post_meta( $product->id, '_wpbo_step', true )
+						'step' 		=> get_post_meta( $product->id, '_wpbo_step', true ),
+						'min_oos'	=> get_post_meta( $product->id, '_wpbo_minimum_oos', true ),
+						'max_oos'	=> get_post_meta( $product->id, '_wpbo_maximum_oos', true ),
 					);
 				break;
 			case 'min':
@@ -179,6 +217,14 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 				
 			case 'step':
 				return get_post_meta( $product->id, '_wpbo_step', true );
+				break;
+			
+			case 'min_oos':
+				return get_post_meta( $product->id, '_wpbo_minimum_oos', true );
+				break;
+			
+			case 'max_oos':
+				return get_post_meta( $product->id, '_wpbo_maximum_oos', true );
 				break;
 				
 			case 'priority':
@@ -203,6 +249,18 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 			$max = '';
 		}
 
+		if( isset( $options['ipq_site_min_oos'] ) ) {
+			$min_oos = $options['ipq_site_min_oos'];
+		} else {
+			$min_oos = '';
+		}
+		
+		if( isset( $options['ipq_site_max_oos'] ) ) {
+			$max_oos = $options['ipq_site_max_oos'];
+		} else {
+			$max_oos = '';
+		}
+		
 		if( isset( $options['ipq_site_step'] ) ) {
 			$step = $options['ipq_site_step'];			
 		} else {
@@ -213,7 +271,9 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 			case 'all':
 				return array( 
 					'min_value' => $min, 
-					'max_value' => $max, 
+					'max_value' => $max,
+					'min_oos' 	=> $min_oos,
+					'max_oos' 	=> $max_oos,
 					'step' 		=> $step
 				);
 				break;
@@ -224,6 +284,14 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 			
 			case 'max': 
 				return array( 'max' => $max );		
+				break;
+			
+			case 'min_oos': 
+				return array( 'min_oos' => $min_oos );		
+				break;
+				
+			case 'max_oos': 
+				return array( 'max_oos' => $max_oos );		
 				break;
 				
 			case 'step':
@@ -244,6 +312,8 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 				return array( 
 						'min_value' => get_post_meta( $rule->ID, '_min', true ),
 						'max_value' => get_post_meta( $rule->ID, '_max', true ),
+						'min_oos'	=> get_post_meta( $rule->ID, '_min_oos', true ),
+						'max_oos'	=> get_post_meta( $rule->ID, '_max_oos', true ),
 						'step' 		=> get_post_meta( $rule->ID, '_step', true ),
 						'priority'  => get_post_meta( $rule->ID, '_priority', true ),
 						'roles' 	=> get_post_meta( $rule->ID, '_roles', true )
@@ -256,6 +326,14 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 			
 			case 'max': 
 				return get_post_meta( $rule->ID, '_max', true );
+				break;
+			
+			case 'min_oos': 
+				return get_post_meta( $rule->ID, '_min_oos', true );
+				break;
+				
+			case 'max_oos': 
+				return get_post_meta( $rule->ID, '_max_oos', true );
 				break;
 				
 			case 'step':
@@ -278,6 +356,7 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 */
 function wpbo_validate_number( $number ) {
 	
+	$number = stripslashes( $number );
 	$number = intval( $number );
 	
 	if ( $number == 0 ) {

@@ -74,12 +74,25 @@ class IPQ_Quantity_Validations {
 		$values = wpbo_get_value_from_rule( 'all', $product, $rule );
 		
 		if ( $values != null )
-			extract( $values ); // $min_value, $max_value, $step, $priority
+			extract( $values ); // $min_value, $max_value, $step, $priority, $min_oos, $max_oos
 				
 		// Inactive Products can be ignored
 		if ( $values == null )
 			return true;
 	
+		// Check if the product is out of stock 
+		$stock = $product->get_stock_quantity();
+	
+		// Adjust min value if item is out of stock
+		if ( strlen( $stock ) != 0 and $stock <= 0 and isset( $min_oos ) and $min_oos != null  ) {
+			$min_value = $min_oos;
+		}
+		
+		// Adjust max value if item is out of stock
+		if ( strlen( $stock ) != 0 and $stock <= 0 and isset( $max_oos ) and $max_oos != null ) {
+			$max_value = $max_oos;
+		}
+		
 		// Min Validation
 		if ( $min_value != null && $quantity < intval( $min_value ) ) {
 			
@@ -188,7 +201,7 @@ class IPQ_Quantity_Validations {
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
