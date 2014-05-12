@@ -98,6 +98,8 @@ class IPQ_Quantity_Meta_Boxes {
 						<th>Rule</th>
 						<th>Min</th>
 						<th>Max</th>
+						<th>Min OOS</th>
+						<th>Max OOS</th>
 						<th>Step</th>
 						<th>Priority</th>
 					</tr>
@@ -106,6 +108,8 @@ class IPQ_Quantity_Meta_Boxes {
 						<td><a href='<?php echo admin_url( 'edit.php?post_type=quantity-rule&page=class-ipq-advanced-rules.php' ) ?>'>Site Wide Rule</a></td>
 						<td><?php echo $values['min_value'] ?></td>
 						<td><?php echo $values['max_value'] ?></td>
+						<td><?php echo $values['min_oos'] ?></td>
+						<td><?php echo $values['max_oos'] ?></td>
 						<td><?php echo $values['step'] ?></td>
 						<td></td>
 					</tr>
@@ -131,6 +135,8 @@ class IPQ_Quantity_Meta_Boxes {
 						<th>Rule</th>
 						<th>Min</th>
 						<th>Max</th>
+						<th>Min OOS</th>
+						<th>Max OOS</th>
 						<th>Step</th>
 						<th>Priority</th>
 					</tr>
@@ -144,10 +150,14 @@ class IPQ_Quantity_Meta_Boxes {
 							<td><a href='<?php echo get_edit_post_link( $rule->ID ) ?>' target="_blank"><?php echo $rule->post_title ?></a></td>
 							<td><?php echo $values['min_value'] ?></td>
 							<td><?php echo $values['max_value'] ?></td>
+							<td><?php echo $values['min_oos'] ?></td>
+							<td><?php echo $values['max_oos'] ?></td>							
 							<td><?php echo $values['step'] ?></td>
 							<td><?php echo $values['priority'] ?></td>
 						<?php else: ?>
 							<td>None</td>
+							<td></td>
+							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
@@ -317,7 +327,7 @@ class IPQ_Quantity_Meta_Boxes {
 			);
 		}
 		
-		// Update Out of Stock Minimum
+		// Update Out of Stock Maximum
 		if( isset( $_POST['_wpbo_maximum_oos'] )) {
 		
 			$max_oos = stripslashes( $_POST['_wpbo_maximum_oos'] );

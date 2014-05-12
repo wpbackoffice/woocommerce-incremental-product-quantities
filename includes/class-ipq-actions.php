@@ -65,6 +65,10 @@ class IPQ_Actions {
 	
 		global $product;
 		
+		if ( !is_product() ) {
+			return;
+		}
+		
 		if( $product->product_type == 'grouped' )
 			return;
 		
@@ -73,14 +77,39 @@ class IPQ_Actions {
 		
 		// Get minimum value for product 
 		$rule = wpbo_get_applied_rule( $product );
-		$min = wpbo_get_value_from_rule( 'min', $product, $rule );
-		$max = wpbo_get_value_from_rule( 'max', $product, $rule );
+		
+		// Return nothing if APQ is deactivated
+		if ( $rule == 'inactive' ) {
+			return; 
+		}
+		
+		// Check if the product is out of stock 
+		$stock = $product->get_stock_quantity();
+
+		// Check if the product is under stock management and out of stock
+		if ( strlen( $stock ) != 0 and $stock <= 0 ) {
+			$min = wpbo_get_value_from_rule( 'min_oos', $product, $rule );
+			$max = wpbo_get_value_from_rule( 'max_oos', $product, $rule );
+		} else {
+			$min = wpbo_get_value_from_rule( 'min', $product, $rule );
+			$max = wpbo_get_value_from_rule( 'max', $product, $rule );
+		}	
+
 		$step = wpbo_get_value_from_rule( 'step', $product, $rule );
 
 		// If sitewide rule is applied, convert return arrays to values
-		if ( $rule == 'sitewide' ) {
+		if ( $rule == 'sitewide' and strlen( $stock ) != 0 and $stock <= 0  ) {
 			if ( is_array( $min ) )
-			$min = $min['min'];
+				$min = $min['min_oos'];
+		
+			if ( is_array( $max ) )
+				$max = $max['max_oos'];
+				
+			if ( is_array( $step ) )
+				$step = $step['step'];
+		} else if ( $rule == 'sitewide' ) {
+			if ( is_array( $min ) )
+				$min = $min['min'];
 		
 			if ( is_array( $max ) )
 				$max = $max['max'];

@@ -97,18 +97,38 @@ class IPQ_Advanced_Rules {
 		if ( isset( $_POST['ipq_site_max'] )) {
 			$max = wpbo_validate_number( $_POST['ipq_site_max'] );
 		}
+		
+		if ( isset( $_POST['ipq_site_min_oos'] )) {
+			$min_oos = wpbo_validate_number( $_POST['ipq_site_min_oos'] );
+		}
+		
+		if ( isset( $_POST['ipq_site_max_oos'] )) {
+			$max_oos = wpbo_validate_number( $_POST['ipq_site_max_oos'] );
+		}
 
-		/* Make sure min >= step */
+		// Make sure min >= step
 		if ( isset( $step ) and isset( $min ) ) {
 			if ( $min < $step ) {
 				$min = $step;
 			}
 		}
 		
-		/* Make sure min <= max */
+		// Make sure min <= max
 		if ( isset( $step ) and isset( $max ) ) {
 			if ( $min > $max and $max != '' and $max != 0 ) {
 				$max = $min;
+			}
+		}
+		
+		// Make sure min_oos <= max and max_oos
+		if ( isset( $min_oos ) and $min_oos != 0 ) {
+			if ( isset( $max_oos ) and $max_oos != 0 and
+				$min_oos > $max_oos ) {
+
+				$max_oos = $min_oos;
+			} else if ( !isset( $max_oos ) and isset ( $max ) and
+				$max != 0 and $min_oos > $max ) {
+				$min_oos = $max;
 			}
 		}
 
@@ -122,15 +142,19 @@ class IPQ_Advanced_Rules {
 			$settings['ipq_site_step'] = strip_tags( $step );
 		} 
 		
-		/* Make sure Max > Min */
+		// Site Max
 		if( isset( $_POST['ipq_site_max'] )) {
-			
-			if ( isset( $min ) and $max < $min and $max != 0 and $max != '' ) {
-				$max = $min;
-			}
-
-			// Site Maximum
 			$settings['ipq_site_max'] = strip_tags( $max );
+		}
+		
+		// Site Min OOS
+		if( isset( $_POST['ipq_site_min_oos'] )) {
+			$settings['ipq_site_min_oos'] = strip_tags( $min_oos );
+		}
+		
+				// Site Max
+		if( isset( $_POST['ipq_site_max_oos'] )) {
+			$settings['ipq_site_max_oos'] = strip_tags( $max_oos );
 		}
 
 		// Update Settings
@@ -148,7 +172,7 @@ class IPQ_Advanced_Rules {
 		if ($options == false) {
 			$options = array();
 		}
-		
+
 		extract($options);
 		$qty_text_default = "Minimum Qty: %MIN%";
 		
@@ -178,6 +202,20 @@ class IPQ_Advanced_Rules {
 						<th>Site Wide Product Maximum</th>
 						<td><input type='number' name='ipq_site_max' id='ipq_site_max'
 							value='<?php if ( isset( $ipq_site_max ) and $ipq_site_max != '' ) echo $ipq_site_max; ?>'
+						 /></td>
+					</tr>
+					
+					<tr>
+						<th>Site Wide Product Minimum Out of Stock</th>
+						<td><input type='number' name='ipq_site_min_oos' id='ipq_site_min_oos'
+							value='<?php if ( isset( $ipq_site_min_oos ) and $ipq_site_min_oos != '' ) echo $ipq_site_min_oos; ?>'
+						 /></td>
+					</tr>
+					
+					<tr>
+						<th>Site Wide Product Maximum Out of Stock</th>
+						<td><input type='number' name='ipq_site_max_oos' id='ipq_site_max_oos'
+							value='<?php if ( isset( $ipq_site_max_oos ) and $ipq_site_max_oos != '' ) echo $ipq_site_max_oos; ?>'
 						 /></td>
 					</tr>
 					
@@ -237,6 +275,10 @@ class IPQ_Advanced_Rules {
 					<td><input type='text' name='ipq_qty_class' id='ipq_qty_class' value='<?php if ( isset( $ipq_qty_class ) and $ipq_qty_class != '' ) echo $ipq_qty_class; ?>' /></td>
 				</tr>
 				
+				<tr>
+					<th>Message Shortcode</th>
+					<td>Place in product content to display message <strong>[wpbo_quantity_message]</strong></td>
+				</tr>
 			</table>
 			
 			<p class="submit" style="clear: both;">

@@ -249,6 +249,18 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 			$max = '';
 		}
 
+		if( isset( $options['ipq_site_min_oos'] ) ) {
+			$min_oos = $options['ipq_site_min_oos'];
+		} else {
+			$min_oos = '';
+		}
+		
+		if( isset( $options['ipq_site_max_oos'] ) ) {
+			$max_oos = $options['ipq_site_max_oos'];
+		} else {
+			$max_oos = '';
+		}
+		
 		if( isset( $options['ipq_site_step'] ) ) {
 			$step = $options['ipq_site_step'];			
 		} else {
@@ -259,7 +271,9 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 			case 'all':
 				return array( 
 					'min_value' => $min, 
-					'max_value' => $max, 
+					'max_value' => $max,
+					'min_oos' 	=> $min_oos,
+					'max_oos' 	=> $max_oos,
 					'step' 		=> $step
 				);
 				break;
@@ -270,6 +284,14 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 			
 			case 'max': 
 				return array( 'max' => $max );		
+				break;
+			
+			case 'min_oos': 
+				return array( 'min_oos' => $min_oos );		
+				break;
+				
+			case 'max_oos': 
+				return array( 'max_oos' => $max_oos );		
 				break;
 				
 			case 'step':
@@ -290,6 +312,8 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 				return array( 
 						'min_value' => get_post_meta( $rule->ID, '_min', true ),
 						'max_value' => get_post_meta( $rule->ID, '_max', true ),
+						'min_oos'	=> get_post_meta( $rule->ID, '_min_oos', true ),
+						'max_oos'	=> get_post_meta( $rule->ID, '_max_oos', true ),
 						'step' 		=> get_post_meta( $rule->ID, '_step', true ),
 						'priority'  => get_post_meta( $rule->ID, '_priority', true ),
 						'roles' 	=> get_post_meta( $rule->ID, '_roles', true )
@@ -302,6 +326,14 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 			
 			case 'max': 
 				return get_post_meta( $rule->ID, '_max', true );
+				break;
+			
+			case 'min_oos': 
+				return get_post_meta( $rule->ID, '_min_oos', true );
+				break;
+				
+			case 'max_oos': 
+				return get_post_meta( $rule->ID, '_max_oos', true );
 				break;
 				
 			case 'step':
@@ -324,6 +356,7 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 */
 function wpbo_validate_number( $number ) {
 	
+	$number = stripslashes( $number );
 	$number = intval( $number );
 	
 	if ( $number == 0 ) {

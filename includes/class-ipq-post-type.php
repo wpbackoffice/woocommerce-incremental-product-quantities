@@ -186,6 +186,8 @@ class IPQ_Quantity_Rule_Post_Type {
 		
 		$min  = get_post_meta( $post->ID, '_min', true);
 		$max  = get_post_meta( $post->ID, '_max', true);
+		$min_oos = get_post_meta( $post->ID, '_min_oos', true );
+		$max_oos = get_post_meta( $post->ID, '_max_oos', true );		
 		$step = get_post_meta( $post->ID, '_step', true);
 		$priority = get_post_meta( $post->ID, '_priority', true);
 		
@@ -199,6 +201,12 @@ class IPQ_Quantity_Rule_Post_Type {
 			
 				<label for="max">Maximum</label>
 				<input type="number" name="max" id="max" value="<?php echo $max ?>" />
+				
+				<label for="_wpbo_minimum_oos">Out of Stock Minimum</label>
+				<input type="number" name="min_oos" value="<?php echo $min_oos ?>" />
+				
+				<label for="_wpbo_maximum_oos">Out of Stock Maximum</label>
+				<input type="number" name="max_oos" value="<?php echo $max_oos ?>" />
 				
 				<label for="step">Step Value</label>
 				<input type="number" name="step" id="step" value="<?php echo $step ?>" />
@@ -499,9 +507,15 @@ class IPQ_Quantity_Rule_Post_Type {
 		}
 		*/
 		
+		// Get Min Out of Stock
+		if( isset( $_POST['min_oos'] ) ) {
+			$min_oos = $_POST['min_oos'];
+			update_post_meta( $post_id, '_min_oos', stripslashes( $min_oos ) );
+		}
+		
 		// Update Min
 		if ( isset( $min ) ) {
-			update_post_meta( $post_id, '_min', $min );
+			update_post_meta( $post_id, '_min', stripslashes( $min ) );
 		}
 		
 		// Update Max
@@ -514,6 +528,24 @@ class IPQ_Quantity_Rule_Post_Type {
 			}
 			
 			update_post_meta( $post_id, '_max', wpbo_validate_number( $max ) );
+		}
+		
+		// Update Max OOS
+		if ( isset( $_POST['max_oos'] ) ) {
+			$max_oos = $_POST['max_oos'];
+			
+			// Max must be bigger then min
+			if ( isset( $min_oos ) and $min_oos != 0 ) {
+				if ( $min_oos > $max_oos )
+					$max_oos = $min_oos;
+				
+			} elseif ( isset( $min ) and $min != 0 ){
+				if ( $min > $max_oos ) {
+					$max_oos = $min;
+				}
+			}
+				
+			update_post_meta( $post_id, '_max_oos', wpbo_validate_number( $max_oos ) );
 		}
 		
 		// Update Step

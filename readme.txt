@@ -1,9 +1,9 @@
 === WooCommerce Advanced Product Quantities  ===
 Contributors: wpbackoffice
-Tags: woocommerce, product quantities, product minimum values, product maximum values, product step values, woocommerce incremental product quantities
+Tags: woocommerce, product quantities, product minimum values, product maximum values, product step values, incremental product quantities, min, max
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Requires at least: 2.3
-Tested up to: 3.83
+Tested up to: 3.91
 Stable tag: 2.1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ Easily require your customers to buy a minimum / maximum / incremental amount of
 
 With WooCommerce Advanced Product Quantities you can easily create rules that restrict the amount of products a user can buy at once. Set Minimum, Maximum and Step values for any product type and must be valid before a customer can proceed to checkout.
 
-New Features as of version 2.1.0
+New Features as of version 2.1.3
 
 * Added Custom Quantity Message Option
 * Added Out of Stock Min/Max
@@ -165,4 +165,4 @@ This major upgrade adds the following features - Now supports all product types,
 1. Single product 'Product Quantity Rules' meta box. Deactivate or override rules. Even set out of stock min/max values.
 1. Single product 'Product Quantity Rules' meta box. Display of values by user role.
 1. 'Advanced Rules' page, set sitewide rules and configure quantity notifications (screenshot 1)
-
+1. Required configuration for Out of Stock quantities to be displayed.
