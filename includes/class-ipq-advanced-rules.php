@@ -189,7 +189,7 @@ class IPQ_Advanced_Rules {
 					 /></td>
 				</tr>
 
-				<?php if ( $ipq_site_rule_active != '' ): ?>
+				<?php if ( isset( $ipq_site_rule_active ) and $ipq_site_rule_active != '' ): ?>
 				
 					<tr>
 						<th>Site Wide Product Minimum</th>

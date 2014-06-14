@@ -10,7 +10,7 @@ class IPQ_Actions {
 		// Conditionally add quantity note to product page
 		$settings = get_option( 'ipq_options' );
 
-		if ( $settings['ipq_show_qty_note'] == 'on' ) {
+		if ( isset( $settings['ipq_show_qty_note'] ) and $settings['ipq_show_qty_note'] == 'on' ) {
 			add_action( 'init', array( $this, 'apply_product_notification' ) );
 		}
 		

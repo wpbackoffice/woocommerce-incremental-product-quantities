@@ -533,13 +533,13 @@ class IPQ_Quantity_Rule_Post_Type {
 		// Update Max OOS
 		if ( isset( $_POST['max_oos'] ) ) {
 			$max_oos = $_POST['max_oos'];
-			
+				
 			// Max must be bigger then min
-			if ( isset( $min_oos ) and $min_oos != 0 ) {
+			if ( $max_oos != '' and isset( $min_oos ) and $min_oos != 0 ) {
 				if ( $min_oos > $max_oos )
 					$max_oos = $min_oos;
 				
-			} elseif ( isset( $min ) and $min != 0 ){
+			} elseif ( $max_oos != '' and isset( $min ) and $min != 0 ){
 				if ( $min > $max_oos ) {
 					$max_oos = $min;
 				}

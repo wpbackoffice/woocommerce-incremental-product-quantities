@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Advanced Product Quantities
 Plugin URI: http://www.wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Description: Easily require your customers to buy a minimum / maximum / incremental amount of products to continue with their checkout. It is highly recommended to also install 'WooCommerce Thumbnail Input Quantities' to allow users to add your custom quantites from product thumbnails.
-Version: 2.1.3
+Version: 2.1.5
 Author: WP BackOffice
 Author URI: http://www.wpbackoffice.com
 */ 
@@ -60,7 +60,7 @@ class Incremental_Product_Quantities {
 		// Control Admin Notices
 		add_action( 'admin_notices', array( $this, 'thumbnail_plugin_notice' ) );
 		add_action( 'admin_init', array( $this, 'thumbnail_plugin_notice_ignore' ) );
-		
+
 	}
 
 	/*
@@ -69,22 +69,39 @@ class Incremental_Product_Quantities {
 	public function activation_hook() {
 
 		$options = get_option( 'ipq_options' );
-	
+		
+		$defaults = array (		
+			'ipq_site_rule_active'	=> '',
+			'ipq_site_min'			=> '',
+			'ipq_site_max' 			=> '',
+			'ipq_site_step' 		=> '',
+			'ipq_site_rule_active'	=> '',
+			'ipq_show_qty_note' 	=> '',
+			'ipq_qty_text'			=> 'Minimum Qty: %MIN%',
+			'ipq_show_qty_note_pos' => 'below',	
+			'ipq_qty_class'			=> ''
+		);
+
+		// If no options set the defaults
 		if ( $options == false ) {
-		
-			$defaults = array (		
-				'ipq_site_rule_active'	=> '',
-				'ipq_site_min'			=> '',
-				'ipq_site_max' 			=> '',
-				'ipq_site_step' 		=> '',
-				'ipq_site_rule_active'	=> '',
-				'ipq_show_qty_note' 	=> '',
-				'ipq_qty_text'			=> 'Minimum Qty: %MIN%',
-				'ipq_show_qty_note_pos' => 'below',	
-				'ipq_qty_class'			=> ''
-			);
-		
 			add_option( 'ipq_options', $defaults, '', false );
+		
+		// Otherwise check that all option are set
+		} else {
+			$needs_update = FALSE;
+			
+			// Check and assign each unset value
+			foreach ( $defaults as $key => $value ) {
+				if ( !isset( $options[$key] ) ) {
+					$options[$key] = $value;
+					$needs_update = TRUE;
+				}
+			}
+			
+			// If values are missing update the options
+			if ( $needs_update === TRUE ) {
+				update_option( 'ipq_options', $options );
+			}
 		}
 	}
 
