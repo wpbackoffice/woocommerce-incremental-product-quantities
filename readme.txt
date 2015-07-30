@@ -4,7 +4,7 @@ Tags: woocommerce, product quantities, product minimum values, product maximum v
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Requires at least: 2.3
 Tested up to: 3.91
-Stable tag: 2.1.3
+Stable tag: 2.1.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,12 @@ Manual Installation
 
 == Upgrade Notice == 
 
+= 2.1.5 = 
+* Minor bug fix, couldn't unset max out of stock value
+
+= 2.1.4 = 
+* Upgrade fix, removed error for unset value
+
 = 2.1.3 = 
 * Added Quantity Message Options
 * Added Out of Stock min/max values 
@@ -84,6 +90,12 @@ Added user role support for Quantity Rules, improved performance / user interfac
 This major upgrade adds the following features - Now supports all product types, allows you to create site wide rules, and rules by product tags. It is recommended that you back up and test your site with 2.0 before going live.
 
 == Changelog ==
+
+= 2.1.5 = 
+* Minor bug fix, couldn't unset max out of stock value
+
+= 2.1.4 = 
+* Upgrade fix, removed error for unset value
 
 = 2.1.3 = 
 * Added Quantity Message Options

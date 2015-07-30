@@ -26,7 +26,7 @@ class IPQ_Quantity_Meta_Boxes {
 						
 				add_meta_box(
 					'wpbo_product_info', 
-					__('Product Quantity Rules', 'woocommerce'), 
+					__('Product Quantity Rules', 'woocommerce-incremental-product-quantities'),
 					array( $this, 'product_meta_box_content' ), 
 					'product', 
 					'normal', 
@@ -117,7 +117,7 @@ class IPQ_Quantity_Meta_Boxes {
 			</div>
 			<?php 
 		} elseif ( ! isset( $rule->post_title ) or $rule->post_title == null ) {
-			echo "<div class='no-rule rule-message'>No rule is currently being applied to this product.</div>";
+			echo "<div class='no-rule rule-message'>".__('No rule is currently being applied to this product.','woocommerce-incremental-product-quantities')."</div>";
 			
 		} else { ?>
 			<div class="active-rule">
@@ -183,30 +183,31 @@ class IPQ_Quantity_Meta_Boxes {
 		wp_nonce_field( plugin_basename( __FILE__ ), '_wpbo_product_rule_nonce' );
 		
 		// Print the form ?>	
+		// Print the form ?>	
 		<div class="rule-input-boxes">
 			<input type="checkbox" name="_wpbo_deactive" <?php if ( $deactive == 'on' ) echo 'checked'; ?> />
-			<span>Deactivate Quantity Rules on this Product?</span>
+			<span><?php _e('Deactivate Quantity Rules on this Product?','woocommerce-incremental-product-quantities');?></span>
 			
 			<input type="checkbox" name="_wpbo_override" id='toggle_override' <?php if ( $over == 'on' ) echo 'checked'; ?> />
-			<span>Override Quantity Rules with Values Below</span>
+			<span><?php _e('Override Quantity Rules with Values Below','woocommerce-incremental-product-quantities');?></span>
 			
 			<span class='wpbo_product_values' <?php if ( $over != 'on' ) echo "style='display:none'"?>>
-				<label for="_wpbo_step">Step Value</label>
+				<label for="_wpbo_step"><?php _e('Step Value','woocommerce-incremental-product-quantities'); ?></label>
 				<input type="number" name="_wpbo_step" value="<?php echo $step; ?>" />
 				
-				<label for="_wpbo_minimum">Minimum Quantity</label>
+				<label for="_wpbo_minimum"><?php _e('Minimum Quantity','woocommerce-incremental-product-quantities'); ?></label>
 				<input type="number" name="_wpbo_minimum" value="<?php echo $min; ?>" />
 				
-				<label for="_wpbo_maximum">Maximum Quantity</label>
+				<label for="_wpbo_maximum"><?php _e('Maximum Quantity','woocommerce-incremental-product-quantities'); ?></label>
 				<input type="number" name="_wpbo_maximum" value="<?php echo $max; ?>" />
 				
-				<label for="_wpbo_minimum_oos">Out of Stock Minimum</label>
+				<label for="_wpbo_minimum_oos"><?php _e('Out of Stock Minimum','woocommerce-incremental-product-quantities'); ?></label>
 				<input type="number" name="_wpbo_minimum_oos" value="<?php echo $min_oos ?>" />
 				
-				<label for="_wpbo_maximum_oos">Out of Stock Maximum</label>
+				<label for="_wpbo_maximum_oos"><?php _e('Out of Stock Maximum','woocommerce-incremental-product-quantities'); ?></label>
 				<input type="number" name="_wpbo_maximum_oos" value="<?php echo $max_oos ?>" />
 				
-				<span class='clear-left'>Note* Maximum values must be larger then minimums</span>
+				<span class='clear-left'><?php _e('Note* Maximum values must be larger then minimums','woocommerce-incremental-product-quantities'); ?></span>
 			</span>
 
 		</div>

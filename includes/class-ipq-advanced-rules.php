@@ -18,8 +18,8 @@ class IPQ_Advanced_Rules {
 		
 		$slug = add_submenu_page(
 			'edit.php?post_type=quantity-rule', 
-			'Advanced Rules', 
-			'Advanced Rules', 
+			__('Advanced Rules','woocommerce-incremental-product-quantities'),
+			__('Advanced Rules','woocommerce-incremental-product-quantities'), 
 			'edit_posts', 
 			basename(__FILE__), 
 			array( $this, 'advanced_rules_page_content')
@@ -174,22 +174,22 @@ class IPQ_Advanced_Rules {
 		}
 
 		extract($options);
-		$qty_text_default = "Minimum Qty: %MIN%";
+		$qty_text_default = __('Minimum Qty:','woocommerce-incremental-product-quantities') ."%MIN%";
 		
 		?>
-		<h2>Advanced Rules</h2>
+		<h2><?php _e('Advanced Rules','woocommerce-incremental-product-quantities'); ?></h2>
 		<form method="post" action="<?php admin_url( 'edit.php?post_type=quantity-rule&page=class-ipq-advanced-rules.php' ); ?>">
 			<?php wp_nonce_field( "ipq-advanced-rules" ); ?>
 			
 			<table class="form-table">
 				<tr>
-					<th>Activate Site Wide Rules?</th>
+					<th><?php _e('Activate Site Wide Rules?','woocommerce-incremental-product-quantities'); ?></th>
 					<td><input type='checkbox' name='ipq_site_rule_active' id='ipq_site_rule_active'
 						<?php if ( isset( $ipq_site_rule_active ) and $ipq_site_rule_active != '' ) echo 'checked'; ?>
 					 /></td>
 				</tr>
 
-				<?php if ( $ipq_site_rule_active != '' ): ?>
+				<?php if ( isset( $ipq_site_rule_active ) and $ipq_site_rule_active != '' ): ?>
 				
 					<tr>
 						<th>Site Wide Product Minimum</th>
@@ -236,24 +236,24 @@ class IPQ_Advanced_Rules {
 				<?php endif; ?>
 				
 				<tr>
-					<th>Show Quantity Notification on Product Page?</th>
+					<th><?php _e('Show Quantity Notification on Product Page?','woocommerce-incremental-product-quantities'); ?></th>
 					<td><input type='checkbox' name='ipq_show_qty_note' id='ipq_show_qty_note' 
 						<?php if ( isset( $ipq_show_qty_note ) and $ipq_show_qty_note != '' ) echo 'checked'; ?>
 						/></td>
 				</tr>
 				
 				<tr>
-					<th>Notification Position</th>
+					<th><?php _e('Notification Position','woocommerce-incremental-product-quantities'); ?></th>
 					<td>
 						<select name='ipq_show_qty_note_pos' id='ipq_show_qty_note_pos'>
-							<option value='above' <?php if ( isset( $ipq_show_qty_note_pos ) and $ipq_show_qty_note_pos == 'above' ) echo 'selected' ?>>Above Add To Cart</option>
-							<option value='below' <?php if ( isset( $ipq_show_qty_note_pos ) and  $ipq_show_qty_note_pos == 'below' ) echo 'selected' ?>>Below Add To Cart</option>
+							<option value='above' <?php if ( isset( $ipq_show_qty_note_pos ) and $ipq_show_qty_note_pos == 'above' ) echo 'selected' ?>><?php _e('Above Add To Cart','woocommerce-incremental-product-quantities'); ?></option>
+							<option value='below' <?php if ( isset( $ipq_show_qty_note_pos ) and  $ipq_show_qty_note_pos == 'below' ) echo 'selected' ?>><?php _e('Below Add To Cart','woocommerce-incremental-product-quantities'); ?></option>
 						</select>
 					</td>
 				</tr>
 				
 				<tr>
-					<th>Quantity Notification Text</th>
+					<th><?php _e('Quantity Notification Text','woocommerce-incremental-product-quantities'); ?></th>
 					<td><input type='text' name='ipq_qty_text' id='ipq_qty_text' value='<?php 
 							if ( isset( $ipq_qty_text ) and $ipq_qty_text != '' ) {
 								echo $ipq_qty_text; 
@@ -265,24 +265,24 @@ class IPQ_Advanced_Rules {
 				
 				<tr>
 					<th></th>
-					<td>%MIN% = Minimum Value<br />
-						%MAX% = Maximum Value<br />
-						%STEP% = Step Value
+					<td>
+						%MIN% = <?php _e('Minimum Value','woocommerce-incremental-product-quantities'); ?><br />
+						%MAX% = <?php _e('Maximum Value','woocommerce-incremental-product-quantities'); ?><br />
+						%STEP% = <?php _e('Step Value','woocommerce-incremental-product-quantities'); ?>
 					</td>
 				</tr>
 				<tr>
-					<th>Custom Quantity Note HTML Class</th>
+					<th><?php _e('Custom Quantity Note HTML Class','woocommerce-incremental-product-quantities'); ?></th>
 					<td><input type='text' name='ipq_qty_class' id='ipq_qty_class' value='<?php if ( isset( $ipq_qty_class ) and $ipq_qty_class != '' ) echo $ipq_qty_class; ?>' /></td>
 				</tr>
 				
 				<tr>
-					<th>Message Shortcode</th>
-					<td>Place in product content to display message <strong>[wpbo_quantity_message]</strong></td>
-				</tr>
+					<th><?php _e('Message Shortcode','woocommerce-incremental-product-quantities'); ?></th>
+					<td><?php _e('Place in product content to display message <strong>[wpbo_quantity_message]</strong>','woocommerce-incremental-product-quantities'); ?></td>				</tr>
 			</table>
 			
 			<p class="submit" style="clear: both;">
-				<input type="submit" name="Submit"  class="button-primary" value="Update Settings" />
+				<input type="submit" name="Submit"  class="button-primary" value=<?php _e('Update Settings','woocommerce-incremental-product-quantities'); ?> />
 				<input type="hidden" name="ipq-advanced-rules-submit" value="Y" />
 			</p>
 		</form>
