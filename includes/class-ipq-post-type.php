@@ -37,19 +37,19 @@ class IPQ_Quantity_Rule_Post_Type {
 	public function quantity_rule_init() {
 	
 		$labels = array(
-			'name'               => 'Quantity Rules',
-			'singular_name'      => 'Quantity Rule',
-			'add_new'            => 'Add New',
-			'add_new_item'       => 'Add New Rule',
-			'edit_item'          => 'Edit Rule',
-			'new_item'           => 'New Rule',
-			'all_items'          => 'All Rules',
-			'view_item'          => 'View Rule',
-			'search_items'       => 'Search Ruless',
-			'not_found'          => 'No rules found',
-			'not_found_in_trash' => 'No rules found in Trash',
-			'parent_item_colon'  => '',
-			'menu_name'          => 'Quantity Rules'
+			'name'               => __('Quantity Rules','woocommerce-incremental-product-quantities'),
+			'singular_name'      => __('Quantity Rule','woocommerce-incremental-product-quantities'),
+			'add_new'            => __('Add New','woocommerce-incremental-product-quantities'),
+			'add_new_item'       => __('Add New Rule','woocommerce-incremental-product-quantities'),
+			'edit_item'          => __('Edit Rule','woocommerce-incremental-product-quantities'),
+			'new_item'           => __('New Rule','woocommerce-incremental-product-quantities'),
+			'all_items'          => __('All Rules','woocommerce-incremental-product-quantities'),
+			'view_item'          => __('View Rule','woocommerce-incremental-product-quantities'),
+			'search_items'       => __('Search Ruless','woocommerce-incremental-product-quantities'),
+			'not_found'          => __('No rules found','woocommerce-incremental-product-quantities'),
+			'not_found_in_trash' => __('No rules found in Trash','woocommerce-incremental-product-quantities'),
+			'parent_item_colon'  => __('','woocommerce-incremental-product-quantities'),
+			'menu_name'          => __('Quantity Rules','woocommerce-incremental-product-quantities')
 		);
 		
 		$args = array(
@@ -78,14 +78,14 @@ class IPQ_Quantity_Rule_Post_Type {
 	 	
 	 	unset( $column['date'] );
 	 	
-	    $new_columns['priority'] = __('Priority');
-	    $new_columns['min'] = __('Minimum');
-	    $new_columns['max'] = __('Maximum');
-	    $new_columns['step'] = __('Step Value');     
-	    $new_columns['cats'] = __('Categories');
-	    $new_columns['product_tags'] = __('Tags');
-	    $new_columns['roles'] = __('Roles');
-	    $new_columns['date'] = __('Date');
+	    $new_columns['priority'] = __('Priority','woocommerce-incremental-product-quantities');
+	    $new_columns['min'] = __('Minimum','woocommerce-incremental-product-quantities');
+	    $new_columns['max'] = __('Maximum','woocommerce-incremental-product-quantities');
+	    $new_columns['step'] = __('Step Value','woocommerce-incremental-product-quantities');
+	    $new_columns['cats'] = __('Categories','woocommerce-incremental-product-quantities');
+	    $new_columns['product_tags'] = __('Tags','woocommerce-incremental-product-quantities');
+	    $new_columns['roles'] = __('Roles','woocommerce-incremental-product-quantities');
+	    $new_columns['date'] = __('Date','woocommerce-incremental-product-quantities');
 
 	    return array_merge( $column, $new_columns );
 	}
@@ -160,10 +160,10 @@ class IPQ_Quantity_Rule_Post_Type {
 	*/	
 	public function sortable_quantity_rule_columns( $columns ) {  
 	    
-	    $columns['priority'] = __('Priority');
-	    $columns['min'] = __('Minimum');
-	    $columns['max'] = __('Maximum');
-	    $columns['step'] = __('Step Value');
+	    $columns['priority'] = __('Priority','woocommerce-incremental-product-quantities');
+	    $columns['min'] = __('Minimum','woocommerce-incremental-product-quantities');
+	    $columns['max'] = __('Maximum','woocommerce-incremental-product-quantities');
+	    $columns['step'] = __('Step Value','woocommerce-incremental-product-quantities');
 	  
 	    return $columns;  
 	}  
@@ -174,7 +174,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	public function quantity_rule_meta_init() {
 		add_meta_box(
 			'wpbo-quantity-rule-meta', 
-			'Set Quantity Rule Options', 
+			__('Set Quantity Rule Options','woocommerce-incremental-product-quantities'), 
 			array( $this, 'quantity_rule_meta' ), 
 			'quantity-rule', 
 			'normal', 
@@ -196,26 +196,26 @@ class IPQ_Quantity_Rule_Post_Type {
 		
 		?>
 			<div class="wpbo-meta">
-				<label for="min">Minimum</label>
+				<label for="min"><?php _e('Minimum','woocommerce-incremental-product-quantities');?></label>
 				<input type="number" name="min" id="min" value="<?php echo $min ?>" />
 			
-				<label for="max">Maximum</label>
+				<label for="max"><?php _e('Maximum','woocommerce-incremental-product-quantities');?></label>
 				<input type="number" name="max" id="max" value="<?php echo $max ?>" />
 				
-				<label for="_wpbo_minimum_oos">Out of Stock Minimum</label>
+				<label for="_wpbo_minimum_oos"><?php _e('Out of Stock Minimum','woocommerce-incremental-product-quantities');?></label>
 				<input type="number" name="min_oos" value="<?php echo $min_oos ?>" />
 				
-				<label for="_wpbo_maximum_oos">Out of Stock Maximum</label>
+				<label for="_wpbo_maximum_oos"><?php _e('Out of Stock Maximum','woocommerce-incremental-product-quantities');?></label>
 				<input type="number" name="max_oos" value="<?php echo $max_oos ?>" />
 				
-				<label for="step">Step Value</label>
+				<label for="step"><?php _e('Step Value','woocommerce-incremental-product-quantities');?></label>
 				<input type="number" name="step" id="step" value="<?php echo $step ?>" />
 				
-				<label for="step">Priority</label>
+				<label for="step"><?php _e('Priority','woocommerce-incremental-product-quantities');?></label>
 				<input type="number" name="priority" id="priority" value="<?php echo $priority ?>" />			
 			</div>
-			<p><em>*Note - the minimum value must be greater then or equal to the step value.</em><br />
-			<em>*Note - The rule with the lowest priority number will be used if multiple rules are applied to a single product.</em></p>
+			<p><em><?php _e('*Note - the minimum value must be greater then or equal to the step value.','woocommerce-incremental-product-quantities');?></em><br />
+			<em><?php _e('*Note - The rule with the lowest priority number will be used if multiple rules are applied to a single product.','woocommerce-incremental-product-quantities');?></em></p>
 		<?php	
 	}
 	
@@ -225,7 +225,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	public function quantity_rule_tax_init() {
 		add_meta_box(	
 			'wpbo-quantity-rule-tax-meta', 
-			'Product Categories', 
+			__('Product Categories','woocommerce-incremental-product-quantities'), 
 			array( $this, 'quantity_rule_tax_meta' ), 
 			'quantity-rule', 
 			'normal', 
@@ -301,7 +301,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	public function quantity_rule_tag_init() {
 		add_meta_box(	
 			'wpbo-quantity-rule-tag-meta', 
-			'Product Tags', 
+			__('Product Tags','woocommerce-incremental-product-quantities'), 
 			array( $this, 'quantity_rule_tag_meta' ), 
 			'quantity-rule', 
 			'normal', 
@@ -351,8 +351,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	public function quantity_rule_role_init() {
 		add_meta_box(
 			'wpbo-quantity-rule-role', 
-			'User Roles', 
-			array( $this, 'quantity_rule_role' ), 
+			__('User Roles','woocommerce-incremental-product-quantities'),			array( $this, 'quantity_rule_role' ), 
 			'quantity-rule', 
 			'normal', 
 			'high'
@@ -396,7 +395,7 @@ class IPQ_Quantity_Rule_Post_Type {
 		
 			add_meta_box(	
 				'wpbo-input-thumbnail-notice', 
-				'Urgent Notice', 
+				__('Urgent Notice','woocommerce-incremental-product-quantities'),
 				array( $this, 'input_thumbnail_notice_meta' ), 
 				'quantity-rule', 
 				'side', 
@@ -407,7 +406,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	
 	public function input_thumbnail_notice_meta( $post ) {
 		
-		echo "We've noticed you do not have <a href='http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/' target='_blank'>WooCommerce Thumbnail Input Quantity</a> installed. <br /><br />Installation is <strong>highly recommended</strong> as it shows an input box (with your quantity rules) from all product thumbnails such as on the shop page and in the related prodcuts section.";
+		_e("We've noticed you do not have <a href='http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/' target='_blank'>WooCommerce Thumbnail Input Quantity</a> installed. <br /><br />Installation is <strong>highly recommended</strong> as it shows an input box (with your quantity rules) from all product thumbnails such as on the shop page and in the related products section.","woocommerce-incremental-product-quantities");
 		
 	}
 	
@@ -418,7 +417,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	
 		add_meta_box(	
 			'wpbo-company-notice', 
-			'Message from WP BackOffice', 
+			__('Message from WP BackOffice','woocommerce-incremental-product-quantities'), 
 			array( $this, 'company_notice_meta' ), 
 			'quantity-rule', 
 			'side', 
@@ -443,7 +442,7 @@ class IPQ_Quantity_Rule_Post_Type {
 	
 		add_meta_box(	
 			'wpbo-additional-info', 
-			'Additional Information', 
+			__('Additional Information','woocommerce-incremental-product-quantities'),
 			array( $this, 'additional_info_notice_meta' ), 
 			'quantity-rule', 
 			'side', 
@@ -452,15 +451,13 @@ class IPQ_Quantity_Rule_Post_Type {
 	}
 	
 	public function additional_info_notice_meta( $post ) {
-		
 		?>
 			<div style="text-align: center">
-				<h3>Enjoy this plugin?</h3>
-				<a href="http://wordpress.org/support/view/plugin-reviews/woocommerce-incremental-product-quantities" target="_blank">Rating us on Wordpress!</a>
+				<h3><?php _e('Enjoy this plugin?','woocommerce-incremental-product-quantities'); ?></h3>
+				<a href="http://wordpress.org/support/view/plugin-reviews/woocommerce-incremental-product-quantities" target="_blank"><?php _e('Rate us on Wordpress.org!','woocommerce-incremental-product-quantities'); ?></a>
 			
-			
-				<h3>Need Support?</h3>
-				<a href="http://wordpress.org/support/plugin/woocommerce-incremental-product-quantities" target="_blank">Visit our Support Forum</a> 
+				<h3><?php _e('Need Support?','woocommerce-incremental-product-quantities'); ?></h3>
+				<a href="http://wordpress.org/support/plugin/woocommerce-incremental-product-quantities" target="_blank"><?php _e('Visit our Support Forum','woocommerce-incremental-product-quantities'); ?></a>
 			</div>
 		<?php 
 	}

@@ -8,6 +8,16 @@ Author: WP BackOffice
 Author URI: http://www.wpbackoffice.com
 */ 
 
+//LOAD FILE .mo for translate
+add_action('init','init_load_plugin_textdomain');
+
+function init_load_plugin_textdomain() {
+	$locale = apply_filters( 'plugin_locale', get_locale(), 'woocommerce-incremental-product-quantities' );
+
+	load_textdomain( 'woocommerce-incremental-product-quantities', trailingslashit( WP_LANG_DIR ) . 'woocommerce-incremental-product-quantities/woocommerce-incremental-product-quantities-' . $locale . '.mo' );
+	load_plugin_textdomain( 'woocommerce-incremental-product-quantities', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'IPQ' ) ) :
@@ -77,7 +87,7 @@ class Incremental_Product_Quantities {
 			'ipq_site_step' 		=> '',
 			'ipq_site_rule_active'	=> '',
 			'ipq_show_qty_note' 	=> '',
-			'ipq_qty_text'			=> 'Minimum Qty: %MIN%',
+			'ipq_qty_text'			=> _('Minimum Qty: %MIN%','woocommerce-incremental-product-quantities'),
 			'ipq_show_qty_note_pos' => 'below',	
 			'ipq_qty_class'			=> ''
 		);
@@ -276,8 +286,8 @@ class Incremental_Product_Quantities {
 			if ( ! get_user_meta( $user_id, 'wpbo_thumbnail_input_notice' ) ) {
 				
 				echo '<div class="updated">
-			       <p><strong>Notice:</strong> It is highly recommended you install and active the <a href="http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/" target="_blank">WooCommerce Thumbnail Input Quantites</a> plugin to display input boxes on products thumbnails. <a href="';
-			       
+			       <p><strong>'.__('Notice: ','woocommerce-incremental-product-quantities').'</strong>'.__("It is highly recommended you install and activate the <a href='http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/' target='_blank'>WooCommerce Thumbnail Input Quantites</a> plugin to display input boxes on products thumbnails.","woocommerce-incremental-product-quantities").' <a href="';
+
 			       // Echo the current url 
 			       echo site_url() . $_SERVER['REQUEST_URI'];
 			       
@@ -289,7 +299,7 @@ class Incremental_Product_Quantities {
 				       echo '?wpbo_thumbnail_plugin_dismiss=0';
 			       }
 			       
-			    echo '">Dismiss Notice</a></p></div>';
+			    echo '">'._e('Dismiss Notice','woocommerce-incremental-product-quantities').'</a></p></div>';
 			}
 		} 
 	}
