@@ -20,7 +20,7 @@ function wpbo_get_applied_rule( $product, $role = null ) {
 	} elseif ( get_post_meta( $product->get_id(), '_wpbo_override', true ) == 'on' ) {
 		return 'override';
 
-	} elseif ( isset( $options['ipq_site_rule_active'] ) and $options['ipq_site_rule_active'] == 'on' ) {
+	} elseif ( isset( $options['ipq_site_rule_active'] ) && $options['ipq_site_rule_active'] == 'on' ) {
 		return 'sitewide';
 
 	} else {
@@ -43,7 +43,7 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 	$product_tags = wp_get_post_terms( $product->get_id(), 'product_tag' );
 
 	// Get role if not passed
-	if(!is_user_logged_in()) {
+	if ( ! is_user_logged_in() ) {
 		$role = 'guest';
 	} else if ( $role == NULL ) {
 		$user_data = get_userdata( get_current_user_id() );
@@ -76,7 +76,7 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 		while ( $cnt < count( $rules ) ) {
 
 			$roles = get_post_meta( $rules[$cnt]->ID, '_roles' );
-		 	if ( !in_array( $role, $roles[0] ) && !empty($roles[0])) {
+		 	if ( !in_array( $role, $roles[0] ) && !empty( $roles[0] ) ) {
 			 	array_push( $rules_to_unset, $cnt );
 		 	}
 
