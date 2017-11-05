@@ -1,6 +1,7 @@
 <?php
+
 /*
-*	Given the product, this will check which rule is being applied to a product
+*	Given the product, this will check which rule is being applied.
 * 	If there is a rule, the values will be returned otherwise it is inactive
 *	or overridden (from the product meta box).
 *
@@ -32,7 +33,7 @@ function wpbo_get_applied_rule( $product, $role = null ) {
 *	Will return null if no rule is applied.
 *
 *	@params object	$product WC_Product object
-*	@param 	string	User role to get rule from, otherwise current user role is used
+*	@params	string	User role to get rule from, otherwise current user role is used
 *	@return mixed 	Null if no rule applies / Object top rule post
 */
 function wpbo_get_applied_rule_obj( $product, $role = null ) {

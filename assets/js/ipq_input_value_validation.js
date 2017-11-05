@@ -9,16 +9,16 @@ jQuery(document).ready( function($) {
 	$(".qty").change(function() {
 
 		// Get values from input box
-		var new_qty = $(this).val();
-		var step = $(this).attr( 'step' );
-		var max = $(this).attr( 'max' );
-		var min = $(this).attr( 'min' );
+		var new_qty = $(this).val(),
+			step = $(this).attr( 'step' ),
+			max = $(this).attr( 'max' ),
+			min = $(this).attr( 'min' );
 
 		// Adjust default values if values are blank
 		if ( min == '' || typeof min == 'undefined' )
 			min = 1;
 
-		if ( step == '' || typeof step == 'undefined')
+		if ( step == '' || typeof step == 'undefined' )
 			step = 1;
 
 		// Max Value Validation
@@ -63,9 +63,9 @@ jQuery(document).ready( function($) {
 
 	// Get localized Variables
 	if ( typeof ipq_validation !== 'undefined' ) {
-		var start_min = ipq_validation.min;
-		var start_max = ipq_validation.max;
-		var start_step = ipq_validation.step;
+		var start_min = ipq_validation.min,
+			start_max = ipq_validation.max,
+			start_step = ipq_validation.step;
 	}
 
 	// Update input box after variaiton selects are blured
@@ -90,7 +90,5 @@ jQuery(document).ready( function($) {
 		if ( start_min > $('.qty').attr('value') && start_min != '' ) {
 			$('.qty').attr('value', start_min );
 		}
-
 	});
-
 });

@@ -60,7 +60,6 @@ class Incremental_Product_Quantities {
 		// Control Admin Notices
 		add_action( 'admin_notices', array( $this, 'thumbnail_plugin_notice' ) );
 		add_action( 'admin_init', array( $this, 'thumbnail_plugin_notice_ignore' ) );
-
 	}
 
 	/*
@@ -130,6 +129,7 @@ class Incremental_Product_Quantities {
 
 		// Loop through rules
 		foreach ( $rules as $rule ) {
+
 			// If their rule value is false, apply all roles
 			$roles = get_post_meta( $rule->ID, '_roles', true );
 

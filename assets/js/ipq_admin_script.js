@@ -20,5 +20,4 @@ jQuery(document).ready( function($) {
 			$('span.wpbo_product_values').show();
 		}
 	});
-
 });

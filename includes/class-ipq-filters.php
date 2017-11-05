@@ -28,7 +28,7 @@ class IPQ_Filters {
 	public function input_min_value( $default, $product ) {
 
 		// Return Defaults if it isn't a simple product
-		if( $product->product_type != 'simple' ) {
+		if ( $product->product_type != 'simple' ) {
 			return $default;
 		}
 
@@ -38,7 +38,7 @@ class IPQ_Filters {
 		// Get Value from Rule
 		$min = wpbo_get_value_from_rule( 'min', $product, $rule );
 		// Return Value
-		if ( $min == '' or $min == null or (isset($min['min']) and $min['min'] == "")) {
+		if ( $min == '' or $min == null or (isset($min['min']) and $min['min'] == "") ) {
 			return $default;
 		} else {
 			return $min;
@@ -68,7 +68,7 @@ class IPQ_Filters {
 		$max = wpbo_get_value_from_rule( 'max', $product, $rule );
 
 		// Return Value
-		if ( $max == '' or $max == null or (isset($max['max']) and $max['max'] == "")) {
+		if ( $max == '' || $max == null || (isset($max['max']) && $max['max'] == "") ) {
 			return $default;
 		} else {
 			return $max;
@@ -98,7 +98,7 @@ class IPQ_Filters {
 		$step = wpbo_get_value_from_rule( 'step', $product, $rule );
 
 		// Return Value
-		if ( $step == '' or $step == null or (isset($step['step']) and $step['step'] == "")) {
+		if ( $step == '' || $step == null || (isset($step['step']) && $step['step'] == "")) {
 			return $default;
 		} else {
 			return $step;
@@ -141,25 +141,25 @@ class IPQ_Filters {
 		$stock = $product->get_stock_quantity();
 
 		// Check stock status and if Out try Out of Stock value
-		if ( strlen( $stock ) != 0 and $stock <= 0 and isset( $values['min_oos'] ) and $values['min_oos'] != '' ) {
+		if ( strlen( $stock ) != 0 && $stock <= 0 && isset( $values['min_oos'] ) && $values['min_oos'] != '' ) {
 			$args['min_value'] = $values['min_oos'];
 
 		// Otherwise just check normal min
 		} elseif ( $values['min_value'] != ''  ) {
-			$args['min_value'] 	 = $values['min_value'];
+			$args['min_value'] = $values['min_value'];
 
 		// If no min, try step
-		} elseif ( $values['min_value'] == '' and $values['step'] != '' ) {
-			$args['min_value'] 	 = $values['step'];
+		} elseif ( $values['min_value'] == '' && $values['step'] != '' ) {
+			$args['min_value'] = $values['step'];
 		}
 
 		// Check stock status and if Out try Out of Stock value
-		if ( $stock <= 0 and isset( $values['min_oos'] ) and $values['max_oos'] != '' ) {
+		if ( $stock <= 0 && isset( $values['min_oos'] ) && $values['max_oos'] != '' ) {
 			$args['max_value'] = $values['max_oos'];
 
 		// Otherwise just check normal max
-		} elseif ($values['max_value'] != ''  ) {
-			$args['max_value'] 	 = $values['max_value'];
+		} elseif ( $values['max_value'] != '' ) {
+			$args['max_value'] = $values['max_value'];
 		}
 
 		// Set step value
@@ -169,7 +169,6 @@ class IPQ_Filters {
 
 		return $args;
 	}
-
 }
 
 endif;

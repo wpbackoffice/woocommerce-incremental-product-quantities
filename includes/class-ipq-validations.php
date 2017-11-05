@@ -204,7 +204,6 @@ class IPQ_Quantity_Validations {
 
 		return true;
 	}
-
 }
 
 endif;
