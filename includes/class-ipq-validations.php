@@ -66,7 +66,7 @@ class IPQ_Quantity_Validations {
 	public function validate_single_product( $passed, $product_id, $quantity, $from_cart, $variation_id = null, $variations = null ) {
 		global $woocommerce, $product, $ipq;
 
-		$product = get_product( $product_id );
+		$product = wc_get_product( $product_id );
 		$title = $product->get_title();
 
 		// Get the applied rule and values - if they exist
