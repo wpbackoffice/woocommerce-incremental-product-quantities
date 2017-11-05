@@ -147,7 +147,7 @@ class IPQ_Quantity_Validations {
 			// Get Cart Quantity for the product
 			foreach( $woocommerce->cart->get_cart() as $cart_item_key => $values ) {
 				$_product = $values['data'];
-				if( $product_id == $_product->id ) {
+				if( $product_id == $_product->get_id() ) {
 					$cart_qty = $values['quantity'];
 				}
 			}
