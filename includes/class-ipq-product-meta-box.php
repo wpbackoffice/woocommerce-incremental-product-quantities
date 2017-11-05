@@ -45,7 +45,7 @@ class IPQ_Quantity_Meta_Boxes {
 		global $wp_roles;
 
 		// Get the product and see what rules are being applied
-		$pro = get_product( $post );
+		$pro = wc_get_product( $post );
 
 		// Get applied rules by user role
 		$roles = $wp_roles->get_names();
