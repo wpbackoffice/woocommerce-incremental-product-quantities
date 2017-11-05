@@ -84,12 +84,12 @@ class IPQ_Quantity_Validations {
 		$stock = $product->get_stock_quantity();
 
 		// Adjust min value if item is out of stock
-		if ( strlen( $stock ) != 0 and $stock <= 0 and isset( $min_oos ) and $min_oos != null  ) {
+		if ( strlen( $stock ) != 0 && $stock <= 0 && isset( $min_oos ) && $min_oos != null  ) {
 			$min_value = $min_oos;
 		}
 
 		// Adjust max value if item is out of stock
-		if ( strlen( $stock ) != 0 and $stock <= 0 and isset( $max_oos ) and $max_oos != null ) {
+		if ( strlen( $stock ) != 0 && $stock <= 0 && isset( $max_oos ) && $max_oos != null ) {
 			$max_value = $max_oos;
 		}
 
@@ -153,7 +153,7 @@ class IPQ_Quantity_Validations {
 			}
 
 			//  If there aren't any items in the cart already, ignore these validations
-			if ( isset( $cart_qty ) and $cart_qty != null ) {
+			if ( isset( $cart_qty ) && $cart_qty != null ) {
 
 				// Total Cart Quantity Min Validation
 				if ( $min_value != null && ( $quantity + $cart_qty ) < $min_value ) {
