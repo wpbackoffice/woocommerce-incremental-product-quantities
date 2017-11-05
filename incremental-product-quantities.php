@@ -180,7 +180,7 @@ class Incremental_Product_Quantities {
 				$product = wc_get_product( $post );
 
 				// Check if variable
-				if ( $product->product_type == 'variable' ) {
+				if ( $product->is_type( 'variable' ) ) {
 
 					// See what rules are being applied
 					$rule_result = wpbo_get_applied_rule( $product );
