@@ -49,6 +49,8 @@ class IPQ_Quantity_Meta_Boxes {
 		
 		// Get applied rules by user role
 		$roles = $wp_roles->get_names();
+		$roles['guest'] = "Guest";
+		
 		$rules_by_role = array();
 		
 		// Loop through roles

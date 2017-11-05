@@ -37,9 +37,8 @@ class IPQ_Filters {
 
 		// Get Value from Rule
 		$min = wpbo_get_value_from_rule( 'min', $product, $rule );
-		
 		// Return Value
-		if ( $min == '' or $min == null ) {
+		if ( $min == '' or $min == null or (isset($min['min']) and $min['min'] == "")) {
 			return $default;
 		} else {
 			return $min;
@@ -69,7 +68,7 @@ class IPQ_Filters {
 		$max = wpbo_get_value_from_rule( 'max', $product, $rule );
 	
 		// Return Value
-		if ( $max == '' or $max == null ) {
+		if ( $max == '' or $max == null or (isset($max['max']) and $max['max'] == "")) {
 			return $default;
 		} else {
 			return $max;
@@ -99,7 +98,7 @@ class IPQ_Filters {
 		$step = wpbo_get_value_from_rule( 'step', $product, $rule );
 	
 		// Return Value
-		if ( $step == '' or $step == null ) {
+		if ( $step == '' or $step == null or (isset($step['step']) and $step['step'] == "")) {
 			return $default;
 		} else {
 			return $step;

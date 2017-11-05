@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Advanced Product Quantities
 Plugin URI: http://www.wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 Description: Easily require your customers to buy a minimum / maximum / incremental amount of products to continue with their checkout. It is highly recommended to also install 'WooCommerce Thumbnail Input Quantities' to allow users to add your custom quantites from product thumbnails.
-Version: 2.1.5
+Version: 2.1.9
 Author: WP BackOffice
 Author URI: http://www.wpbackoffice.com
 */ 
@@ -276,7 +276,7 @@ class Incremental_Product_Quantities {
 			if ( ! get_user_meta( $user_id, 'wpbo_thumbnail_input_notice' ) ) {
 				
 				echo '<div class="updated">
-			       <p><strong>Notice:</strong> It is highly recommended you install and active the <a href="http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/" target="_blank">WooCommerce Thumbnail Input Quantites</a> plugin to display input boxes on products thumbnails. <a href="';
+			       <p><strong>Notice:</strong> It is highly recommended you install and activate the <a href="http://wordpress.org/plugins/woocommerce-thumbnail-input-quantities/" target="_blank">WooCommerce Thumbnail Input Quantites</a> plugin to display input boxes on products thumbnails. <a href="';
 			       
 			       // Echo the current url 
 			       echo site_url() . $_SERVER['REQUEST_URI'];

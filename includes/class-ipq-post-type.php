@@ -377,12 +377,15 @@ class IPQ_Quantity_Rule_Post_Type {
 			<ul>
 				<?php foreach ( $roles as $slug => $name ): ?>
 					<li>
-						<input type='checkbox' name='_wpbo_role_<?php echo $slug ?>' id='wpbo_role_<?php echo $slug ?>'  <?php if( in_array( $slug, $applied_roles ) ) echo 'checked' ?> />
+						<input type='checkbox' name='_wpbo_role_<?php echo $slug ?>' id='wpbo_role_<?php echo $slug ?>'  <?php if( in_array( $slug, $applied_roles ) || empty($applied_roles) ) echo 'checked' ?> />
 						<?php echo $name; ?>
 					</li>
 				<?php endforeach; ?>
+				<li>
+					<input type='checkbox' name='_wpbo_role_guest' id='wpbo_role_guest'  <?php if( in_array( 'guest', $applied_roles ) || empty($applied_roles) ) echo 'checked' ?> />
+				Guest
+				</li>
 			</ul>
-			<p><em>Note* - All roles are selected by default.</em></p>
 		<?php endif;
 	}
 
@@ -452,12 +455,10 @@ class IPQ_Quantity_Rule_Post_Type {
 	}
 	
 	public function additional_info_notice_meta( $post ) {
-		
 		?>
 			<div style="text-align: center">
 				<h3>Enjoy this plugin?</h3>
-				<a href="http://wordpress.org/support/view/plugin-reviews/woocommerce-incremental-product-quantities" target="_blank">Rating us on Wordpress!</a>
-			
+				<a href="http://wordpress.org/support/view/plugin-reviews/woocommerce-incremental-product-quantities" target="_blank">Rate us on Wordpress.org!</a>
 			
 				<h3>Need Support?</h3>
 				<a href="http://wordpress.org/support/plugin/woocommerce-incremental-product-quantities" target="_blank">Visit our Support Forum</a> 
@@ -492,6 +493,10 @@ class IPQ_Quantity_Rule_Post_Type {
 			delete_transient( 'ipq_rules_' . $slug );
 		}
 	
+		//Also delete the guest transient, which is not a role
+
+		delete_transient( 'ipq_rules_guest' );
+
 		// Make sure $min >= step
 		if( isset( $_POST['min'] ) ) {
 			$min = $_POST['min'];
@@ -681,6 +686,12 @@ class IPQ_Quantity_Rule_Post_Type {
 			}
 		}
 		
+		// If guest role is set add it to the applied list
+		if ( isset( $_POST[ '_wpbo_role_guest' ] ) and $_POST[ '_wpbo_role_guest' ] == 'on' ) {
+			array_push( $applied_roles, 'guest' );
+		}
+
+
 		// Add them to the post meta
 		delete_post_meta( $post_id, '_roles' );
 		update_post_meta( $post_id, '_roles', $applied_roles, false );

@@ -42,18 +42,15 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 	$product_tags = wp_get_post_terms( $product->id, 'product_tag' );	
 
 	// Get role if not passed
-	if ( $role == NULL and is_user_logged_in() ) {
+	if(!is_user_logged_in()) {
+		$role = 'guest';
+	} else if ( $role == NULL ) {
 		$user_data = get_userdata( get_current_user_id() );
-		if ( $user_data->wp_capabilities ) {
-			foreach ( $user_data->wp_capabilities as $cap => $val ) {
+		if ( $user_data->roles ) {
+			foreach ( $user_data->roles as $cap => $val ) {
 				$role = $cap;
 			}
 		}
-	}
-	
-	// Use default role if the user isn't signed in
-	if ( $role == NULL ) {
-		$role = get_option('default_role');	
 	}
 
 	// Combine all product terms
@@ -78,7 +75,7 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 		while ( $cnt < count( $rules ) ) {
 	
 			$roles = get_post_meta( $rules[$cnt]->ID, '_roles' );
-		 	if ( !in_array( $role, $roles[0] ) ) {
+		 	if ( !in_array( $role, $roles[0] ) && !empty($roles[0])) {
 			 	array_push( $rules_to_unset, $cnt );
 		 	} 
 		 	
@@ -174,7 +171,7 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 	// Return Product Meta if Override is on
 	} elseif ( $rule == 'override' ) {
 		
-		// Check if the product is out of stock 
+		// Check if the product is out of stock
 		$stock = $product->get_stock_quantity();
 
 		// Check if the product is under stock management and out of stock
@@ -262,7 +259,7 @@ function wpbo_get_value_from_rule( $type, $product, $rule ) {
 		}
 		
 		if( isset( $options['ipq_site_step'] ) ) {
-			$step = $options['ipq_site_step'];			
+			$step = $options['ipq_site_step'];
 		} else {
 			$step = '';			
 		}

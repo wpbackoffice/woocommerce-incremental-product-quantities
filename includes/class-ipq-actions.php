@@ -79,7 +79,7 @@ class IPQ_Actions {
 		$rule = wpbo_get_applied_rule( $product );
 		
 		// Return nothing if APQ is deactivated
-		if ( $rule == 'inactive' ) {
+		if ( $rule == 'inactive' or $rule == null ) {
 			return; 
 		}
 		
@@ -105,8 +105,9 @@ class IPQ_Actions {
 			if ( is_array( $max ) )
 				$max = $max['max_oos'];
 				
-			if ( is_array( $step ) )
+			if ( is_array( $step ) ) {
 				$step = $step['step'];
+			}
 		} else if ( $rule == 'sitewide' ) {
 			if ( is_array( $min ) )
 				$min = $min['min'];
@@ -114,8 +115,9 @@ class IPQ_Actions {
 			if ( is_array( $max ) )
 				$max = $max['max'];
 				
-			if ( is_array( $step ) )
+			if ( is_array( $step ) ) {
 				$step = $step['step'];
+			}
 		}
 		
 		// If the text is set, update and print the output
