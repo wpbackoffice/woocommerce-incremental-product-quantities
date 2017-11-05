@@ -39,7 +39,7 @@ Features:
 * Now fully supports ALL PRODUCT TYPES, simple, variable, grouped and affiliate
 * Create Site Wide rules that apply to every product unless overwritten on a per-product basis
 * Create rules by Product Tags (opposed to just categories)
-* Woocommerce +2.0 compatible 
+* Woocommerce +2.0 compatible
 
 [Plugin's Official Documentation and Support Page](http://www.wpbackoffice.com/plugins/woocommerce-incremental-product-quantities)
 
@@ -61,40 +61,40 @@ Manual Installation
 5. Active the plugin from your WordPress backend ‘Plugins -> Installed Plugins’
 6. Set Rules for categories by clicking the new ‘Quantity Rules’ sidebar option or assign per-product rules by using the new metabox on your product page.
 
-== Upgrade Notice == 
+== Upgrade Notice ==
 
-= 2.1.9 = 
+= 2.1.9 =
 * Fixing munged defaults for the sitewide rules that could cause it to fail if all fields weren't populated.
 
-= 2.1.8 = 
+= 2.1.8 =
 * Fixing an issue where rules category/tag rules wouldn't work if the site WP Site used a custom database prefix.
 
-= 2.1.7 = 
+= 2.1.7 =
 * Adding Guest Role, improving interface for role selection, and bug when no roles were selected.
 
-= 2.1.6 = 
+= 2.1.6 =
 * Hides message when no quantity rule is being applied.
 
-= 2.1.5 = 
+= 2.1.5 =
 * Minor bug fix, couldn't unset max out of stock value
 
-= 2.1.4 = 
+= 2.1.4 =
 * Upgrade fix, removed error for unset value
 
-= 2.1.3 = 
+= 2.1.3 =
 * Added Quantity Message Options
-* Added Out of Stock min/max values 
+* Added Out of Stock min/max values
 * Fixed 0 quantity appearing as 1 bug
 * Minor class tweaks
 
-= 2.1.2 = 
+= 2.1.2 =
 * Default user role bug fix.
 
-= 2.1.1 = 
+= 2.1.1 =
 Product Page UI Update
 Minor bug fixes.
 
-= 2.1.0 = 
+= 2.1.0 =
 Added user role support for Quantity Rules, improved performance / user interface.
 
 = 2.0.0 =
@@ -102,35 +102,35 @@ This major upgrade adds the following features - Now supports all product types,
 
 == Changelog ==
 
-= 2.1.6 = 
+= 2.1.6 =
 * Hides message when no quantity rule is being applied.
 
-= 2.1.5 = 
+= 2.1.5 =
 * Minor bug fix, couldn't unset max out of stock value
 
-= 2.1.4 = 
+= 2.1.4 =
 * Upgrade fix, removed error for unset value
 
-= 2.1.3 = 
+= 2.1.3 =
 * Added Quantity Message Options
-* Added Out of Stock min/max values 
+* Added Out of Stock min/max values
 * Fixed 0 quantity appearing as 1 bug
 * Minor class tweaks
 
-= 2.1.2 = 
+= 2.1.2 =
 * Default user role bug fix.
 
-= 2.1.1 = 
+= 2.1.1 =
 * Product Page UI Update
 * Minor bug fixes.
 
-= 2.1.0 = 
+= 2.1.0 =
 * Added Role Support, create rules based on user roles.
 * Improved performance / cacheing
 * Improved admin interface
 * Allows rules to have a minimum of 0
 
-= 2.0.0 = 
+= 2.0.0 =
 * Updated name from WooCommerce Incremental Product Quantities to WooCommerce Advanced Product Quantities
 * Now fully supports ALL PRODUCT TYPES, simple, variable, grouped and affiliate
 * Create Site Wide rules that apply to every product unless overwritten on a per-product basis
@@ -138,7 +138,7 @@ This major upgrade adds the following features - Now supports all product types,
 * Code reconfiguration puts everything into classes, the way it should be.
 
 = 1.1.4 =
-* Added back WC 2.0.x validation compatibility. 
+* Added back WC 2.0.x validation compatibility.
 
 = 1.1.3 =
 * Minor bug fixes.
@@ -166,11 +166,11 @@ This major upgrade adds the following features - Now supports all product types,
 * Fixed cart bug, added additional validation so users can't enter minimum values that are less then the step value.
 
 = 1.0.5 =
-* Fixed additional bug related to missing input values and error messages on some installs. Also updated notice window. 
+* Fixed additional bug related to missing input values and error messages on some installs. Also updated notice window.
 
 = 1.0.4 =
-* Style sheet and link update. 
-* Added potential solution for niche validation problem.  
+* Style sheet and link update.
+* Added potential solution for niche validation problem.
 
 = 1.0.3 =
 * Readme.txt updates.
@@ -187,7 +187,7 @@ This major upgrade adds the following features - Now supports all product types,
 == Screenshots ==
 
 1. Single product page, page loads with it's minimum quantity and notifies the user below.
-1. Create rule page. 
+1. Create rule page.
 1. Single product 'Product Quantity Rules' meta box. Deactivate or override rules. Even set out of stock min/max values.
 1. Single product 'Product Quantity Rules' meta box. Display of values by user role.
 1. 'Advanced Rules' page, set sitewide rules and configure quantity notifications (screenshot 1)
