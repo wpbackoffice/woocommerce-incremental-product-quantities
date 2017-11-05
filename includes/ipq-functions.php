@@ -49,7 +49,7 @@ function wpbo_get_applied_rule_obj( $product, $role = null ) {
 		$user_data = get_userdata( get_current_user_id() );
 		if ( $user_data->roles ) {
 			foreach ( $user_data->roles as $cap => $val ) {
-				$role = $cap;
+				$role = $val;
 			}
 		}
 	}
