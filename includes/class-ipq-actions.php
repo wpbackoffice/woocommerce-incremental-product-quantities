@@ -69,7 +69,7 @@ class IPQ_Actions {
 			return;
 		}
 
-		if ( $product->product_type == 'grouped' )
+		if ( $product->is_type( 'grouped' ) )
 			return;
 
 		$settings = get_option( 'ipq_options' );

@@ -28,7 +28,7 @@ class IPQ_Filters {
 	public function input_min_value( $default, $product ) {
 
 		// Return Defaults if it isn't a simple product
-		if ( $product->product_type != 'simple' ) {
+		if ( $product->is_type( 'simple' ) ) {
 			return $default;
 		}
 
@@ -57,7 +57,7 @@ class IPQ_Filters {
 	public function input_max_value( $default, $product ) {
 
 		// Return Defaults if it isn't a simple product
-		if( $product->product_type != 'simple' ) {
+		if ( ! $product->is_type( 'simple' ) ) {
 			return $default;
 		}
 
@@ -87,7 +87,7 @@ class IPQ_Filters {
 	public function input_step_value( $default, $product ) {
 
 		// Return Defaults if it isn't a simple product
-		if( $product->product_type != 'simple' ) {
+		if ( ! $product->is_type( 'simple' ) ) {
 			return $default;
 		}
 
@@ -119,7 +119,7 @@ class IPQ_Filters {
 		// Return Defaults if it isn't a simple product
 		/* Commented out to allow for grouped and variable products
 		*  on their product pages
-		if( $product->product_type != 'simple' ) {
+		if ( ! $product->is_type( 'simple' ) ) {
 			return $args;
 		}
 		*/
@@ -141,7 +141,7 @@ class IPQ_Filters {
 		$stock = $product->get_stock_quantity();
 
 		// Check stock status and if Out try Out of Stock value
-		if ( strlen( $stock ) != 0 && $stock <= 0 && isset( $values['min_oos'] ) && $values['min_oos'] != '' ) {
+		if ( strlen( $stock ) != 0 && $stock <= 0 && isset( $values['min_oos'] ) and $values['min_oos'] != '' ) {
 			$args['min_value'] = $values['min_oos'];
 
 		// Otherwise just check normal min
