@@ -5,11 +5,11 @@ Tags: woocommerce, product quantities, input values
 
 Donate Link: http://wpbackoffice.com/plugins/woocommerce-incremental-product-quantities/
 
-Requires at least: 2.3
+Requires at least: 3.5
 
-Tested up to: 3.91
+Tested up to: 4.1
 
-Stable tag: 2.1.3
+Stable tag: 2.1.9
 
 License: GPLv2
 
@@ -70,6 +70,11 @@ Manual Installation
 6. Set Rules for categories by clicking the new ‘Quantity Rules’ sidebar option or assign per-product rules by using the new metabox on your product page.
 
 ## Upgrade Notice
+####2.1.5 
+* Minor bug fix, couldn't unset max out of stock value
+
+####2.1.4
+* Upgrade fix, removed error for unset value
 
 ####2.1.3
 * Added Quantity Message Options

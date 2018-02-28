@@ -10,7 +10,7 @@ class IPQ_Actions {
 		// Conditionally add quantity note to product page
 		$settings = get_option( 'ipq_options' );
 
-		if ( $settings['ipq_show_qty_note'] == 'on' ) {
+		if ( isset( $settings['ipq_show_qty_note'] ) and $settings['ipq_show_qty_note'] == 'on' ) {
 			add_action( 'init', array( $this, 'apply_product_notification' ) );
 		}
 		
@@ -79,7 +79,7 @@ class IPQ_Actions {
 		$rule = wpbo_get_applied_rule( $product );
 		
 		// Return nothing if APQ is deactivated
-		if ( $rule == 'inactive' ) {
+		if ( $rule == 'inactive' or $rule == null ) {
 			return; 
 		}
 		
@@ -105,8 +105,9 @@ class IPQ_Actions {
 			if ( is_array( $max ) )
 				$max = $max['max_oos'];
 				
-			if ( is_array( $step ) )
+			if ( is_array( $step ) ) {
 				$step = $step['step'];
+			}
 		} else if ( $rule == 'sitewide' ) {
 			if ( is_array( $min ) )
 				$min = $min['min'];
@@ -114,8 +115,9 @@ class IPQ_Actions {
 			if ( is_array( $max ) )
 				$max = $max['max'];
 				
-			if ( is_array( $step ) )
+			if ( is_array( $step ) ) {
 				$step = $step['step'];
+			}
 		}
 		
 		// If the text is set, update and print the output
