@@ -28,7 +28,7 @@ class IPQ_Filters {
 	public function input_min_value( $default, $product ) {
 
 		// Return Defaults if it isn't a simple product 
-		if( $product->product_type != 'simple' ) {
+		if( $product->get_type() != 'simple' ) {
 			return $default;
 		}
 		
@@ -55,9 +55,9 @@ class IPQ_Filters {
 	*
 	*/	
 	public function input_max_value( $default, $product ) {	
-		
+	
 		// Return Defaults if it isn't a simple product
-		if( $product->product_type != 'simple' ) {
+		if( $product->get_type() != 'simple' ) {
 			return $default;
 		}
 		
@@ -87,7 +87,7 @@ class IPQ_Filters {
 	public function input_step_value( $default, $product ) {
 		
 		// Return Defaults if it isn't a simple product
-		if( $product->product_type != 'simple' ) {
+		if( $product->get_type() != 'simple' ) {
 			return $default;
 		}
 		
@@ -119,7 +119,7 @@ class IPQ_Filters {
 		// Return Defaults if it isn't a simple product
 		/* Commented out to allow for grouped and variable products
 		*  on their product pages
-		if( $product->product_type != 'simple' ) {
+		if( $product->get_type() != 'simple' ) {
 			return $args;
 		}
 		*/
