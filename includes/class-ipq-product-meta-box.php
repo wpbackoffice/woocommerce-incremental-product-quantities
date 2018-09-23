@@ -19,7 +19,7 @@ class IPQ_Quantity_Meta_Boxes {
 
 		if ( $post->post_type == 'product' ) {
 			
-			$product = get_product( $post->ID );
+			$product = wc_get_product( $post->ID );
 			$unsupported_product_types = array( 'external', 'grouped' );
 
 			if ( ! in_array( $product->get_type(), $unsupported_product_types ) ) {
@@ -45,7 +45,7 @@ class IPQ_Quantity_Meta_Boxes {
 		global $wp_roles;
 				
 		// Get the product and see what rules are being applied
-		$pro = get_product( $post );
+		$pro = wc_get_product( $post );
 		
 		// Get applied rules by user role
 		$roles = $wp_roles->get_names();
